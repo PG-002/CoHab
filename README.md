@@ -7,3 +7,6 @@ CoHab is a roommate assistant app designed to help groups of people that are in 
 - cors
 - dotenv
 - body-parser
+- heroku
+- path
+- jsonwebtoken
