@@ -35,7 +35,25 @@ const signup = async (req, res) => {
     });
 }
 
-const login = () => {}
+const login = async (req, res) => {
+    const {username, password } = req.body;
+
+    const query = User.where({ username: username, password: password });
+    const user = await query.findOne();
+
+    if (user) {
+        res.status(200);
+        res.json({user : {
+            id : user._id,
+            firstname: user.firstname,
+            lastname: user.lastname
+        },
+    });
+    } else {
+        res.status(404);
+        res.json({error : 404});
+    }
+}
 
 const decode = async (req, res) => {
     const { token } = req.body;
