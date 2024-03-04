@@ -43,11 +43,13 @@ const login = async (req, res) => {
     const user = await query.findOne();
 
     if (user) {
+        console.log(user)
         res.status(200);
         res.json({user : {
             id : user._id,
-            firstname: user.firstname,
-            lastname: user.lastname
+            firstname: user.firstName,
+            lastname: user.lastName,
+            email : user.email
         },
     });
     } else {
