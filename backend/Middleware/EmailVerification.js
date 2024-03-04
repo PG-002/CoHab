@@ -32,7 +32,10 @@ const sendVerificationCode = async (name, emailTo) => {
     return await UserVerification.create({
         email : emailTo,
         code : code
-    }).then(async () => await transporter.sendMail(mailOptions, (err, info) => err ? err : info))
+    }).then(async () => {
+        await transporter.sendMail(mailOptions, (err, info) => err ? err : info)
+        return 'Message sent!'
+    })
     .catch(err => err);
 };
 

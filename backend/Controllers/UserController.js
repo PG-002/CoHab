@@ -61,7 +61,7 @@ const login = async (req, res) => {
 const emailVerificationCode = async (req, res) => {
     const { name, email } = req.body;
 
-    let x = sendVerificationCode(name, email);
+    let x = await sendVerificationCode(name, email);
 
     res.status(200);
     res.json(x);
