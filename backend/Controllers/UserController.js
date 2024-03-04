@@ -23,8 +23,8 @@ const signup = async (req, res) => {
         res.json({ token : createToken({
             user : {
                 id : user._id,
-                firstname : user.firstname,
-                lastname : user.lastname,
+                firstname : user.firstName,
+                lastname : user.lastName,
                 email : user.email,
                 error : ''
             },
