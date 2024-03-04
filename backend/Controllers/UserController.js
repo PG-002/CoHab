@@ -3,11 +3,11 @@ const { sendVerificationCode, checkVerificationCode } = require('../Middleware/E
 const { createToken, verifyToken, decodeToken } = require('../Middleware/Token');
 
 const signup = async (req, res) => {
-    const { firstname, lastname, email, username, password } = req.body;
+    const { firstName, lastName, email, username, password } = req.body;
 
     await User.create({
-        firstname : firstname,
-        lastname : lastname,
+        firstName : firstName,
+        lastName : lastName,
         email : email,
         username : username,
         password : password,
