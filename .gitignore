@@ -1,2 +1,6 @@
 node_modules
 .env
+backend/Controllers/HouseController.js
+backend/Models/House.js
+backend/Routes/HouseRoutes.js
+backend/Routes/HouseRoutes.js

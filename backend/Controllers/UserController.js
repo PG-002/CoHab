@@ -1,4 +1,5 @@
-const User = require('../Models/User')
+const User = require('../Models/User');
+const { sendVerificationCode, checkVerificationCode } = require('../Middleware/EmailVerification');
 const { createToken, verifyToken, decodeToken } = require('../Middleware/Token');
 
 const signup = async (req, res) => {
@@ -55,13 +56,31 @@ const login = async (req, res) => {
     }
 }
 
+const emailVerificationCode = async (req, res) => {
+    const { name, email } = req.body;
+
+    let x = sendVerificationCode(name, email);
+
+    res.status(200);
+    res.json(x);
+}
+
+const validateVerificationCode = async (req, res) => {
+    const { email, code } = req.body;
+
+    res.status(200);
+    res.json({msg : await checkVerificationCode(email, code)});
+}
+
+
+
 const decode = async (req, res) => {
     const { token } = req.body;
 
     if(await verifyToken(token))
     {
         res.status(200);
-        const obj = decodeToken(token).payload.user;
+        const obj = decodeToken(token).payload;
         res.json(obj);
     }
     else
@@ -72,4 +91,4 @@ const decode = async (req, res) => {
 }
 
 
-module.exports = { signup, login, decode };
+module.exports = { signup, login, emailVerificationCode, validateVerificationCode, decode };

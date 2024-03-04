@@ -10,6 +10,7 @@ CoHab is a roommate assistant app designed to help groups of people that are in 
 - heroku
 - path
 - jsonwebtoken
+- nodemailer
 
 ### Install for flutter:
 - install flutter from https://docs.flutter.dev/get-started/install/windows/mobile?tab=vscode
