@@ -31,7 +31,12 @@ const joinHouse = async (req, res) => {
 
     await House.updateOne({ joinHouseCode : joinHouseCode }, {$inc: { amountOfUsers : 1 }, $push: { members : fullName }}).then(() => {
         res.status(200);
-        res.json({ Message : 'Success'});
+        res.json({user : {
+            id : user._id,
+            firstname: user.firstName,
+            lastname: user.lastName,
+            houseID : house._id
+        }});
     }).catch(e => {
         console.log(e);
         res.status(200);
