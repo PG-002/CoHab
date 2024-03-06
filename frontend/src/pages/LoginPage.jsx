@@ -3,7 +3,7 @@ import test from "../assets/test.jpg";
 const LoginPage = () => {
   return (
     <>
-      <div className="flex h-screen">
+      <div className="flex h-screen w-screen">
         <img className="hidden lg:flex" src={test} />
         <div className="w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
