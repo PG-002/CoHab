@@ -11,9 +11,6 @@ const LoginPage = () => {
           <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">
             Join to Our Community with all time access and free{" "}
           </h1>
-          <div className="mt-4 text-sm text-gray-600 text-center">
-            <p>or with email</p>
-          </div>
           <form action="#" method="POST" className="space-y-4">
             <div>
               <label
