@@ -39,5 +39,8 @@ if(env.NODE_ENV === 'production')
 const userRoutes = require('../backend/Routes/UserRoutes');
 app.use('/api/users', userRoutes);
 
+const houseRoutes = require('../backend/Routes/HouseRoutes');
+app.use('/api/houses', houseRoutes);
+
 
 app.listen(PORT, () => console.log('Server listening on port ' + PORT));
