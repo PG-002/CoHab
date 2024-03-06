@@ -10,7 +10,6 @@ function App() {
   return (
     <>
       <LoginPage />
-      <h1> YO</h1>
     </>
   );
 }

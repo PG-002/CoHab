@@ -1,9 +1,11 @@
 import React from "react";
+import test from "../assets/test.jpg"
 
 const LoginPage = () => {
   return (
     <div className="flex h-screen">
-      <div className="w-full bg-gray-100 flex items-center justify-center">
+        <img src={test} />
+              <div className="w-full bg-gray-100 flex items-center justify-center">
         <div className="max-w-md w-full p-6">
           <h1 className="text-3xl font-semibold mb-6 text-black text-center">
             Sign Up
@@ -23,7 +25,7 @@ const LoginPage = () => {
                 type="text"
                 id="username"
                 name="username"
-                className="bg-white mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors <duration-300"
+                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors <duration-300"
               ></input>
             </div>
             <div>
@@ -37,7 +39,7 @@ const LoginPage = () => {
                 type="text"
                 id="email"
                 name="email"
-                className="bg-white mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors <duration-300"
+                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors <duration-300"
               ></input>
             </div>
             <div>
@@ -51,7 +53,7 @@ const LoginPage = () => {
                 type="password"
                 id="password"
                 name="password"
-                className="bg-white mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors <duration-300"
+                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors <duration-300"
               ></input>
             </div>
             <div>
