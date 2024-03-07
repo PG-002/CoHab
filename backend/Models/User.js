@@ -26,23 +26,28 @@ const UserSchema = new Schema({
     },
     houseID : {
         type : String,
+        default : null,
         required : false
     },
     location : {
         lastUpdated : {
             type : Schema.Types.Date,
+            default : Date.now(),
             required : [true, 'Must include the time the user\'s location was last updated.']
         },
         lattitude : {
             type : Number,
+            default : 0,
             required : [true, 'Must include the user\'s lattitude.'] 
         },
         longitude : {
             type : Number,
+            default : 0,
             required : [true, 'Must include the user\'s longitude.']
         },
         isTracking : {
             type : Boolean,
+            default : true,
             required : [true, 'isTracking is required.']
         }
     }

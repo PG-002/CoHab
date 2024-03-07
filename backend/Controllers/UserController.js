@@ -1,39 +1,15 @@
 const User = require('../Models/User');
-const { sendVerificationCode, checkVerificationCode } = require('../Middleware/EmailVerification');
+const House = require('../Models/House');
+const { sendCode, verifyCode, deleteCode } = require('../Middleware/Email');
 const { createToken, verifyToken, decodeToken } = require('../Middleware/Token');
 
 const signup = async (req, res) => {
     const { firstName, lastName, email, username, password } = req.body;
 
-    await User.create({
-        firstName : firstName,
-        lastName : lastName,
-        email : email,
-        username : username,
-        password : password,
-        houseID : null,
-        location : {
-            lastUpdated : Date.now(),
-            lattitude : 0,
-            longitude : 0,
-            isTracking : false
-        }
-    }).then((user) => {
-        res.status(200);
-        res.json({ token : createToken({
-            user : {
-                id : user._id,
-                firstname : user.firstName,
-                lastname : user.lastName,
-                email : user.email,
-                error : ''
-            },
-        })});
-    }).catch(error => {
-        console.log(error);
-        res.status(400);
-        res.json({error : error});
-    });
+    res.status(200);
+    await User.create({ firstName : firstName, lastName : lastName, email : email, username : username, password : password })
+        .then((user) => res.json({ token : createToken({user : user, error : '' }) }))
+        .catch(() => res.json({ token : createToken({ user : null, error : 'User could not be created.' }) }));
 }
 
 const login = async (req, res) => {
@@ -58,23 +34,66 @@ const login = async (req, res) => {
     }
 }
 
-const emailVerificationCode = async (req, res) => {
-    const { name, email } = req.body;
-
-    let x = await sendVerificationCode(name, email);
-
+const updateUser = async (req, res) => {
+    const { id, fieldName, fieldValue } = req.body;
+    
     res.status(200);
-    res.json(x);
+    await User.updateOne({ _id : id }, { [fieldName] : fieldValue })
+        .then(() => res.json({ updated : true, error : '' }))
+        .catch(err => res.json({ updated : false, error: err }));
 }
 
-const validateVerificationCode = async (req, res) => {
-    const { email, code } = req.body;
+const deleteUser = async (req, res) => {
+    const { id } = req.body;
+    const user = await User.findOne({ _id : id }).catch(() => null);
+
+    if(!user)
+    {
+        res.status(200);
+        res.json({ deleted : false, error : 'User does not exist.' });
+        return;
+    }
+
+    const house = await House.findOne({ _id : user.houseID }).catch(err => null);
+
+    if(house)
+        await House.updateOne({ _id : house._id }, { members : house.members.filter(objID => objID !== id) });
 
     res.status(200);
-    res.json({msg : await checkVerificationCode(email, code)});
+    await User.deleteOne({ _id : id })
+        .then(() => res.json({ deleted : true, error : '' }))
+        .catch(err => res.json({ deleted : false, error : err }));
 }
 
+const sendVerification = async (req, res) => {
+    const { id, type } = req.body;
+    const user = await User.findOne({ _id : id }).catch(() => null);
 
+    res.status(200);
+
+    if(!user)
+        res.json({ sent : false, error : 'User not found.' });
+    else
+        res.json(await sendCode(user, type));
+}
+
+const verifyUser = async (req, res) => {
+    const { id, code } = req.body;
+    const user = await User.findOne({ _id : id });
+
+    res.status(200);
+
+    if(!user)
+        res.json({ error : 'User could not be found.' });
+    else
+    {
+        const verificationError = await verifyCode(user, code);
+        if(verificationError)
+            res.json({ verfied : false, error : verificationError });
+        else
+            res.json(deleteCode(user, code))
+    }
+}
 
 const decode = async (req, res) => {
     const { token } = req.body;
@@ -92,5 +111,4 @@ const decode = async (req, res) => {
     }
 }
 
-
-module.exports = { signup, login, emailVerificationCode, validateVerificationCode, decode };
+module.exports = { signup, login, updateUser, deleteUser, sendVerification, verifyUser, decode };
