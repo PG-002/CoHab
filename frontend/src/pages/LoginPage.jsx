@@ -1,4 +1,5 @@
 import test from "../assets/test.jpg";
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   return (
@@ -8,15 +9,11 @@ const LoginPage = () => {
         <div className="w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
             <h1 className="text-3xl font-semibold mb-6 text-black text-center">
-              Sign Up
+              Login
             </h1>
             <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">
               Join to Our Community with all time access and free{" "}
             </h1>
-
-            <div className="mt-4 text-sm text-gray-600 text-center">
-              <p>or with email</p>
-            </div>
             <form action="#" method="POST" className="space-y-4">
               <div>
                 <label
@@ -63,9 +60,9 @@ const LoginPage = () => {
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+                  className="w-full bg-green-900 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
                 >
-                  Sign Up
+                  Login
                 </button>
               </div>
             </form>
@@ -120,10 +117,10 @@ const LoginPage = () => {
             </div>
             <div className="mt-4 text-sm text-gray-600 text-center">
               <p>
-                Already have an account?{" "}
-                <a href="#" className="text-black hover:underline">
-                  Login here
-                </a>
+                Don't have an account?{" "}
+                <Link to="/signup" className="text-black hover:underline">
+                  Sign up here
+                </Link>
               </p>
             </div>
           </div>

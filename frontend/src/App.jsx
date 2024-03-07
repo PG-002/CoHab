@@ -1,6 +1,7 @@
 import LoginPage from "./pages/LoginPage";
 import "./App.css";
 import SignUpPage from "./pages/SignUpPage";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 if (localStorage.theme === "dark" || !("theme" in localStorage)) {
   document.documentElement.classList.add("dark");
@@ -17,8 +18,13 @@ if (localStorage.theme === "dark") {
 function App() {
   return (
     <>
-      <LoginPage />
-      {/* <SignUpPage /> */}
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+      </Routes>
+    </Router>
     </>
   );
 }

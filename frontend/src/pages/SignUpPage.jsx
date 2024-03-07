@@ -1,6 +1,60 @@
 import test from "../assets/test.jpg";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUpPage = () => {
+
+
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    const handleUsernameChange = (e) => setUsername(e.target.value);
+    const handleEmailChange = (e) => setEmail(e.target.value);
+    const handlePasswordChange = (e) => setPassword(e.target.value);
+    const handlefirstNameChange = (e) => setFirstName(e.target.value);
+    const handlelastNameChange = (e) => setLastName(e.target.value);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent the default form submission
+    
+        try {
+          const response = await fetch('http://localhost:5003/api/users/signup', { // this is just for now, eventually will need to do actual URL
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            // has to follow same format as in UserController.js
+            body: JSON.stringify(
+                { firstName,
+                    lastName,
+                    username,
+                    email,
+                    password }),
+          });
+    
+          if (response.ok) 
+          {
+            // Registration was successful
+            const data = await response.json();
+            console.log(data); // Do something with the response data
+            navigate('/login'); // Temp for now, should redirect to dashboard
+          } 
+          else 
+          {
+            throw new Error('Failed to register');
+          }
+        } 
+        catch (error) 
+        {
+          console.error('Registration error', error);
+        }
+      };
+
+
   return (
     <>
       <div className="flex h-screen w-screen">
@@ -13,6 +67,30 @@ const SignUpPage = () => {
             <h1 className="text-sm font-semibold mb-6 text-gray-500 dark:text-gray-400 text-center">
               Join to Our Community with all time access and free{" "}
             </h1>
+            <hr className="mt-4"></hr>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                  First Name
+                </label>
+                <input required type="text" value={firstName} onChange={handlefirstNameChange} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
+                <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                  Last Name
+                </label>
+                <input required type="text" value={lastName} onChange={handlelastNameChange} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
+                <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                  Username
+                </label>
+                <input required type="text" value={username} onChange={handleUsernameChange} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
+                <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                  Email
+                </label>
+                <input required type="email" value={email} onChange={handleEmailChange} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
+                <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                  Password
+                </label>
+                <input required type="password" value={password} onChange={handlePasswordChange} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
+                <button type="submit" className="w-full bg-green-900 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300">Sign Up</button>
+            </form>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
               <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
                 <button
@@ -62,71 +140,12 @@ const SignUpPage = () => {
                 </button>
               </div>
             </div>
-            <hr className="mt-4"></hr>
-            <div className="mt-2 text-sm text-gray-600 dark:text-gray-400 text-center">
-              <p>or with email</p>
-            </div>
-            <form action="#" method="POST" className="space-y-4">
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-medium text-gray-700 dark:text-white"
-                >
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                ></input>
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-white"
-                >
-                  Email
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  name="email"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                ></input>
-              </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 dark:text-white "
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                ></input>
-              </div>
-              <div>
-                <button
-                  type="submit"
-                  className="w-full bg-green-900 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
-                >
-                  Sign Up
-                </button>
-              </div>
-            </form>
             <div className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
               <p>
                 Already have an account?{" "}
-                <a
-                  href="#"
-                  className="text-black dark:text-white hover:underline"
-                >
+                <Link to="/" className="text-black dark:text-white hover:underline">
                   Login here
-                </a>
+                </Link>
               </p>
             </div>
           </div>
