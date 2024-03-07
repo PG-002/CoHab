@@ -22,6 +22,7 @@ const login = async (req, res) => {
         console.log(user)
         res.status(200);
         res.json({user : {
+            token : createToken({user : user, error : '' }),
             id : user._id,
             firstname: user.firstName,
             lastname: user.lastName,
