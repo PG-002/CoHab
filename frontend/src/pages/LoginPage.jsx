@@ -1,24 +1,21 @@
 import test from "../assets/test.jpg";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   return (
     <>
       <div className="flex h-screen w-screen">
         <img className="hidden lg:flex" src={test} />
-        <div className="w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
+        <div className="w-full bg-gray-100 dark:bg-neutral-900  lg:w-1/2 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
-            <h1 className="text-3xl font-semibold mb-6 text-black text-center">
-              Login
-            </h1>
-            <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">
-              Join to Our Community with all time access and free{" "}
+            <h1 className="text-3xl font-semibold mb-6 text-black dark:text-white text-center">
+              Log In
             </h1>
             <form action="#" method="POST" className="space-y-4">
               <div>
                 <label
                   htmlFor="username"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   Username
                 </label>
@@ -26,13 +23,13 @@ const LoginPage = () => {
                   type="text"
                   id="username"
                   name="username"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                  className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 ></input>
               </div>
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   Email
                 </label>
@@ -40,13 +37,13 @@ const LoginPage = () => {
                   type="text"
                   id="email"
                   name="email"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                  className="mt-1 p-2 w-full border  text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 ></input>
               </div>
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white "
                 >
                   Password
                 </label>
@@ -54,7 +51,7 @@ const LoginPage = () => {
                   type="password"
                   id="password"
                   name="password"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                  className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 ></input>
               </div>
               <div>
@@ -66,6 +63,7 @@ const LoginPage = () => {
                 </button>
               </div>
             </form>
+            <hr className="mt-4"></hr>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
               <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
                 <button
@@ -95,7 +93,7 @@ const LoginPage = () => {
                       d="m419.404 58.936-82.933 67.896C313.136 112.246 285.552 103.82 256 103.82c-66.729 0-123.429 42.957-143.965 102.724l-83.397-68.276h-.014C71.23 56.123 157.06 0 256 0c62.115 0 119.068 22.126 163.404 58.936z"
                     ></path>
                   </svg>{" "}
-                  Sign Up with Google{" "}
+                  Log In with Google{" "}
                 </button>
               </div>
               <div className="w-full lg:w-1/2 ml-0 lg:ml-2">
@@ -111,14 +109,17 @@ const LoginPage = () => {
                   >
                     <path d="M7.999 0C3.582 0 0 3.596 0 8.032a8.031 8.031 0 0 0 5.472 7.621c.4.074.546-.174.546-.387 0-.191-.007-.696-.011-1.366-2.225.485-2.695-1.077-2.695-1.077-.363-.928-.888-1.175-.888-1.175-.727-.498.054-.488.054-.488.803.057 1.225.828 1.225.828.714 1.227 1.873.873 2.329.667.072-.519.279-.873.508-1.074-1.776-.203-3.644-.892-3.644-3.969 0-.877.312-1.594.824-2.156-.083-.203-.357-1.02.078-2.125 0 0 .672-.216 2.2.823a7.633 7.633 0 0 1 2.003-.27 7.65 7.65 0 0 1 2.003.271c1.527-1.039 2.198-.823 2.198-.823.436 1.106.162 1.922.08 2.125.513.562.822 1.279.822 2.156 0 3.085-1.87 3.764-3.652 3.963.287.248.543.738.543 1.487 0 1.074-.01 1.94-.01 2.203 0 .215.144.465.55.386A8.032 8.032 0 0 0 16 8.032C16 3.596 12.418 0 7.999 0z"></path>
                   </svg>{" "}
-                  Sign Up with Github{" "}
+                  Login In with Github{" "}
                 </button>
               </div>
             </div>
-            <div className="mt-4 text-sm text-gray-600 text-center">
+            <div className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
               <p>
                 Don't have an account?{" "}
-                <Link to="/signup" className="text-black hover:underline">
+                <Link
+                  to="/signup"
+                  className="text-black dark:text-white hover:underline"
+                >
                   Sign up here
                 </Link>
               </p>
