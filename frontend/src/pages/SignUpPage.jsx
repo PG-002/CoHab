@@ -5,12 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  // const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  // const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handleUsernameChange = (e) => setUsername(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handlefirstNameChange = (e) => setFirstName(e.target.value);
@@ -39,7 +39,7 @@ const SignUpPage = () => {
         body: JSON.stringify({
           firstName,
           lastName,
-          // username,
+          username,
           email,
           password,
         }),
@@ -92,10 +92,10 @@ const SignUpPage = () => {
                 onChange={handlelastNameChange}
                 className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
               />
-              {/* <label className="block text-sm font-medium text-gray-700 dark:text-white">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white">
                   Username
                 </label>
-                <input required type="text" value={username} onChange={handleUsernameChange} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/> */}
+                <input required type="text" value={username} onChange={handleUsernameChange} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
               <label className="block text-sm font-medium text-gray-700 dark:text-white">
                 Email
               </label>

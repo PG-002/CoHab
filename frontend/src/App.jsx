@@ -7,7 +7,9 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import DashboardPage from './pages/DashboardPage';
 import ErrorPage from "./pages/ErrorPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 if (localStorage.theme === "dark" || !("theme" in localStorage)) {
   document.documentElement.classList.add("dark");
@@ -30,6 +32,13 @@ function App() {
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/dashboard" element=
+          {
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          } 
+          />
         </Routes>
       </Router>
     </>
