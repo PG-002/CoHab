@@ -5,27 +5,40 @@ class Register extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Text(
-            'Welcome To Cohab!',
-            style: TextStyle(color: Colors.black),
-          ),
-          Text(
-            'Your all in one roommate assistant',
-            style: TextStyle(color: Colors.black),
-          ),
-          Container(
-            child: TextFormField(
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.white, // Added comma and corrected closing parenthesis
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Welcome To Cohab!',
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 20), // Making text bold
+            ),
+            SizedBox(height:20),
+            Text(
+              'Your all in one roommate assistant',
+              style: TextStyle(color: Colors.black),
+            ),
+            TextFormField(
               decoration: InputDecoration(
-                labelText: 'Email',
-                hintText: 'Example@gmail.com'
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                hintText: 'Example@gmail.com',
               ),
             ),
-          ),
-        ],
+            TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                hintText: 'At least 8 characters',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
