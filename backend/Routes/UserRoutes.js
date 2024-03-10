@@ -5,7 +5,7 @@ const router = express.Router();
 
 // User CRUD Operations
 router.post('/signup', signup);
-router.get('/login', login);
+router.post('/login', login);
 router.put('/updateUser', updateUser);
 router.delete('/deleteUser', deleteUser);
 

@@ -7,15 +7,15 @@ const signup = async (req, res) => {
     const { firstName, lastName, email, username, password } = req.body;
 
     res.status(200);
-    await User.create({ firstName : firstName, lastName : lastName, email : email, username : username, password : password })
+    await User.create({ firstName : firstName, lastName : lastName, email : email, username : String(username).toLowerCase(), password : password })
         .then((user) => res.json({ token : createToken({user : user, error : '' }) }))
         .catch(() => res.json({ token : createToken({ user : null, error : 'User could not be created.' }) }));
 }
 
 const login = async (req, res) => {
-    const {username, password } = req.body;
+    const {email, password } = req.body;
 
-    const query = User.where({ username: username, password: password });
+    const query = User.where({ email: email, password: password });
     const user = await query.findOne();
 
     if (user) {
