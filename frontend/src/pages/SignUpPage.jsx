@@ -16,8 +16,17 @@ const SignUpPage = () => {
   const handlefirstNameChange = (e) => setFirstName(e.target.value);
   const handlelastNameChange = (e) => setLastName(e.target.value);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+
+    if (!passwordRegex.test(password))
+     {
+    alert('Password must be 8-20 characters long, include at least one uppercase letter, one number, and one special character.');
+    return; // Stop the form submission
+  }
 
     try {
       const response = await fetch("http://localhost:5003/api/users/signup", {
