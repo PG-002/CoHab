@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'register.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -22,7 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _navigateToRegister() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Register()),
+      MaterialPageRoute(builder: (context) => const Register()),
     );
   }
 
@@ -64,7 +64,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

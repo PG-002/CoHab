@@ -1,44 +1,73 @@
+import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatelessWidget {
-  const Register({Key? key}) : super(key: key);
+  const Register({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.white, // Added comma and corrected closing parenthesis
+        backgroundColor: Colors.white,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Welcome To Cohab!',
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 20), // Making text bold
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
             ),
-            SizedBox(height:20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Your all in one roommate assistant',
               style: TextStyle(color: Colors.black),
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+            const Text('Email'),
+            SizedBox(
+              width: 250, // Set width of TextFormField
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  hintText: 'Example@gmail.com',
                 ),
-                hintText: 'Example@gmail.com',
               ),
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+            const SizedBox(height:20),
+            const Text('Password'),
+            SizedBox(
+              width: 250, // Set width of TextFormField
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  hintText: 'At least 8 characters',
                 ),
-                hintText: 'At least 8 characters',
               ),
             ),
+            const ForgotPassword(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ForgotPassword extends StatelessWidget {
+  const ForgotPassword({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to ForgotPasswordScreen when text is tapped
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyApp()),
+        );
+      },
+      child: const Text('Forgot Password?', style: TextStyle(color: Colors.blue)),
     );
   }
 }
