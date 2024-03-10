@@ -1,68 +1,110 @@
 import test from "../assets/test.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
 
 const LoginPage = () => {
+
+
+  const [username, setUsername] = useState('');
+  // const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleUsernameChange = (e) => setUsername(e.target.value);
+  // const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5003/api/users/login', { // Adjust URL as necessary
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data); 
+        navigate('/dashboard');
+      } 
+      else if(response.status === 404) 
+      {
+        alert('Login failed: User not found');
+      } 
+      else 
+      {
+        throw new Error('Failed to log in');
+      }
+    }
+    catch (error)
+     {
+      console.error('Login error', error);
+    }
+  };
+
+
   return (
     <>
       <div className="flex h-screen w-screen">
-        <img className="hidden lg:flex" src={test} />
-        <div className="w-full bg-gray-100 dark:bg-neutral-900  lg:w-1/2 flex items-center justify-center">
+        <img className="hidden lg:flex" src={test} alt="Login visual"/>
+        <div className="w-full bg-gray-100 dark:bg-neutral-900 lg:w-1/2 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
             <h1 className="text-3xl font-semibold mb-6 text-black dark:text-white text-center">
               Log In
             </h1>
-            <form action="#" method="POST" className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-medium text-gray-700 dark:text-white"
-                >
+                <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-white">
                   Username
                 </label>
                 <input
                   type="text"
+                  required
                   id="username"
-                  name="username"
+                  value={username}
+                  onChange={handleUsernameChange}
                   className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                ></input>
+                />
               </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-white"
-                >
+              {/* <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-white">
                   Email
                 </label>
                 <input
-                  type="text"
+                  type="email"
                   id="email"
-                  name="email"
-                  className="mt-1 p-2 w-full border  text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                ></input>
-              </div>
+                  value={email}
+                  onChange={handleEmailChange}
+                  className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                />
+              </div> */}
               <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 dark:text-white "
-                >
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-white">
                   Password
                 </label>
                 <input
                   type="password"
+                  required
                   id="password"
-                  name="password"
+                  value={password}
+                  onChange={handlePasswordChange}
                   className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                ></input>
+                />
               </div>
-              <div>
-                <button
-                  type="submit"
-                  className="w-full bg-green-900 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
-                >
-                  Login
-                </button>
-              </div>
+              <button
+                type="submit"
+                className="w-full bg-green-900 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+              >
+                Login
+              </button>
             </form>
+
             <hr className="mt-4"></hr>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
               <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
@@ -121,6 +163,12 @@ const LoginPage = () => {
                   className="text-black dark:text-white hover:underline"
                 >
                   Sign up here
+                </Link>
+              </p>
+              <p>
+                Forgot password?{" "}
+                <Link to="/login" className="text-black dark:text-white hover:underline">
+                  Click here
                 </Link>
               </p>
             </div>
