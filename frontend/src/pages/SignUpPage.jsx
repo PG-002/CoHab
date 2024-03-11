@@ -5,30 +5,38 @@ import { Link, useNavigate } from "react-router-dom";
 const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
   const navigate = useNavigate();
 
-  const handleUsernameChange = (e) => setUsername(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handlefirstNameChange = (e) => setFirstName(e.target.value);
   const handlelastNameChange = (e) => setLastName(e.target.value);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 
-    if (!passwordRegex.test(password))
-     {
-    alert('Password must be 8-20 characters long, include at least one uppercase letter, one number, and one special character.');
-    return; // Stop the form submission
-  }
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must be 8-20 characters long, include at least one uppercase letter, one number, and one special character."
+      );
+      return; // Stop the form submission
+    }
 
     try {
+      const JSONPayload = JSON.stringify({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+      });
+
+      console.log(JSONPayload);
       const response = await fetch("http://localhost:5003/api/users/signup", {
         // this is just for now, eventually will need to do actual URL
         method: "POST",
@@ -36,26 +44,24 @@ const SignUpPage = () => {
           "Content-Type": "application/json",
         },
         // has to follow same format as in UserController.js
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          username,
-          email,
-          password,
-        }),
+        body: JSONPayload,
       });
 
       if (response.ok) {
         // Registration was successful
         const data = await response.json();
-        console.log(data); // Do something with the response data
-        navigate("/login"); // Temp for now, should redirect to dashboard
+        localStorage.setItem("sessionId", data.token);
+        navigate("/dashboard");
       } else {
         throw new Error("Failed to register");
       }
     } catch (error) {
       console.error("Registration error", error);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPass((prevState) => !prevState);
   };
 
   return (
@@ -93,10 +99,6 @@ const SignUpPage = () => {
                 className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
               />
               <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                  Username
-                </label>
-                <input required type="text" value={username} onChange={handleUsernameChange} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
-              <label className="block text-sm font-medium text-gray-700 dark:text-white">
                 Email
               </label>
               <input
@@ -109,13 +111,16 @@ const SignUpPage = () => {
               <label className="block text-sm font-medium text-gray-700 dark:text-white">
                 Password
               </label>
-              <input
-                required
-                type="password"
-                value={password}
-                onChange={handlePasswordChange}
-                className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-              />
+              <div className="relative">
+                <input
+                  required
+                  type={showPass ? "text" : "password"}
+                  value={password}
+                  onChange={handlePasswordChange}
+                  className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                />
+              </div>
+
               <button
                 type="submit"
                 className="w-full bg-green-900 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
@@ -176,7 +181,10 @@ const SignUpPage = () => {
             <div className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
               <p>
                 Already have an account?{" "}
-                <Link to="/login" className="text-black dark:text-white hover:underline">
+                <Link
+                  to="/login"
+                  className="text-black dark:text-white hover:underline"
+                >
                   Login here
                 </Link>
               </p>

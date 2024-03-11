@@ -1,58 +1,52 @@
 import test from "../assets/test.jpg";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const LoginPage = () => {
-
-
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState("");
   // const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
   // const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5003/api/users/login', { // Adjust URL as necessary
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+      const JSONPayload = JSON.stringify({
+        email: email,
+        password: password,
       });
 
-      if (response.ok) {
+      const response = await fetch("http://localhost:5003/api/users/login", {
+        // Adjust URL as necessary
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSONPayload,
+      });
+
+      if (response.ok && response.status == 201) {
         const data = await response.json();
-        console.log(data); 
-        navigate('/dashboard');
-      } 
-      else if(response.status === 404) 
-      {
-        alert('Login failed: User not found');
-      } 
-      else 
-      {
-        throw new Error('Failed to log in');
+        localStorage.setItem("sessionId", data.token);
+        navigate("/dashboard");
+      } else if (response.status === 404) {
+        alert("Login failed: User not found");
+      } else {
+        throw new Error("Failed to log in");
       }
-    }
-    catch (error)
-     {
-      console.error('Login error', error);
+    } catch (error) {
+      console.error("Login error", error);
     }
   };
-
 
   return (
     <>
       <div className="flex h-screen w-screen">
-        <img className="hidden lg:flex" src={test} alt="Login visual"/>
+        <img className="hidden lg:flex" src={test} alt="Login visual" />
         <div className="w-full bg-gray-100 dark:bg-neutral-900 lg:w-1/2 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
             <h1 className="text-3xl font-semibold mb-6 text-black dark:text-white text-center">
@@ -60,20 +54,10 @@ const LoginPage = () => {
             </h1>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-white">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  required
-                  id="username"
-                  value={username}
-                  onChange={handleUsernameChange}
-                  className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                />
-              </div>
-              {/* <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-white">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
+                >
                   Email
                 </label>
                 <input
@@ -83,9 +67,12 @@ const LoginPage = () => {
                   onChange={handleEmailChange}
                   className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
-              </div> */}
+              </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-white">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
+                >
                   Password
                 </label>
                 <input
@@ -167,7 +154,10 @@ const LoginPage = () => {
               </p>
               <p>
                 Forgot password?{" "}
-                <Link to="/login" className="text-black dark:text-white hover:underline">
+                <Link
+                  to="/login"
+                  className="text-black dark:text-white hover:underline"
+                >
                   Click here
                 </Link>
               </p>
