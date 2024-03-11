@@ -1,38 +1,44 @@
 const User = require('../Models/User');
 const House = require('../Models/House');
+const { hash, compare } = require('../Middleware/Hash');
 const { sendCode, verifyCode, deleteCode } = require('../Middleware/Email');
 const { createToken, verifyToken, decodeToken } = require('../Middleware/Token');
 
 const signup = async (req, res) => {
-    const { firstName, lastName, email, username, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
+    const hashedPassword = await hash(password);
 
     res.status(200);
-    await User.create({ firstName : firstName, lastName : lastName, email : email, username : String(username).toLowerCase(), password : password })
-        .then((user) => res.json({ token : createToken({user : user, error : '' }) }))
-        .catch(() => res.json({ token : createToken({ user : null, error : 'User could not be created.' }) }));
+    if(hashedPassword.error)
+        res.json({ token : createToken({ user : null, error : hashedPassword.error }) })
+    else
+        await User.create({ firstName : firstName, lastName : lastName, email : email, password : hashedPassword.password })
+            .then((user) => res.json({ token : createToken({user : user, error : '' }) }))
+            .catch(() => res.json({ token : createToken({ user : null, error : 'User could not be created.' }) }));
 }
 
 const login = async (req, res) => {
-    const {email, password } = req.body;
+    const { email, password } = req.body;
 
-    const query = User.where({ email: email, password: password });
-    const user = await query.findOne();
+    res.status(200);
+    await User.findOne({ email : email })
+        .then(async user => {
+            if(!user)
+            {
+                res.json({ token : createToken({ user : null, error : 'Invalid email.' }) });
+                return;
+            }
 
-    if (user) {
-        console.log(user)
-        res.status(200);
-        res.json({user : {
-            token : createToken({user : user, error : '' }),
-            id : user._id,
-            firstname: user.firstName,
-            lastname: user.lastName,
-            email : user.email
-        },
-    });
-    } else {
-        res.status(404);
-        res.json({error : 404});
-    }
+            const hashCompare = await compare(password, user.password);
+
+            if(hashCompare.error)
+                res.json({ token : createToken({ user : null, error : hashCompare.error }) });
+            else if(hashCompare.match)
+                res.json({ token : createToken({ user : user, error : '' }) });
+            else
+                res.json({ token : createToken({ user : null, error : 'Password does not match.' }) })
+        })
+        .catch(() => res.json({ token : createToken({ user : null, error : 'Error fetching user.' }) }));
 }
 
 const updateUser = async (req, res) => {

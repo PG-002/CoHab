@@ -17,6 +17,7 @@ npm install -D tailwindcss postcss autoprefixer
 - path
 - jsonwebtoken
 - nodemailer
+- bcryptI'
 
 ### Install for flutter:
 

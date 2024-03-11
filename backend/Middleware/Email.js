@@ -53,7 +53,10 @@ const verifyCode = async (user, code) => {
     else if(entry.code !== code)
         return 'The code provided does not match.';
     else if(entry.expDate < Date.now())
+    {
+        await VerificationEntry.deleteOne({ userId : user._id }).catch(() => null);
         return 'The code has expired.'
+    }
 };  
 
 const deleteCode = async (user, code) => await VerificationEntry.deleteOne({ userId : user._id, code : code })

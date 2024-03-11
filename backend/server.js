@@ -7,14 +7,11 @@ require('dotenv').config();
 const env = process.env;
 const PORT = env.PORT || 5003;
 
-
 // Connection to MongoDB
-
 const mongoose = require('mongoose');
 mongoose.connect(env.MONGODB_URI, { dbName : 'Co-habDB'})
     .then(() => console.log('Connected to MongoDB.'))
     .catch((e) => console.log(e));
-
 
 const app = express();
 app.set('port', PORT);
