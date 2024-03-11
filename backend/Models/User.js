@@ -15,34 +15,34 @@ const UserSchema = new Schema({
         unique : [true, 'This email is already in use.'],
         required : [true, 'Email is required.']
     },
-    username : {
-        type : String,
-        unique : [true, 'A user with that username already exists.'],
-        required : [true, 'Username is required.']
-    },
     password : {
         type : String,
         required : [true, 'Password is required.']
     },
     houseID : {
         type : String,
+        default : null,
         required : false
     },
     location : {
         lastUpdated : {
             type : Schema.Types.Date,
+            default : Date.now(),
             required : [true, 'Must include the time the user\'s location was last updated.']
         },
         lattitude : {
             type : Number,
+            default : 0,
             required : [true, 'Must include the user\'s lattitude.'] 
         },
         longitude : {
             type : Number,
+            default : 0,
             required : [true, 'Must include the user\'s longitude.']
         },
         isTracking : {
             type : Boolean,
+            default : true,
             required : [true, 'isTracking is required.']
         }
     }
