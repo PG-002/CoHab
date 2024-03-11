@@ -8,14 +8,28 @@ const signup = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     const hashedPassword = await hash(password);
 
-    res.status(200);
     if(hashedPassword.error)
+    {
+        res.status(404);
         res.json({ error : hashedPassword.error })
+    }
     else
+    {
         await User.create({ firstName : firstName, lastName : lastName, email : email, password : hashedPassword.password })
-            .then((user) => res.json({ token : createToken({user : user, error : '' }) }))
-            .catch(() => res.json({ error : 'User could not be created.' }));
-}
+            .then((user) => {
+                res.status(200);
+                res.json({ token : createToken({user : user, error : '' }) });
+            })
+            .catch((e) => {
+                res.status(404);
+                if(e.code === 11000)
+                    res.json({ error : 'An account with that email already exists.' });
+                else
+                    res.json({ error : 'User could not be created.' });
+            });
+
+        }
+};
 
 const login = async (req, res) => {
     const { email, password } = req.body;
@@ -49,7 +63,7 @@ const login = async (req, res) => {
                 
         })
         .catch(() => res.json({ error : 'Error fetching user.' }));
-}
+};
 
 const updateUser = async (req, res) => {
     const { id, fieldName, fieldValue } = req.body;
@@ -58,7 +72,7 @@ const updateUser = async (req, res) => {
     await User.updateOne({ _id : id }, { [fieldName] : fieldValue })
         .then(() => res.json({ updated : true, error : '' }))
         .catch(err => res.json({ updated : false, error: err }));
-}
+};
 
 const deleteUser = async (req, res) => {
     const { id } = req.body;
@@ -80,7 +94,7 @@ const deleteUser = async (req, res) => {
     await User.deleteOne({ _id : id })
         .then(() => res.json({ deleted : true, error : '' }))
         .catch(err => res.json({ deleted : false, error : err }));
-}
+};
 
 const sendVerification = async (req, res) => {
     const { id, type } = req.body;
@@ -92,7 +106,7 @@ const sendVerification = async (req, res) => {
         res.json({ sent : false, error : 'User not found.' });
     else
         res.json(await sendCode(user, type));
-}
+};
 
 const verifyUser = async (req, res) => {
     const { id, code } = req.body;
@@ -110,7 +124,7 @@ const verifyUser = async (req, res) => {
         else
             res.json(deleteCode(user, code))
     }
-}
+};
 
 const decode = async (req, res) => {
     const { token } = req.body;
@@ -126,6 +140,6 @@ const decode = async (req, res) => {
         res.status(200);
         res.json({err : 'Token could not be verified.'});
     }
-}
+};
 
 module.exports = { signup, login, updateUser, deleteUser, sendVerification, verifyUser, decode };
