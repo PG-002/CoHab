@@ -10,35 +10,45 @@ const signup = async (req, res) => {
 
     res.status(200);
     if(hashedPassword.error)
-        res.json({ token : createToken({ user : null, error : hashedPassword.error }) })
+        res.json({ error : hashedPassword.error })
     else
         await User.create({ firstName : firstName, lastName : lastName, email : email, password : hashedPassword.password })
             .then((user) => res.json({ token : createToken({user : user, error : '' }) }))
-            .catch(() => res.json({ token : createToken({ user : null, error : 'User could not be created.' }) }));
+            .catch(() => res.json({ error : 'User could not be created.' }));
 }
 
 const login = async (req, res) => {
     const { email, password } = req.body;
 
-    res.status(200);
     await User.findOne({ email : email })
         .then(async user => {
             if(!user)
             {
-                res.json({ token : createToken({ user : null, error : 'Invalid email.' }) });
+                res.status(404);
+                res.json({ error : 'Invalid email.' });
                 return;
             }
 
             const hashCompare = await compare(password, user.password);
 
             if(hashCompare.error)
-                res.json({ token : createToken({ user : null, error : hashCompare.error }) });
+            {
+                res.status(404);
+                res.json({ error : hashCompare.error });
+            }
             else if(hashCompare.match)
+            {
+                res.status(200);
                 res.json({ token : createToken({ user : user, error : '' }) });
+            }
             else
-                res.json({ token : createToken({ user : null, error : 'Password does not match.' }) })
+            {
+                res.status(404);
+                res.json({ error : 'Password does not match.' })
+            }
+                
         })
-        .catch(() => res.json({ token : createToken({ user : null, error : 'Error fetching user.' }) }));
+        .catch(() => res.json({ error : 'Error fetching user.' }));
 }
 
 const updateUser = async (req, res) => {
