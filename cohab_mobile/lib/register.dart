@@ -15,7 +15,8 @@ class Register extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height:140),
+                const CustomImageWidget(),
+                const SizedBox(height: 35),
                 const Align(alignment: Alignment(-.95,0), child: Text('Welcome To Cohab!', style: TextStyle(color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -214,6 +215,19 @@ class SignIn extends StatelessWidget {
         );
       },
       child: const Text('Sign into Cohab', style: TextStyle(color: Colors.blue,fontFamily: 'Open Sans',fontSize: 17)),
+    );
+  }
+}
+
+class CustomImageWidget extends StatelessWidget {
+  const CustomImageWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 350, // Adjust the width as needed
+      height: 150, // Adjust the height as needed
+      child: Image.asset('assets/test.jpg'),
     );
   }
 }
