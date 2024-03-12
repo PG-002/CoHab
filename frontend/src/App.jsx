@@ -10,6 +10,7 @@ import {
 import DashboardPage from './pages/DashboardPage';
 import ErrorPage from "./pages/ErrorPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { UserProvider } from './components/UserContext';
 
 if (localStorage.theme === "dark" || !("theme" in localStorage)) {
   document.documentElement.classList.add("dark");
@@ -26,6 +27,7 @@ if (localStorage.theme === "dark") {
 function App() {
   return (
     <>
+    <UserProvider>
       <Router>
         <Routes>
           <Route path="*" element={<ErrorPage />} />
@@ -41,6 +43,7 @@ function App() {
           />
         </Routes>
       </Router>
+    </UserProvider>
     </>
   );
 }
