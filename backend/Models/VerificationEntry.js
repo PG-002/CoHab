@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const VerificationEntrySchema = new Schema({
-    type : {
-        type : String,
-        required : [true, 'Verficiation must have a type.']
-    },
     userId : {
         type : String,
         required : [true, 'User must be associated with this verification.']

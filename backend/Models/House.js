@@ -27,7 +27,7 @@ const HouseSchema = new Schema({
          }],
         default : []
     },
-    chatMessages : {
+    groupChat : {
         type : [{
             message : {
                 type : String,
@@ -77,8 +77,8 @@ const HouseSchema = new Schema({
         }],
         default : []
     },
-    taskList : {
-        type : [{ type : String }],
+    tasks : {
+        type : [{ id : String, task : String, completed : Boolean }],
         default : []
     },
     rules : {

@@ -13,6 +13,7 @@ mongoose.connect(env.MONGODB_URI, { dbName : 'Co-habDB'})
     .then(() => console.log('Connected to MongoDB.'))
     .catch((e) => console.log(e));
 
+// Configures the app
 const app = express();
 app.set('port', PORT);
 app.use(cors());
@@ -32,12 +33,36 @@ if(env.NODE_ENV === 'production')
 }
 
 // Routes
-
 const userRoutes = require('../backend/Routes/UserRoutes');
-app.use('/api/users', userRoutes);
-
 const houseRoutes = require('../backend/Routes/HouseRoutes');
+
+app.use('/api/users', userRoutes);
 app.use('/api/houses/', houseRoutes);
 
+// Configures the server and socket io connection
+const server = require('http').Server(app);
+const io = require('socket.io')(server, { cors : { origin : '*' } });
+const Session = require('../backend/Middleware/Session')(io);
 
-app.listen(PORT, () => console.log('Server listening on port ' + PORT));
+// Authenticates client
+io.use(async (socket, next) => {
+    const token = socket.handshake.auth.token ? socket.handshake.auth.token : socket.handshake.headers.token;
+    const session = await Session.getSession(token);
+
+    if(session.error)
+        return next(new Error(session.error));
+
+    socket.sessionId = session.sessionId;
+    socket.user = session.user;
+    socket.room = session.room;
+    next();
+});
+
+// Connection event
+io.on('connect', socket => {
+    socket.join(socket.room);
+    socket.emit('session', { sessionId : socket.sessionId });
+    Session.addEventListeners(socket);
+});
+
+server.listen(PORT, () => console.log('Server listening on port ' + PORT));

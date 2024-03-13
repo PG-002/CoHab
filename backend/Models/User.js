@@ -45,6 +45,11 @@ const UserSchema = new Schema({
             default : true,
             required : [true, 'isTracking is required.']
         }
+    },
+    verified : {
+        type : Boolean,
+        required : [true, 'User must have verification status.'],
+        default : false
     }
 }, { versionKey : false });
 

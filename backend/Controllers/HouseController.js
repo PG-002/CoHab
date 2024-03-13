@@ -22,7 +22,7 @@ const joinHouse = async (req, res) => {
 
     // _id is the user's id
     const { joinHouseCode, firstName, lastName, _id } = req.body;
-    const fullName = firstName + " " + lastName;
+    const fullName = firstName + ' ' + lastName;
 
     const house = await House.where({ joinHouseCode: joinHouseCode }).findOne();
 
