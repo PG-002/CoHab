@@ -15,9 +15,7 @@ class Register extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CustomImageWidget(),
-                const SizedBox(height: 35),
-                const Align(alignment: Alignment(-.95,0), child: Text('Welcome To Cohab!', style: TextStyle(color: Colors.black,
+                const Align(alignment: Alignment.center, child: Text('Welcome To Cohab!', style: TextStyle(color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
                       fontFamily: 'Open Sans',
@@ -26,7 +24,7 @@ class Register extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
                 const Align(
-                  alignment: Alignment(-.95,0),
+                  alignment: Alignment.center,
                   child: Text(
                     'Your all in one roommate assistant',
                     style: TextStyle(
@@ -63,15 +61,15 @@ class Register extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-                const PasswordInput(),
+                PasswordInput(),
                 const SizedBox(height: 5),
                 const Align(
                   alignment: Alignment.centerRight,
                   child: ForgotPassword(),
                 ),
-                const SizedBox(height: 15),
-                const RegisterButton(),
                 const SizedBox(height: 20),
+                const RegisterButton(),
+                const SizedBox(height: 25),
                 Row(
                   children: [
                     Expanded(
@@ -98,7 +96,7 @@ class Register extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 const SignIn(),
               ],
             ),
@@ -136,7 +134,7 @@ class RegisterButton extends StatelessWidget {
       onPressed: () {
         // Define what should happen when the button is pressed
       },
-      color: Colors.black54,
+      color: const Color(0xFF14532d),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -178,7 +176,9 @@ class EmailInput extends StatelessWidget {
 }
 
 class PasswordInput extends StatelessWidget {
-  const PasswordInput({super.key});
+  PasswordInput({super.key}); // Corrected constructor definition
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -192,9 +192,26 @@ class PasswordInput extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
             ),
             hintText: '   At least 8 characters',
-            hintStyle: const TextStyle(color: Colors.black54,fontFamily: 'Open Sans'),
+            hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
             contentPadding: const EdgeInsets.symmetric(vertical: 5.0), // Adjust the height here
           ),
+          onChanged: (value) {
+            _formKey.currentState!.validate();
+          },
+          validator: (String? value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a password';
+            } else if (value.length < 8 || value.length > 20) {
+              return 'Password must be between 8 and 20 characters';
+            } else if (!value.contains(RegExp(r'[A-Z]'))) {
+              return 'Password must contain at least one uppercase letter';
+            } else if (!value.contains(RegExp(r'[0-9]'))) {
+              return 'Password must contain at least one number';
+            } else if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+              return 'Password must contain at least one special character';
+            }
+            return null;
+          },
         ),
       ),
     );
@@ -215,19 +232,6 @@ class SignIn extends StatelessWidget {
         );
       },
       child: const Text('Sign into Cohab', style: TextStyle(color: Colors.blue,fontFamily: 'Open Sans',fontSize: 17)),
-    );
-  }
-}
-
-class CustomImageWidget extends StatelessWidget {
-  const CustomImageWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 350, // Adjust the width as needed
-      height: 150, // Adjust the height as needed
-      child: Image.asset('assets/test.jpg'),
     );
   }
 }
