@@ -3,7 +3,7 @@
     "start": "npm run backend",
     "heroku-postbuild": "npm run frontend",
     "backend": "cd ./backend/ && npm i && npm run start",
-    "frontend": "cd ./frontend/ && npm i && npm run dev",
+    "frontend": "cd ./frontend/ && npm i && npm run build && npm run dev",
     "dev": "concurrently \"cd ./backend/ && npm run dev\" \"npm run frontend\""
   },
   "dependencies": {
