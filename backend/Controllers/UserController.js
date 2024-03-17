@@ -1,34 +1,24 @@
-const User = require("../Models/User");
-const House = require("../Models/House");
-const { hash, compare } = require("../Middleware/Hash");
-const { sendCode, verifyCode, deleteCode } = require("../Middleware/Email");
-const {
-  createToken,
-  verifyToken,
-  decodeToken,
-} = require("../Middleware/Token");
+const User = require('../Models/User');
+const House = require('../Models/House');
+const { hash, compare } = require('../Middleware/PasswordHash');
+const { sendCode, verifyCode, deleteCode } = require('../Middleware/Email');
+const { createToken, verifyToken, decodeToken } = require('../Middleware/Token');
 
 const signup = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   const hashedPassword = await hash(password);
 
-  if (hashedPassword.error) {
+  if (hashedPassword.error)
     res.json({ error: hashedPassword.error });
-  } else {
-    await User.create({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: hashedPassword.password,
-    })
-      .then((user) => {
+  else {
+    await User.create({ firstName: firstName, lastName: lastName, email: email, password: hashedPassword.password })
+      .then(user => {
         res.status(201);
-        res.json({ token: createToken({ user: user, error: "" }) });
+        res.json({ token: createToken({ user: user, error: '' }) });
       })
-      .catch((e) => {
-        if (e.code === 11000)
-          res.json({ error: "An account with that email already exists." });
-        else res.json({ error: "User could not be created." });
+      .catch(e => {
+        res.status(404);
+        res.json({error : e.code === 11000 ? 'An account with that email already exists.' : 'User could not be created.' });
       });
   }
 };
@@ -40,7 +30,7 @@ const login = async (req, res) => {
     .then(async (user) => {
       if (!user) {
         res.status(404);
-        res.json({ error: "Invalid email." });
+        res.json({ error: 'Invalid email.' });
         return;
       }
 
@@ -50,12 +40,12 @@ const login = async (req, res) => {
         res.json({ error: hashCompare.error });
       } else if (hashCompare.match) {
         res.status(201);
-        res.json({ token: createToken({ user: user, error: "" }) });
+        res.json({ token: createToken({ user: user, error: '' }) });
       } else {
-        res.json({ error: "Password does not match." });
+        res.json({ error: 'Password does not match.' });
       }
     })
-    .catch(() => res.json({ error: "Error fetching user." }));
+    .catch(() => res.json({ error: 'Error fetching user.' }));
 };
 
 const updateUser = async (req, res) => {
@@ -63,7 +53,7 @@ const updateUser = async (req, res) => {
 
   res.status(200);
   await User.updateOne({ _id: id }, { [fieldName]: fieldValue })
-    .then(() => res.json({ updated: true, error: "" }))
+    .then(() => res.json({ updated: true, error: '' }))
     .catch((err) => res.json({ updated: false, error: err }));
 };
 
@@ -73,7 +63,7 @@ const deleteUser = async (req, res) => {
 
   if (!user) {
     res.status(200);
-    res.json({ deleted: false, error: "User does not exist." });
+    res.json({ deleted: false, error: 'User does not exist.' });
     return;
   }
 
@@ -87,54 +77,59 @@ const deleteUser = async (req, res) => {
 
   res.status(200);
   await User.deleteOne({ _id: id })
-    .then(() => res.json({ deleted: true, error: "" }))
+    .then(() => res.json({ deleted: true, error: '' }))
     .catch((err) => res.json({ deleted: false, error: err }));
 };
 
 const sendVerification = async (req, res) => {
-  const { id, type } = req.body;
-  const user = await User.findOne({ _id: id }).catch(() => null);
+  const { id } = req.body;
+  const user = await User.findOne({ _id: id })
+    .catch(() => null);
 
   res.status(200);
-
-  if (!user) res.json({ sent: false, error: "User not found." });
-  else res.json(await sendCode(user, type));
+  if(!user)
+    res.json({ sent: false, error: 'User not found.' });
+  else
+    res.json(await sendCode(user));
 };
 
 const verifyUser = async (req, res) => {
   const { id, code } = req.body;
-  const user = await User.findOne({ _id: id });
+  const user = await User.findOne({ _id: id })
+    .catch(() => null);
 
   res.status(200);
-
-  if (!user) res.json({ error: "User could not be found." });
-  else {
+  if(!user)
+    res.json({ error: 'User could not be found.' });
+  else
+  {
     const verificationError = await verifyCode(user, code);
     if (verificationError)
       res.json({ verfied: false, error: verificationError });
-    else res.json(deleteCode(user, code));
+    else
+      await deleteCode(user, code)
+        .then(async (deleteRespose) =>
+          await User.updateOne({ _id : user._id }, { verified : true })
+            .then(() => res.json(deleteRespose))
+            .catch(() => res.json({ verified : false, error : 'Could not update user status.' })))
+        .catch(() => res.json({ verified : false, error : 'VerificationEntry could not be deleted.' }));
   }
 };
 
 const decode = async (req, res) => {
   const { token } = req.body;
 
-  if (await verifyToken(token)) {
+  if (await verifyToken(token))
+  {
     res.status(200);
     const obj = decodeToken(token).payload;
     res.json(obj);
-  } else {
+  }
+  else
+  {
     res.status(200);
-    res.json({ err: "Token could not be verified." });
+    res.json({ err: 'Token could not be verified.' });
   }
 };
 
-module.exports = {
-  signup,
-  login,
-  updateUser,
-  deleteUser,
-  sendVerification,
-  verifyUser,
-  decode,
-};
+module.exports = { signup, login, updateUser, deleteUser, sendVerification, verifyUser, decode };
