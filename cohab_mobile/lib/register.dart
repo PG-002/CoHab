@@ -1,6 +1,7 @@
 import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class Register extends StatelessWidget {
   const Register({super.key});
@@ -247,10 +248,5 @@ class SignIn extends StatelessWidget {
 }
 
 void registerUser() async {
-  // Create a Uri for the POST request
-  var postUrl = Uri.https('example.com', 'whatsit/create');
-
-  // Make a POST request
-  await http.post(postUrl, body: {'name': 'doodle', 'color': 'blue'});
 
 }
