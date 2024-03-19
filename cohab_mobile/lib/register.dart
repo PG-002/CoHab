@@ -1,6 +1,6 @@
 import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
-import 'socketclient.dart';
+import 'socket_client.dart';
 
 
 class Register extends StatelessWidget {
@@ -17,6 +17,7 @@ class Register extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 15),
                 const Align(alignment: Alignment.center, child: Text('Welcome To Cohab!', style: TextStyle(color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -40,6 +41,32 @@ class Register extends StatelessWidget {
                 const Align(
                   alignment: Alignment(-.95,0),
                   child: Text(
+                    'First Name',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: 'Open Sans',
+                    ),
+                  ),
+                ),
+                const FirstNameInput(),
+                const SizedBox(height: 20),
+                const Align(
+                  alignment: Alignment(-.95,0),
+                  child: Text(
+                    'Last Name',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: 'Open Sans',
+                    ),
+                  ),
+                ),
+                const LastNameInput(),
+                const SizedBox(height: 20),
+                const Align(
+                  alignment: Alignment(-.95,0),
+                  child: Text(
                     'Email',
                     style: TextStyle(
                       color: Colors.black,
@@ -48,7 +75,6 @@ class Register extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 5),
                 const EmailInput(),
                 const SizedBox(height: 20),
                 const Align(
@@ -153,35 +179,11 @@ class RegisterButton extends StatelessWidget {
   }
 }
 
-class EmailInput extends StatelessWidget {
-  const EmailInput({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 350, // Set width of TextFormField
-      child: Container(
-        color: Colors.grey[200],
-        child: TextFormField(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          hintText: '   Example@gmail.com',
-          hintStyle: const TextStyle(color: Colors.black54,fontFamily: 'Open Sans'),
-          contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
-        ),
-      ),
-    )
-    );
-  }
-}
-
 class PasswordInput extends StatefulWidget {
   const PasswordInput({super.key});
 
   @override
-   createState() => _PasswordInputState();
+  createState() => _PasswordInputState();
 }
 
 class _PasswordInputState extends State<PasswordInput> {
@@ -228,6 +230,134 @@ class _PasswordInputState extends State<PasswordInput> {
     );
   }
 }
+
+class EmailInput extends StatefulWidget {
+  const EmailInput({super.key});
+
+  @override
+ createState() => _EmailInputState();
+}
+
+class _EmailInputState extends State<EmailInput> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? _emailError;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: SizedBox(
+        width: 350, // Set width of TextFormField
+        child: Container(
+          color: Colors.grey[200],
+          child: TextFormField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              hintText: '   Example@gmail.com',
+              hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+              errorText: _emailError,
+            ),
+            onChanged: (value) {
+              setState(() {
+                _emailError = null;
+              });
+              _formKey.currentState!.validate();
+            },
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter an email';
+              } else if (!_isValidEmail(value)) {
+                setState(() {
+                  _emailError = 'Please enter a valid email';
+                });
+                _resetError();
+                return null;
+              }
+              return null;
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  bool _isValidEmail(String email) {
+    // A simple regex for email validation
+    // This regex might not cover all valid email formats
+    // For production, consider using a more comprehensive solution
+    final RegExp emailRegex =
+    RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
+  void _resetError() {
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        _emailError = null;
+      });
+    });
+  }
+}
+
+class FirstNameInput extends StatefulWidget {
+  const FirstNameInput({super.key});
+
+  @override
+  createState() => _FirstNameInputState();
+}
+
+class _FirstNameInputState extends State<FirstNameInput> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 350, // Set width of TextFormField
+      child: Container(
+        color: Colors.grey[200],
+        child: TextFormField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            hintText: 'John',
+            hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
+            contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LastNameInput extends StatelessWidget {
+  const LastNameInput({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: 350, // Set width of TextFormField
+        child: Container(
+          color: Colors.grey[200],
+          child: TextFormField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              hintText: '   Doe',
+              hintStyle: const TextStyle(color: Colors.black54,fontFamily: 'Open Sans'),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+            ),
+          ),
+        )
+    );
+  }
+}
+
+
 
 class SignIn extends StatelessWidget {
   const SignIn({super.key});
