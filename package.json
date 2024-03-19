@@ -6,6 +6,9 @@
     "frontend": "cd ./frontend/ && npm i && npm run build && npm run dev",
     "dev": "concurrently \"cd ./backend/ && npm run dev\" \"npm run frontend\""
   },
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "concurrently": "^8.2.2"
   }
