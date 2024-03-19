@@ -116,9 +116,14 @@ const verifyUser = async (req, res) => {
   }
 };
 
+const encode = async (req, res) => {
+  res.status(200);
+  res.json({ token : createToken(req.body) });
+}
+
 const decode = async (req, res) => {
   const { token } = req.body;
-
+  console.log(req.body);
   if (await verifyToken(token))
   {
     res.status(200);
@@ -132,4 +137,4 @@ const decode = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, updateUser, deleteUser, sendVerification, verifyUser, decode };
+module.exports = { signup, login, updateUser, deleteUser, sendVerification, verifyUser, encode, decode };

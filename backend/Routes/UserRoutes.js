@@ -1,5 +1,5 @@
 const express = require('express');
-const { signup, login, updateUser, deleteUser, sendVerification, verifyUser, decode } = require('../Controllers/UserController');
+const { signup, login, updateUser, deleteUser, sendVerification, verifyUser, encode, decode } = require('../Controllers/UserController');
 
 const router = express.Router();
 
@@ -13,6 +13,7 @@ router.delete('/deleteUser', deleteUser);
 router.post('/sendVerification', sendVerification);
 router.get('/verifyUser', verifyUser);
 
+router.get('/encode', encode);
 router.get('/decode', decode);
 
 module.exports = router;
