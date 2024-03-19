@@ -1,5 +1,6 @@
 import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'socket_client.dart';
 
 
@@ -149,32 +150,6 @@ class ForgotPassword extends StatelessWidget {
         );
       },
       child: const Text('Forgot Password?', style: TextStyle(color: Colors.blue,fontSize: 17)),
-    );
-  }
-}
-
-class RegisterButton extends StatelessWidget {
-  const RegisterButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () {
-        // Define what should happen when the button is pressed
-      },
-      color: const Color(0xFF14532d),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 13.0),
-      child: const SizedBox(
-        width: 350,
-        child: Text(
-          'Register',
-          style: TextStyle(color: Colors.white,fontSize: 17,fontFamily: 'Open Sans'),
-          textAlign: TextAlign.center, // Align text in the center horizontally
-        ),
-      ),
     );
   }
 }
@@ -422,7 +397,6 @@ class _LastNameInputState extends State<LastNameInput> {
   }
 }
 
-
 class SignIn extends StatelessWidget {
   const SignIn({super.key});
 
@@ -441,6 +415,29 @@ class SignIn extends StatelessWidget {
   }
 }
 
-void registerUser() async {
+class RegisterButton extends StatelessWidget {
+  const RegisterButton({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      onPressed: () {
+        io.Socket socket = SocketClient.socket;
+        socket.emit('eventName', {'key': 'value'});
+      },
+      color: const Color(0xFF14532d),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 13.0),
+      child: const SizedBox(
+        width: 350,
+        child: Text(
+          'Register',
+          style: TextStyle(color: Colors.white,fontSize: 17,fontFamily: 'Open Sans'),
+          textAlign: TextAlign.center, // Align text in the center horizontally
+        ),
+      ),
+    );
+  }
 }

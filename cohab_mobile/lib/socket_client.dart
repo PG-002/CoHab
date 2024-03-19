@@ -1,6 +1,6 @@
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
-class SocketManager {
+class SocketClient {
   static io.Socket? _socket;
 
   static io.Socket get socket {
