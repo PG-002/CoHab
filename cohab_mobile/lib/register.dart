@@ -306,39 +306,78 @@ class FirstNameInput extends StatefulWidget {
   const FirstNameInput({super.key});
 
   @override
-  createState() => _FirstNameInputState();
+ createState() => _FirstNameInputState();
 }
 
 class _FirstNameInputState extends State<FirstNameInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? _firstNameError;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 350, // Set width of TextFormField
-      child: Container(
-        color: Colors.grey[200],
-        child: TextFormField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
+    return Form(
+      key: _formKey,
+      child: SizedBox(
+        width: 350, // Set width of TextFormField
+        child: Container(
+          color: Colors.grey[200],
+          child: TextFormField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              hintText: '   John',
+              hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+              errorText: _firstNameError,
             ),
-            hintText: 'John',
-            hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
-            contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+            onChanged: (value) {
+              setState(() {
+                _firstNameError = null;
+              });
+              _formKey.currentState!.validate();
+            },
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                setState(() {
+                  _firstNameError = 'Please enter your first name';
+                });
+                _resetError();
+                return null;
+              }
+              return null;
+            },
           ),
         ),
       ),
     );
   }
+
+  void _resetError() {
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        _firstNameError = null;
+      });
+    });
+  }
 }
 
-class LastNameInput extends StatelessWidget {
+class LastNameInput extends StatefulWidget {
   const LastNameInput({super.key});
 
   @override
+  createState() => _LastNameInputState();
+}
+
+class _LastNameInputState extends State<LastNameInput> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? _lastNameError;
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Form(
+      key: _formKey,
+      child: SizedBox(
         width: 350, // Set width of TextFormField
         child: Container(
           color: Colors.grey[200],
@@ -348,15 +387,40 @@ class LastNameInput extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               hintText: '   Doe',
-              hintStyle: const TextStyle(color: Colors.black54,fontFamily: 'Open Sans'),
+              hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
               contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+              errorText: _lastNameError,
             ),
+            onChanged: (value) {
+              setState(() {
+                _lastNameError = null;
+              });
+              _formKey.currentState!.validate();
+            },
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                setState(() {
+                  _lastNameError = 'Please enter your last name';
+                });
+                _resetError();
+                return null;
+              }
+              return null;
+            },
           ),
-        )
+        ),
+      ),
     );
   }
-}
 
+  void _resetError() {
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        _lastNameError = null;
+      });
+    });
+  }
+}
 
 
 class SignIn extends StatelessWidget {
