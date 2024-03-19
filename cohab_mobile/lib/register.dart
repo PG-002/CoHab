@@ -4,8 +4,18 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'socket_client.dart';
 
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
   const Register({super.key});
+
+  @override
+  createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  String firstName = '';
+  String lastName = '';
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +60,7 @@ class Register extends StatelessWidget {
                     ),
                   ),
                 ),
-                const FirstNameInput(),
+                FirstNameInput(onSaveFirstName: _saveFirstName,),
                 const SizedBox(height: 20),
                 const Align(
                   alignment: Alignment(-.95,0),
@@ -134,6 +144,12 @@ class Register extends StatelessWidget {
       ),
     );
   }
+  // Callback function to save the first name
+  void _saveFirstName(String firstName) {
+    setState(() {
+      this.firstName = firstName;
+    });
+  }
 }
 
 class ForgotPassword extends StatelessWidget {
@@ -184,6 +200,7 @@ class _PasswordInputState extends State<PasswordInput> {
             ),
             onChanged: (value) {
               _formKey.currentState!.validate();
+
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -278,15 +295,24 @@ class _EmailInputState extends State<EmailInput> {
 }
 
 class FirstNameInput extends StatefulWidget {
-  const FirstNameInput({super.key});
+  final Function(String) onSaveFirstName; // Define a callback function
+
+  const FirstNameInput({super.key, required this.onSaveFirstName});
 
   @override
- createState() => _FirstNameInputState();
+  createState() => _FirstNameInputState();
 }
 
 class _FirstNameInputState extends State<FirstNameInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _firstNameError;
+  final TextEditingController _firstNameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -297,6 +323,7 @@ class _FirstNameInputState extends State<FirstNameInput> {
         child: Container(
           color: Colors.grey[200],
           child: TextFormField(
+            controller: _firstNameController,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -334,6 +361,14 @@ class _FirstNameInputState extends State<FirstNameInput> {
         _firstNameError = null;
       });
     });
+  }
+
+  // Function to validate and save the first name
+  void saveFirstName() {
+    if (_formKey.currentState!.validate()) {
+      // If the form is valid, invoke the callback to save the first name
+      widget.onSaveFirstName(_firstNameController.text);
+    }
   }
 }
 
@@ -423,7 +458,7 @@ class RegisterButton extends StatelessWidget {
     return MaterialButton(
       onPressed: () {
         io.Socket socket = SocketClient.socket;
-        socket.emit('eventName', {'key': 'value'});
+        socket.emit('signup', {'key': 'value'});
       },
       color: const Color(0xFF14532d),
       shape: RoundedRectangleBorder(
