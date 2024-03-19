@@ -1,6 +1,6 @@
 import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
-import 'socketclient.dart';
+
 
 class Register extends StatelessWidget {
   const Register({super.key});
