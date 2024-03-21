@@ -60,7 +60,7 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 ),
-                FirstNameInput(onSaveFirstName: _saveFirstName,),
+                const FirstNameInput(),
                 const SizedBox(height: 20),
                 const Align(
                   alignment: Alignment(-.95,0),
@@ -143,12 +143,6 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
-  }
-  // Callback function to save the first name
-  void _saveFirstName(String firstName) {
-    setState(() {
-      this.firstName = firstName;
-    });
   }
 }
 
@@ -295,9 +289,8 @@ class _EmailInputState extends State<EmailInput> {
 }
 
 class FirstNameInput extends StatefulWidget {
-  final Function(String) onSaveFirstName; // Define a callback function
 
-  const FirstNameInput({super.key, required this.onSaveFirstName});
+  const FirstNameInput({super.key});
 
   @override
   createState() => _FirstNameInputState();
@@ -306,12 +299,16 @@ class FirstNameInput extends StatefulWidget {
 class _FirstNameInputState extends State<FirstNameInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _firstNameError;
-  final TextEditingController _firstNameController = TextEditingController();
+   final _controller = TextEditingController(); // Controller to manage text input
 
   @override
-  void dispose() {
-    _firstNameController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _controller.addListener(setFirstName); // Initialize controller with firstName
+  }
+
+  void setFirstName()
+  {
   }
 
   @override
@@ -323,7 +320,7 @@ class _FirstNameInputState extends State<FirstNameInput> {
         child: Container(
           color: Colors.grey[200],
           child: TextFormField(
-            controller: _firstNameController,
+            controller: _controller, // Assign controller to TextFormField
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -338,6 +335,7 @@ class _FirstNameInputState extends State<FirstNameInput> {
                 _firstNameError = null;
               });
               _formKey.currentState!.validate();
+              setFirstName();
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -363,12 +361,10 @@ class _FirstNameInputState extends State<FirstNameInput> {
     });
   }
 
-  // Function to validate and save the first name
-  void saveFirstName() {
-    if (_formKey.currentState!.validate()) {
-      // If the form is valid, invoke the callback to save the first name
-      widget.onSaveFirstName(_firstNameController.text);
-    }
+  @override
+  void dispose() {
+    _controller.dispose(); // Dispose of the controller
+    super.dispose();
   }
 }
 
