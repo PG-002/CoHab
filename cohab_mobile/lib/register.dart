@@ -281,7 +281,7 @@ class _EmailInputState extends State<EmailInput> {
     // This regex might not cover all valid email formats
     // For production, consider using a more comprehensive solution
     final RegExp emailRegex =
-    RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(email);
   }
 
