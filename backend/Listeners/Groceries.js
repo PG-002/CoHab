@@ -8,7 +8,7 @@ module.exports = (socket, io) => {
     });
 
     socket.on('modifyGrocery', async item => {
-        await House.findOneAndUpdate({ _id : socket.room, groceryNeeded : { $elemMatch : { _id : rule._id } } }, { $set : { 'groceryNeeded' : item } })
+        await House.findOneAndUpdate({ _id : socket.room, groceryNeeded : { $elemMatch : { _id : item._id } } }, { $set : { 'groceryNeeded.$.item' : item.item } })
             .then(groceryNeeded => io.to(socket.room).emit('groceryChange', { groceryNeeded : item }))
             .catch(err => console.log(err));
     });
