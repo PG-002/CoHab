@@ -488,8 +488,20 @@ class RegisterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () {
-        io.Socket socket = SocketClient.socket;
-        socket.emit('signup', {'key': 'value'});
+        var check = checkAgain();
+        if(check == null)
+          {
+
+          }
+        else
+          {
+            // Display error message to the user
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(check),
+              ),
+            );
+          }
       },
       color: const Color(0xFF14532d),
       shape: RoundedRectangleBorder(
@@ -506,4 +518,37 @@ class RegisterButton extends StatelessWidget {
       ),
     );
   }
+}
+
+checkAgain()
+{
+    String? errorMessage;
+
+    if (firstName.isEmpty) {
+      return errorMessage = 'Please enter your first name';
+    }
+
+    if (lastName.isEmpty) {
+      return errorMessage = 'Please enter your last name';
+    }
+
+    final RegExp emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(email)) {
+      return errorMessage = 'Please enter a valid email';
+    }
+
+    if (password.isEmpty) {
+      errorMessage = 'Please enter a password';
+    } else if (password.length < 8 || password.length > 20) {
+      errorMessage = 'Password must be between 8 and 20 characters';
+    } else if (!password.contains(RegExp(r'[A-Z]'))) {
+      errorMessage = 'Password must contain at least one uppercase letter';
+    } else if (!password.contains(RegExp(r'[0-9]'))) {
+      errorMessage = 'Password must contain at least one number';
+    } else if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      errorMessage = 'Password must contain at least one special character';
+    }
+
+    return errorMessage;
+
 }
