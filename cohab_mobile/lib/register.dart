@@ -208,6 +208,7 @@ class _PasswordInputState extends State<PasswordInput> {
             ),
             onChanged: (value) {
               _formKey.currentState!.validate();
+              setPassword();
 
             },
             validator: (String? value) {
@@ -278,6 +279,7 @@ class _EmailInputState extends State<EmailInput> {
                 _emailError = null;
               });
               _formKey.currentState!.validate();
+              setEmail();
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -438,6 +440,7 @@ class _LastNameInputState extends State<LastNameInput> {
                 _lastNameError = null;
               });
               _formKey.currentState!.validate();
+              setLastName();
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
