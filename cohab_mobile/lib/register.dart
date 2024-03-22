@@ -1,5 +1,4 @@
 import 'package:cohab_mobile/main.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'socket_client.dart';
@@ -504,14 +503,10 @@ class RegisterButton extends StatelessWidget {
             // Handle the response from the server
             socket.on('signup_response', (data) async {
               if (data['token'] != null) {
-                if (kDebugMode) {
                   print('Signup successful. Token: ${data['token']}');
-                }
                 await storeToken(data['token']); // Store the token
               } else {
-                if (kDebugMode) {
                   print('Signup failed. Error: ${data['error']}');
-                }
               }
             });
 
