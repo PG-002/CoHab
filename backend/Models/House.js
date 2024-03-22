@@ -82,11 +82,11 @@ const HouseSchema = new Schema({
         default : []
     },
     rules : {
-        type : [{ type : String }],
+        type : [{ id : String, rule : String }],
         default : []
     },
     groceryNeeded : {
-        type : [{ type : String }],
+        type : [{ id : String, item : String }],
         default : []
     },
     noiseLevel : {

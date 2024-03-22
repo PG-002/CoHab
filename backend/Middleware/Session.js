@@ -37,6 +37,8 @@ module.exports = io => {
     const addEventListeners = socket => {
         require('../Listeners/GroupChat')(socket, io);
         require('../Listeners/Tasks')(socket, io);
+        require('../Listeners/Rules')(socket, io);
+        require('../Listeners/Groceries')(socket, io);
     };
 
     return { getSession, addEventListeners };

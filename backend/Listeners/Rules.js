@@ -8,7 +8,7 @@ module.exports = (socket, io) => {
     });
 
     socket.on('modifyRule', async rule => {
-        await House.findOneAndUpdate({ _id : socket.room, rules : { $elemMatch : { _id : rule._id } } }, { $set : { 'rules' : rule } })
+        await House.findOneAndUpdate({ _id : socket.room, rules : { $elemMatch : { _id : rule._id } } }, { $set : { 'rules.$.rule' : rule.rule, } })
             .then(rules => io.to(socket.room).emit('rulesChange', { rules : rules }))
             .catch(err => console.log(err));
     });
