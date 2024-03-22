@@ -1,6 +1,6 @@
 # CoHab
 
-CoHab is a roommate assistant app designed to help groups of people that are in shared living scenarios. Keep track of tasks, schedules, and chats all in one place.
+CoHab is a roommate assistant app designed to help groups of people that are in shared living scenarios. Keep track of tasks, schedules, and chats all in one place!
 
 ### Install for frontend:
 
@@ -17,6 +17,7 @@ npm install -D tailwindcss postcss autoprefixer
 - path
 - jsonwebtoken
 - nodemailer
+- bcryptI'
 
 ### Install for flutter:
 

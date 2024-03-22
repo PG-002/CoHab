@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     firstName : {
         type : String,
-        required : [true, 'First name is requried.']
+        required : [true, 'First name is required.']
     },
     lastName : {
         type : String,
@@ -14,11 +14,6 @@ const UserSchema = new Schema({
         type : String,
         unique : [true, 'This email is already in use.'],
         required : [true, 'Email is required.']
-    },
-    username : {
-        type : String,
-        unique : [true, 'A user with that username already exists.'],
-        required : [true, 'Username is required.']
     },
     password : {
         type : String,
@@ -50,6 +45,11 @@ const UserSchema = new Schema({
             default : true,
             required : [true, 'isTracking is required.']
         }
+    },
+    verified : {
+        type : Boolean,
+        required : [true, 'User must have verification status.'],
+        default : false
     }
 }, { versionKey : false });
 

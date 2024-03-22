@@ -22,7 +22,7 @@ const joinHouse = async (req, res) => {
 
     // _id is the user's id
     const { joinHouseCode, firstName, lastName, _id } = req.body;
-    const fullName = firstName + " " + lastName;
+    const fullName = firstName + ' ' + lastName;
 
     const house = await House.where({ joinHouseCode: joinHouseCode }).findOne();
 
@@ -43,4 +43,33 @@ const joinHouse = async (req, res) => {
         res.json({ Error: e })
     });
 }
-module.exports = { createHouse, joinHouse };
+
+const updateHouse = async (req, res) => {
+    const { id, fieldName, fieldValue } = req.body;
+    
+    res.status(200);
+    await House.updateOne({ _id : id }, { [fieldName] : fieldValue })
+        .then(() => res.json({ updated : true, error : '' }))
+        .catch(err => res.json({ updated : false, error: err }));
+}
+
+const deleteHouse = async (req, res) => {
+    const { id } = req.body;
+    const house = await House.findOne({ _id : id }).catch(() => null);
+
+    if(!house)
+    {
+        res.status(200);
+        res.json({ deleted : false, error : 'House does not exist.' });
+        return;
+    }
+
+    await User.updateMany({ houseID : id }, { houseID : null }).catch(() => null);
+
+    res.status(200);
+    await House.deleteOne({ _id : id })
+        .then(() => res.json({ deleted : true, error : '' }))
+        .catch(err => res.json({ deleted : false, error : err }));
+}
+
+module.exports = { createHouse, joinHouse, updateHouse, deleteHouse };
