@@ -37,7 +37,6 @@ const LoginPage = () => {
 
         setUser({
           token: data.token,
-          houseID: data.user.houseID
         });
         
         navigate("/dashboard");

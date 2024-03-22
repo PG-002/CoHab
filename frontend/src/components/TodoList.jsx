@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
 import Nav from "./Nav";
 import { jwtDecode } from "jwt-decode";
+import { Link, useNavigate } from "react-router-dom";
 
 function TodoList({ socket }) {
+
+    const navigate = useNavigate();
+
+    const LogOut = () => {
+        localStorage.removeItem("sessionId");
+        navigate("/");
+    };
+
     const [todo, setTodo] = useState("");
     const [tasks, setTasks] = useState([]); // You'll need state to store your tasks
 
@@ -74,7 +83,10 @@ function TodoList({ socket }) {
                     </div>
                 ))}
             </div>
+            <button onClick={LogOut}>Log Out</button>
+            <button><Link to="/dashboard" className="text-white dark:text-white hover:underline">Dashboard</Link></button>
         </div>
+        
     );
 }
 export default TodoList;

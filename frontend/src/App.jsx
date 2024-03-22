@@ -27,7 +27,10 @@ if (localStorage.theme === "dark") {
 }
 
 function App() {
-  const socket = io('http://localhost:5003');
+  const socket = io('http://localhost:5003',
+  {
+    transports: ['websocket']
+  });
   return (
     <>
     <UserProvider>
@@ -44,7 +47,11 @@ function App() {
             </ProtectedRoute>
           } 
           />
-          <Route path="/task" element={<TodoList socket={socket}/>} />
+          <Route path="/task" element={
+             <ProtectedRoute>
+          <TodoList socket={socket}/>
+          </ProtectedRoute>
+          } />
         </Routes>
       </Router>
     </UserProvider>

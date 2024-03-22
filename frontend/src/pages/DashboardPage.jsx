@@ -11,6 +11,7 @@ const DashboardPage = () => {
     <>
       <h1>HELLO WORLD!</h1>
       <button onClick={LogOut}>Log Out</button>
+      <button><Link to="/task" className="text-white dark:text-white hover:underline">Task page</Link></button>
     </>
   );
 };
