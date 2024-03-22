@@ -11,6 +11,8 @@ import DashboardPage from './pages/DashboardPage';
 import ErrorPage from "./pages/ErrorPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { UserProvider } from './components/UserContext';
+import TodoList from './components/TodoList';
+import io from 'socket.io-client';
 
 if (localStorage.theme === "dark" || !("theme" in localStorage)) {
   document.documentElement.classList.add("dark");
@@ -25,6 +27,7 @@ if (localStorage.theme === "dark") {
 }
 
 function App() {
+  const socket = io('http://localhost:5003');
   return (
     <>
     <UserProvider>
@@ -41,6 +44,7 @@ function App() {
             </ProtectedRoute>
           } 
           />
+          <Route path="/task" element={<TodoList socket={socket}/>} />
         </Routes>
       </Router>
     </UserProvider>

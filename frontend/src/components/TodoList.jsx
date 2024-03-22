@@ -1,93 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import TodoItem from './TodoItem';
-import { useUser } from './UserContext';
+import { useState, useEffect } from "react";
+import Nav from "./Nav";
+import { jwtDecode } from "jwt-decode";
 
-function TodoList() {
-    const [tasks, setTasks] = useState([]);
-    const [text, setText] = useState('');
+function TodoList({ socket }) {
+    const [todo, setTodo] = useState("");
+    const [tasks, setTasks] = useState([]); // You'll need state to store your tasks
 
-    const { user } = useUser();
-    const houseID = user?.houseID;
-
+    // This useEffect hook will run once on component mount to set up the socket listeners
     useEffect(() => {
-        async function fetchTasks() {
-            try {
-                const response = await fetch(`/api/houses/${houseID}/tasks`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const tasks = await response.json();
-                setTasks(tasks);
-            } catch (error) {
-                console.error('There has been a problem with your fetch operation:', error);
-            }
-        }
-        
-        fetchTasks();
-    }, [houseID]);
 
-    async function addTask(text) {
-        const newTask = {
-            text,
-            completed: false
+    const token = localStorage.getItem("sessionId");
+    const decodedToken = jwtDecode(token);
+
+    // Access the houseID from the token payload
+    const houseID = decodedToken.user.houseID;
+
+        // Listening for tasks updates from the server
+        socket.on('tasksChange', (data) => {
+            setTasks(data.tasks); // Update the local state with the new tasks
+        });
+
+        // Send an event to join the room using the stored houseID when component mounts
+        // Ideally, the houseID should be passed down as a prop to this component
+        // or retrieved from a global state/store or secure storage.
+        socket.emit('joinRoom', { houseID });
+
+        // Clean up the listener when the component unmounts
+        return () => {
+            socket.off('tasksChange');
         };
-        
-        try {
-            const response = await fetch(`/api/houses/${houseID}/tasks`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newTask),
-            });
-            
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            
-            // Fetch the updated task list after adding
-            await fetchTasks();
-            setText('');
-        } catch (error) {
-            console.error('There has been a problem with your fetch operation:', error);
-        }
-    }
+    }, [socket]); // Empty dependency array means this will run once on mount
 
-    async function deleteTask(taskId) {
-        try {
-          const response = await fetch(`/api/houses/${houseID}/tasks/${taskId}`, {
-            method: 'DELETE',
-          });
-      
-          if (!response.ok) {
-            throw new Error('Failed to delete task');
-          }
-      
-          setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
-        } catch (error) {
-          console.error('Error deleting task:', error);
-          // Optionally handle the error in the UI, such as displaying a message to the user
-        }
-      }
-      
+    const handleAddTodo = (e) => {
+        e.preventDefault();
+        // Emit the new task to the server
+        socket.emit("createTask", {
+            task: todo,
+            completed: false,
+        });          
+        setTodo("");
+    };
 
-
-   return (
-    <div className="todo-list">
-    {tasks.map(task => (
-    <TodoItem
-    key={task.id} 
-    task={task}
-    deleteTask={deleteTask}
-    toggleCompleted={toggleCompleted} 
-    />
-    ))}
-   <input
-    value={text}
-    onChange={e => setText(e.target.value)} 
-    />
-   <button onClick={() => addTask(text)}>Add</button>
-    </div>
+    const handleDeleteTask = (taskId) => {
+        // Emit the delete task event to the server
+        socket.emit("deleteTask", { id: taskId });
+        // You may want to optimistically remove the task from the state as well
+        setTasks(currentTasks => currentTasks.filter(task => task.id !== taskId));
+    };
+    return (
+        <div>
+            <Nav />
+            <form className="form" onSubmit={handleAddTodo}>
+                <input
+                    value={todo}
+                    onChange={(e) => setTodo(e.target.value)}
+                    className="input"
+                    placeholder="Enter new task"
+                    required
+                />
+                <button className="form__cta">Add Todo</button>
+            </form>
+            <div className="todo__container">
+                {/* Render the list of tasks */}
+                {tasks.map((taskItem) => (
+                    <div key={taskItem.id} className="todo__item">
+                        <p>{taskItem.task}</p>
+                        <div>
+                            {/* Implement the functionality for viewing comments */}
+                            <button className="commentsBtn">View Comments</button>
+                            {/* Implement the functionality for deleting a task */}
+                            <button className="deleteBtn" onClick={() => handleDeleteTask(taskItem.id)}>Delete</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
     );
-   }
-   export default TodoList;
+}
+export default TodoList;
