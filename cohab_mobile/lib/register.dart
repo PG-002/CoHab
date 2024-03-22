@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'socket_client.dart';
 
+String firstName = '';
+String lastName = '';
+String email = '';
+String password = '';
+
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -12,11 +17,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  String firstName = '';
-  String lastName = '';
-  String email = '';
-  String password = '';
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -173,6 +173,18 @@ class PasswordInput extends StatefulWidget {
 
 class _PasswordInputState extends State<PasswordInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final TextEditingController _text = TextEditingController();
+
+  void setPassword()
+  {
+    password = _text.text;
+  }
+
+  @override
+  void dispose() {
+    _text.dispose(); // Dispose the controller when the state is disposed
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,14 +195,15 @@ class _PasswordInputState extends State<PasswordInput> {
         child: Container(
           color: Colors.grey[200],
           child: TextFormField(
+            controller: _text,
             obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              hintText: '   At least 8 characters',
+              hintText: 'At least 8 characters',
               hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
-              contentPadding: const EdgeInsets.symmetric(vertical: 5.0), // Adjust the height here
+              contentPadding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0), // Add left padding here
             ),
             onChanged: (value) {
               _formKey.currentState!.validate();
@@ -227,6 +240,18 @@ class EmailInput extends StatefulWidget {
 class _EmailInputState extends State<EmailInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _emailError;
+  late final TextEditingController _text = TextEditingController();
+
+  void setEmail()
+  {
+    email = _text.text;
+  }
+
+  @override
+  void dispose() {
+    _text.dispose(); // Dispose the controller when the state is disposed
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -237,13 +262,14 @@ class _EmailInputState extends State<EmailInput> {
         child: Container(
           color: Colors.grey[200],
           child: TextFormField(
+            controller: _text,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              hintText: '   Example@gmail.com',
+              hintText: 'Example@gmail.com',
               hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
-              contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+              contentPadding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0), // Add left padding here
               errorText: _emailError,
             ),
             onChanged: (value) {
@@ -299,16 +325,17 @@ class FirstNameInput extends StatefulWidget {
 class _FirstNameInputState extends State<FirstNameInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _firstNameError;
-   final _controller = TextEditingController(); // Controller to manage text input
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(setFirstName); // Initialize controller with firstName
-  }
+  late final TextEditingController _text = TextEditingController();
 
   void setFirstName()
   {
+    firstName = _text.text;
+  }
+
+  @override
+  void dispose() {
+    _text.dispose(); // Dispose the controller when the state is disposed
+    super.dispose();
   }
 
   @override
@@ -320,14 +347,14 @@ class _FirstNameInputState extends State<FirstNameInput> {
         child: Container(
           color: Colors.grey[200],
           child: TextFormField(
-            controller: _controller, // Assign controller to TextFormField
+            controller: _text,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              hintText: '   John',
+              hintText: 'John',
               hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
-              contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+              contentPadding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0), // Add left padding here
               errorText: _firstNameError,
             ),
             onChanged: (value) {
@@ -361,11 +388,6 @@ class _FirstNameInputState extends State<FirstNameInput> {
     });
   }
 
-  @override
-  void dispose() {
-    _controller.dispose(); // Dispose of the controller
-    super.dispose();
-  }
 }
 
 class LastNameInput extends StatefulWidget {
@@ -378,6 +400,18 @@ class LastNameInput extends StatefulWidget {
 class _LastNameInputState extends State<LastNameInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _lastNameError;
+  late final TextEditingController _text = TextEditingController();
+
+  void setLastName()
+  {
+    lastName = _text.text;
+  }
+
+  @override
+  void dispose() {
+    _text.dispose(); // Dispose the controller when the state is disposed
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -388,13 +422,14 @@ class _LastNameInputState extends State<LastNameInput> {
         child: Container(
           color: Colors.grey[200],
           child: TextFormField(
+            controller: _text,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              hintText: '   Doe',
+              hintText: 'Doe',
               hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
-              contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+              contentPadding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0), // Add left padding here
               errorText: _lastNameError,
             ),
             onChanged: (value) {
