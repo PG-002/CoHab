@@ -1,4 +1,5 @@
 import 'package:socket_io_client/socket_io_client.dart' as io;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SocketClient {
   static io.Socket? _socket;
@@ -23,4 +24,14 @@ class SocketClient {
 
     // Add event listeners or other configurations here if needed
   }
+}
+
+Future<void> storeToken(String token) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('token', token);
+}
+
+Future<String?> getToken() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('token');
 }
