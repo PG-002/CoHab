@@ -3,6 +3,9 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 class SocketClient {
   static io.Socket? _socket;
 
+  // Private constructor to prevent instantiation from outside
+  SocketClient._();
+
   static io.Socket get socket {
     if (_socket == null) {
       _initializeSocket();

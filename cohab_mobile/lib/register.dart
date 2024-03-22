@@ -9,6 +9,7 @@ String email = '';
 String password = '';
 
 
+
 class Register extends StatefulWidget {
   const Register({super.key});
 
@@ -491,6 +492,7 @@ class RegisterButton extends StatelessWidget {
         var check = checkAgain();
         if(check == null)
           {
+            io.Socket socket = SocketClient.socket;
 
           }
         else
