@@ -1,7 +1,7 @@
 const Nav = () => {
     return (
         <nav className='navbar'>
-            <h2>Todo List</h2>
+            <h2>Task List</h2>
         </nav>
     );
 };
