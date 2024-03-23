@@ -47,12 +47,11 @@ const Session = require('../backend/Middleware/Session')(io);
 // Authenticates client
 io.use(async (socket, next) => {
     const token = socket.handshake.auth.token ? socket.handshake.auth.token : socket.handshake.headers.token;
-    const session = await Session.getSession(token);
+    const session = await Session.auth(token);
 
     if(session.error)
         return next(new Error(session.error));
 
-    socket.sessionId = session.sessionId;
     socket.user = session.user;
     socket.room = session.room;
     next();
