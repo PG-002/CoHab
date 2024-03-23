@@ -14,7 +14,7 @@ module.exports = (socket, io) => {
     });
 
     socket.on('deleteTask', async task => {
-        await House.findOneAndUpdate({ _id : socket.room }, { $pull : { tasks : task } })
+        await House.findOneAndUpdate({ _id : socket.room }, { $pull : { tasks : { _id : task.id } } }, { new: true })
             .then(tasks => io.to(socket.room).emit('tasksChange', { tasks : tasks }))
             .catch(err => console.log(err));
     });

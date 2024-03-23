@@ -57,11 +57,11 @@ function TodoList({ socket }) {
         setTodo("");
     };
 
-    const handleDeleteTask = (taskId) => {
+    const handleDeleteTask = (task) => {
         // Emit the delete task event to the server
-        socket.emit("deleteTask", { id: taskId });
+        socket.emit("deleteTask", { id : task._id });
         // You may want to optimistically remove the task from the state as well
-        setTasks(currentTasks => currentTasks.filter(task => task.id !== taskId));
+        setTasks(currentTasks => currentTasks.filter(task => task.id !== task._id));
     };
     return (
         <div>
@@ -79,13 +79,13 @@ function TodoList({ socket }) {
             <div className="todo__container">
                 {/* Render the list of tasks */}
                 {tasks.map((taskItem) => (
-                    <div key={taskItem.id} className="todo__item">
+                    <div key={taskItem._id} className="todo__item">
                         <p>{taskItem.task}</p>
                         <div>
                             {/* Implement the functionality for viewing comments */}
                             <button className="commentsBtn">View Comments</button>
                             {/* Implement the functionality for deleting a task */}
-                            <button className="deleteBtn" onClick={() => handleDeleteTask(taskItem.id)}>Delete</button>
+                            <button className="deleteBtn" onClick={() => handleDeleteTask(taskItem)}>Delete</button>
                         </div>
                     </div>
                 ))}
