@@ -495,23 +495,6 @@ class RegisterButton extends StatelessWidget {
         var check = checkAgain();
         if(check == null)
           {
-            io.Socket socket = SocketClient.socket;
-            socket.emit('signup', {
-              'firstName': firstName,
-              'lastName': lastName,
-              'email': email,
-              'password': password,
-            });
-
-            // Handle the response from the server
-            socket.on('signup_response', (data) async {
-              if (data['token'] != null) {
-                  print('Signup successful. Token: ${data['token']}');
-                await storeToken(data['token']); // Store the token
-              } else {
-                  print('Signup failed. Error: ${data['error']}');
-              }
-            });
 
           }
         else
