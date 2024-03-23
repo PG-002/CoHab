@@ -23,16 +23,22 @@ function TodoList({ socket }) {
 
     // Access the houseID from the token payload
     const houseID = decodedToken.user.houseID;
+    // console.log('house id is ' + houseID);
+    // console.log('token is ' + token);
 
         // Listening for tasks updates from the server
         socket.on('tasksChange', (data) => {
-            setTasks(data.tasks); // Update the local state with the new tasks
+            console.log("I am changing!");
+            console.log(tasks);
+            console.log(data.tasks.tasks);
+            setTasks(data.tasks.tasks);
+            console.log(data.tasks) // Update the local state with the new tasks
         });
 
         // Send an event to join the room using the stored houseID when component mounts
         // Ideally, the houseID should be passed down as a prop to this component
         // or retrieved from a global state/store or secure storage.
-        socket.emit('joinRoom', { houseID });
+        socket.emit('requestTask');
 
         // Clean up the listener when the component unmounts
         return () => {
@@ -42,6 +48,7 @@ function TodoList({ socket }) {
 
     const handleAddTodo = (e) => {
         e.preventDefault();
+        console.log("I am being called");
         // Emit the new task to the server
         socket.emit("createTask", {
             task: todo,

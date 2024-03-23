@@ -11,12 +11,23 @@ module.exports = io => {
     };
 
     const getSession = async (token) => {
-        if(!verifyToken(token))
-            return { error : 'Token could not be verified.' };
+        // console.log('the token in getSession is ' + token);
+        if (!token)
+            return;
+            
 
+        if(!verifyToken(token))
+        {
+            console.log("The token was not verified");
+            return { error : 'Token could not be verified.' };
+        }
+            
         const payload = decodeToken(token).payload;
+        console.log(payload);
         let sessionId = payload.sessionId;
-        const userId = payload.userId;
+        console.log('SessionId is ' + sessionId);
+        const userId = payload.user._id;
+        console.log('userId is ' + userId);
 
         if(sessions[sessionId])
             return { sessionId : sessionId, user : sessions[sessionId].user, room : sessions[sessionId].room, error : '' };

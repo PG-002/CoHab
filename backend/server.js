@@ -6,7 +6,6 @@ const path = require('path');
 require('dotenv').config();
 const env = process.env;
 const PORT = env.PORT || 5003;
-
 // Connection to MongoDB
 const mongoose = require('mongoose');
 mongoose.connect(env.MONGODB_URI, { dbName : 'Co-habDB'})
@@ -48,6 +47,10 @@ const Session = require('../backend/Middleware/Session')(io);
 io.use(async (socket, next) => {
     const token = socket.handshake.auth.token ? socket.handshake.auth.token : socket.handshake.headers.token;
     const session = await Session.getSession(token);
+    if (!session)
+        return;
+        
+        
 
     if(session.error)
         return next(new Error(session.error));
@@ -55,6 +58,7 @@ io.use(async (socket, next) => {
     socket.sessionId = session.sessionId;
     socket.user = session.user;
     socket.room = session.room;
+    console.log('the socket room is ' + socket.room);
     next();
 });
 

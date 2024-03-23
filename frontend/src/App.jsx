@@ -29,7 +29,10 @@ if (localStorage.theme === "dark") {
 function App() {
   const socket = io('http://localhost:5003',
   {
-    transports: ['websocket']
+    transports: ['websocket'],
+    auth: {
+      token: localStorage.getItem('sessionId'), // Retrieve the token from local storage
+    },
   });
   return (
     <>
