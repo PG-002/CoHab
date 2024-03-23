@@ -48,6 +48,35 @@ const login = async (req, res) => {
     .catch(() => res.json({ error: 'Error fetching user.' }));
 };
 
+const getHouse = async (req, res) => {
+  const { userId } = req.body;
+
+  await User.findOne({ _id : userId })
+    .then(async user => {
+      if(!user.houseID)
+      {
+        res.status(404);
+        res.json({ error : 'User is not part of a house.' });
+      }
+
+      const house = await House.findOne({ _id : user.houseID })
+        .catch(() => null);
+
+      if(!house)
+      {
+        res.status(404);
+        res.json({ error : 'Could not find house.' });
+      }
+
+      res.status(200);
+      res.json({ house : house, error : '' });
+    })
+    .catch(() => {
+      res.status(404);
+      res.json({ error : 'User not found.' })
+    })
+}
+
 const updateUser = async (req, res) => {
   const { id, fieldName, fieldValue } = req.body;
 
@@ -137,4 +166,4 @@ const decode = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, updateUser, deleteUser, sendVerification, verifyUser, encode, decode };
+module.exports = { signup, login, getHouse, updateUser, deleteUser, sendVerification, verifyUser, encode, decode };
