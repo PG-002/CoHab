@@ -24,7 +24,7 @@ module.exports = io => {
             
         const payload = decodeToken(token).payload;
         console.log(payload);
-        let sessionId = payload.sessionId;
+        let sessionId = null;
         console.log('SessionId is ' + sessionId);
         const userId = payload.user._id;
         console.log('userId is ' + userId);
