@@ -1,0 +1,38 @@
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  #message-list {
+    flex-grow: 1;
+    overflow: auto;
+  }
+  
+  .message-item {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .message-input {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: black;
+    padding: 10px;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .message-input textarea {
+    width: calc(100% - 100px);
+    margin-right: 10px;
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 5px; /* Padding inside the textarea */
+  }
+  
+  .message-input button {
+    width: 90px;
+  }
+  

@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { UserProvider } from './components/UserContext';
 import TodoList from './components/TodoList';
 import io from 'socket.io-client';
+import Chat from './components/Chat';
 
 if (localStorage.theme === "dark" || !("theme" in localStorage)) {
   document.documentElement.classList.add("dark");
@@ -53,6 +54,12 @@ function App() {
           <Route path="/task" element={
              <ProtectedRoute>
           <TodoList socket={socket}/>
+          </ProtectedRoute>
+          } />
+
+        <Route path="/chat" element={
+             <ProtectedRoute>
+          <Chat socket={socket}/>
           </ProtectedRoute>
           } />
         </Routes>

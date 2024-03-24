@@ -24,17 +24,8 @@ module.exports = io => {
             
         const payload = decodeToken(token).payload;
         console.log(payload);
-        let sessionId = null;
-        console.log('SessionId is ' + sessionId);
         const userId = payload.user._id;
         console.log('userId is ' + userId);
-
-        if(sessions[sessionId])
-            return { sessionId : sessionId, user : sessions[sessionId].user, room : sessions[sessionId].room, error : '' };
-
-        sessionId = Object.keys(sessions).find(id => sessions[id].user._id.toString() === userId);
-        if(sessionId)
-            return { sessionId : sessionId, user : sessions[sessionId].user, room : sessions[sessionId].room, error : '' };
 
         const user = await User.findOne({ _id : userId })
             .catch(() => null);
@@ -42,7 +33,7 @@ module.exports = io => {
         if(!user)
             return { error : 'Could not fetch user.' };
         
-        return { sessionId : createSession(user, user.houseID), user : user, room : user.houseID, error : '' };
+        return { user : user, room : user.houseID, error : '' };
     };
 
     const addEventListeners = socket => {
