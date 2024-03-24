@@ -1,10 +1,10 @@
 {
   "scripts": {
     "start": "cd backend && node server.js",
-    "heroku-postbuild": "npm run frontend && npm run build",
+    "heroku-postbuild": "cd frontend && npm i && npm run build",
     "devStart": "concurrently \"npm run backend\" \"npm run frontend\"",
     "backend": "cd ./backend/ && npm i && npm run start",
-    "frontend": "cd ./frontend/ && npm i",
+    "frontend": "cd frontend && npm i",
     "dev": "concurrently \"cd ./backend/ && npm run dev\" \"npm run frontend\""
   },
   "engines": {
