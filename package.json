@@ -2,7 +2,6 @@
   "scripts": {
     "start": "cd backend && node server.js",
     "devStart": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "heroku-postbuild": "npm run frontend",
     "backend": "cd ./backend/ && npm i && npm run start",
     "frontend": "cd ./frontend/ && npm i && npm run start",
     "dev": "concurrently \"cd ./backend/ && npm run dev\" \"npm run frontend\""
