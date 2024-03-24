@@ -42,26 +42,26 @@ app.use('/api/houses/', houseRoutes);
 // Configures the server and socket io connection
 const server = require('http').Server(app);
 const io = require('socket.io')(server, { cors : { origin : '*' } });
-// const Session = require('../backend/Middleware/Session')(io);
+const Session = require('../backend/Middleware/Session')(io);
 
 // Authenticates client
-// io.use(async (socket, next) => {
-//     const token = socket.handshake.auth.token ? socket.handshake.auth.token : socket.handshake.headers.token;
-//     const session = await Session.auth(token);
+io.use(async (socket, next) => {
+    const token = socket.handshake.auth.token ? socket.handshake.auth.token : socket.handshake.headers.token;
+    const session = await Session.auth(token);
 
-//     if(session.error)
-//         return next(new Error(session.error));
+    if(session.error)
+        return next(new Error(session.error));
 
-//     socket.user = session.user;
-//     socket.room = session.room;
-//     next();
-// });
+    socket.user = session.user;
+    socket.room = session.room;
+    next();
+});
 
 // Connection event
-// io.on('connect', socket => {
-//     socket.join(socket.room);
-//     socket.emit('session', { sessionId : socket.sessionId });
-//     Session.addEventListeners(socket);
-// });
+io.on('connect', socket => {
+    socket.join(socket.room);
+    socket.emit('session', { sessionId : socket.sessionId });
+    Session.addEventListeners(socket);
+});
 
 server.listen(PORT, () => console.log('Server listening on port ' + PORT));
