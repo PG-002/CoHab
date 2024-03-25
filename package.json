@@ -1,9 +1,8 @@
 {
   "scripts": {
-    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "heroku-postbuild": "npm run frontend",
-    "backend": "cd ./backend/ && npm i && npm run start",
-    "frontend": "cd ./frontend/ && npm i && npm run build && npm run start",
+    "start": "cd backend && node server.js",
+    "heroku-postbuild": "cd frontend && npm i && npm run build",
+    "devStart": "concurrently \"npm run backend\" \"npm run frontend\"",
     "dev": "concurrently \"cd ./backend/ && npm run dev\" \"npm run frontend\""
   },
   "engines": {

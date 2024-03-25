@@ -72,4 +72,19 @@ const deleteHouse = async (req, res) => {
         .catch(err => res.json({ deleted : false, error : err }));
 }
 
-module.exports = { createHouse, joinHouse, updateHouse, deleteHouse };
+const modifyNoiseLevel = async (req, res) => {
+    const { id, newLevel } = req.body;
+    const house = await House.findOne({ _id : id }).catch(() => null);
+
+    if(!house)
+    {
+        res.status(200);
+        res.json({ deleted : false, error : 'House does not exist.' });
+        return;
+    }
+    await House.updateOne({ _id : id }, { noiseLevel : newLevel })
+        .then(() => res.json({ updated : true, error : '' }))
+        .catch(err => res.json({ updated : false, error: err }));
+}
+
+module.exports = { createHouse, joinHouse, updateHouse, deleteHouse, modifyNoiseLevel };
