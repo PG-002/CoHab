@@ -9,7 +9,7 @@ Future<void> signUp(String firstName, String lastName, String email, String pass
     'firstName': firstName,
     'lastName': lastName,
     'email': email,
-    'password': password,
+    'password': password
   };
 
 
