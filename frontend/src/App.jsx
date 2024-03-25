@@ -1,15 +1,15 @@
-import LoginPage from "./pages/LoginPage";
 import "./App.css";
-import SignUpPage from "./pages/SignUpPage";
+import LoginPage from "./pages/login-signup/LoginPage";
+import SignUpPage from "./pages/login-signup/SignUpPage";
+import DashboardPage from "./pages/dashboard/DashboardPage";
+import ErrorPage from "./pages/global/ErrorPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import DashboardPage from './pages/DashboardPage';
-import ErrorPage from "./pages/ErrorPage";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 if (localStorage.theme === "dark" || !("theme" in localStorage)) {
   document.documentElement.classList.add("dark");
@@ -32,12 +32,13 @@ function App() {
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/dashboard" element=
-          {
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          } 
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </Router>
