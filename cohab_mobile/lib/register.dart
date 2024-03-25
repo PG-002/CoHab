@@ -1,7 +1,6 @@
-import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
-import 'socketclient.dart';
+import 'register_token.dart';
 
 String firstName = '';
 String lastName = '';
@@ -495,25 +494,7 @@ class RegisterButton extends StatelessWidget {
         var check = checkAgain();
         if(check == null)
           {
-            io.Socket socket = SocketClient.socket;
-            socket.emit('signup', {
-              'firstName': firstName,
-              'lastName': lastName,
-              'email': email,
-              'password': password,
-            });
-
-            // Handle the response from the server
-            socket.on('signup_response', (data) async {
-              if (data['token'] != null) {
-                print('Signup successful. Token: ${data['token']}');
-                // Store the token
-                token = (data['token']);
-              } else {
-                print('Signup failed. Error: ${data['error']}');
-              }
-            });
-
+          signUp(firstName, lastName, email, password);
           }
         else
           {
@@ -574,3 +555,4 @@ checkAgain()
     return errorMessage;
 
 }
+
