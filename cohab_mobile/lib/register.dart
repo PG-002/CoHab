@@ -1,6 +1,7 @@
 import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
+import 'login.dart';
 
 String firstName = '';
 String lastName = '';
@@ -480,7 +481,7 @@ class SignIn extends StatelessWidget {
         // Navigate to ForgotPasswordScreen when text is tapped
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MyApp()),
+          MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       },
       child: const Text('Sign into Cohab',
