@@ -93,7 +93,7 @@ const updatePassword = async (req, res) => {
 
   if (hashedPassword.error)
   {
-    res.status(201);
+    res.status(404);
     res.json({ error: hashedPassword.error });
   }
   else
@@ -104,8 +104,7 @@ const updatePassword = async (req, res) => {
         res.json({ changed : true, error : '' });
       })
       .catch((e) => {
-        console.log(e);
-        res.status(201);
+        res.status(404);
         res.json({ changed : false, error : 'The password could not be updated.' });
       });
   }
