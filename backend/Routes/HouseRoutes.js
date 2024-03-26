@@ -12,17 +12,6 @@ router.post('/joinHouse', joinHouse);
 router.post('/updateHouse', updateHouse);
 router.post('/deleteHouse', deleteHouse);
 router.post('/modifyNoiseLevel', modifyNoiseLevel);
-// add user
 // add event
-// add reminder
-// add task
-// add event
-// add rules
-// add grocery
-// send group message
-// add todo
-// set noise level
-// delete house
-
-
+ 
 module.exports = router;

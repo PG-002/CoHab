@@ -25,6 +25,7 @@ module.exports = io => {
         require('../Listeners/Rules')(socket, io);
         require('../Listeners/Groceries')(socket, io);
         require('../Listeners/Reminders')(socket, io);
+        require('../Listeners/Events')(socket, io);
     };
 
     return { auth, addEventListeners };
