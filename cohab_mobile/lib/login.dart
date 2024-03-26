@@ -26,58 +26,50 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _handleSubmit() async {
-  if (!mounted) {
-    return; // Widget is unmounted, do nothing
-  }
+  void _handleSubmit(BuildContext context) async {
+    // Call the login function with the provided email and password
 
-  try {
-    await login(_email, _password);
+    try {
+      await login(_email, _password);
 
-    if (token is String) {
-      // Login failed, token is an error message
-      if (!mounted) {
-        return; // Widget is unmounted, do nothing
+      print(token);
+      if (token is String) {
+        // Login failed, token is an error message
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(token),
+          ),
+        );
+      } else if (token is Map<String, dynamic> && token.containsKey('error')) {
+        // Login failed, token is a JSON object containing an error message
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(token['error']),
+          ),
+        );
+      } else {
+        // Login successful, navigate to the home screen or any other screen
+        if (!context.mounted) {
+          print("Hi");
+          return;
+        }
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MyApp()),
+        );
       }
+    } catch (e) {
+      // Handle any exceptions that may occur during login
+      print('Error occurred during login: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(token),
+        const SnackBar(
+          content: Text('An error occurred. Please try again later.'),
         ),
       );
-    } else if (token is Map<String, dynamic> && token.containsKey('error')) {
-      // Login failed, token is a JSON object containing an error message
-      if (!mounted) {
-        return; // Widget is unmounted, do nothing
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(token['error']),
-        ),
-      );
-    } else {
-      // Login successful, navigate to the home screen or any other screen
-      if (!mounted) {
-        return; // Widget is unmounted, do nothing
-      }
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const MyApp()),
-      );
     }
-  } catch (e) {
-    // Handle any exceptions that may occur during login
-    print('Error occurred during login: $e');
-    if (!mounted) {
-      return; // Widget is unmounted, do nothing
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('An error occurred. Please try again later.'),
-      ),
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +148,9 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _handleSubmit,
+                  onPressed: () {
+                    _handleSubmit(context); // Pass the context here
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF14532D),
                   ),
