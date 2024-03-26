@@ -9,15 +9,17 @@ Future<void> signUp(String firstName, String lastName, String email, String pass
     'firstName': firstName,
     'lastName': lastName,
     'email': email,
-    'password': password
+    'password': password,
   };
 
 
   try {
     final response = await http.post(
       url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
       body: json.encode(body),
-      headers: {'Content-Type': 'application/json'},
     );
 
     if (response.statusCode == 201) {
