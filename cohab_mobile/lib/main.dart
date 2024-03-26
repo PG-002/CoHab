@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
 
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 

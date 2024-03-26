@@ -1,13 +1,11 @@
 import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
-import 'register_token.dart';
+import 'token.dart';
 
 String firstName = '';
 String lastName = '';
 String email = '';
 String password = '';
-
-
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -29,7 +27,12 @@ class _RegisterState extends State<Register> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 15),
-                const Align(alignment: Alignment.center, child: Text('Welcome To Cohab!', style: TextStyle(color: Colors.black,
+                const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Welcome To Cohab!',
+                    style: TextStyle(
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
                       fontFamily: 'Open Sans',
@@ -50,7 +53,7 @@ class _RegisterState extends State<Register> {
                 ),
                 const SizedBox(height: 20),
                 const Align(
-                  alignment: Alignment(-.95,0),
+                  alignment: Alignment(-.95, 0),
                   child: Text(
                     'First Name',
                     style: TextStyle(
@@ -63,7 +66,7 @@ class _RegisterState extends State<Register> {
                 const FirstNameInput(),
                 const SizedBox(height: 20),
                 const Align(
-                  alignment: Alignment(-.95,0),
+                  alignment: Alignment(-.95, 0),
                   child: Text(
                     'Last Name',
                     style: TextStyle(
@@ -76,7 +79,7 @@ class _RegisterState extends State<Register> {
                 const LastNameInput(),
                 const SizedBox(height: 20),
                 const Align(
-                  alignment: Alignment(-.95,0),
+                  alignment: Alignment(-.95, 0),
                   child: Text(
                     'Email',
                     style: TextStyle(
@@ -89,7 +92,7 @@ class _RegisterState extends State<Register> {
                 const EmailInput(),
                 const SizedBox(height: 20),
                 const Align(
-                  alignment: Alignment(-.95,0),
+                  alignment: Alignment(-.95, 0),
                   child: Text(
                     'Password',
                     style: TextStyle(
@@ -159,7 +162,8 @@ class ForgotPassword extends StatelessWidget {
           MaterialPageRoute(builder: (context) => const MyApp()),
         );
       },
-      child: const Text('Forgot Password?', style: TextStyle(color: Colors.blue,fontSize: 17)),
+      child: const Text('Forgot Password?',
+          style: TextStyle(color: Colors.blue, fontSize: 17)),
     );
   }
 }
@@ -175,8 +179,7 @@ class _PasswordInputState extends State<PasswordInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController _text = TextEditingController();
 
-  void setPassword()
-  {
+  void setPassword() {
     password = _text.text;
   }
 
@@ -202,13 +205,14 @@ class _PasswordInputState extends State<PasswordInput> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               hintText: 'At least 8 characters',
-              hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
-              contentPadding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0), // Add left padding here
+              hintStyle: const TextStyle(
+                  color: Colors.black54, fontFamily: 'Open Sans'),
+              contentPadding: const EdgeInsets.fromLTRB(
+                  12.0, 8.0, 12.0, 8.0), // Add left padding here
             ),
             onChanged: (value) {
               _formKey.currentState!.validate();
               setPassword();
-
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -235,7 +239,7 @@ class EmailInput extends StatefulWidget {
   const EmailInput({super.key});
 
   @override
- createState() => _EmailInputState();
+  createState() => _EmailInputState();
 }
 
 class _EmailInputState extends State<EmailInput> {
@@ -243,8 +247,7 @@ class _EmailInputState extends State<EmailInput> {
   String? _emailError;
   late final TextEditingController _text = TextEditingController();
 
-  void setEmail()
-  {
+  void setEmail() {
     email = _text.text;
   }
 
@@ -269,8 +272,10 @@ class _EmailInputState extends State<EmailInput> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               hintText: 'Example@gmail.com',
-              hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
-              contentPadding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0), // Add left padding here
+              hintStyle: const TextStyle(
+                  color: Colors.black54, fontFamily: 'Open Sans'),
+              contentPadding: const EdgeInsets.fromLTRB(
+                  12.0, 8.0, 12.0, 8.0), // Add left padding here
               errorText: _emailError,
             ),
             onChanged: (value) {
@@ -302,8 +307,7 @@ class _EmailInputState extends State<EmailInput> {
     // A simple regex for email validation
     // This regex might not cover all valid email formats
     // For production, consider using a more comprehensive solution
-    final RegExp emailRegex =
-    RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
+    final RegExp emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(email);
   }
 
@@ -317,7 +321,6 @@ class _EmailInputState extends State<EmailInput> {
 }
 
 class FirstNameInput extends StatefulWidget {
-
   const FirstNameInput({super.key});
 
   @override
@@ -329,8 +332,7 @@ class _FirstNameInputState extends State<FirstNameInput> {
   String? _firstNameError;
   late final TextEditingController _text = TextEditingController();
 
-  void setFirstName()
-  {
+  void setFirstName() {
     firstName = _text.text;
   }
 
@@ -355,8 +357,10 @@ class _FirstNameInputState extends State<FirstNameInput> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               hintText: 'John',
-              hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
-              contentPadding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0), // Add left padding here
+              hintStyle: const TextStyle(
+                  color: Colors.black54, fontFamily: 'Open Sans'),
+              contentPadding: const EdgeInsets.fromLTRB(
+                  12.0, 8.0, 12.0, 8.0), // Add left padding here
               errorText: _firstNameError,
             ),
             onChanged: (value) {
@@ -389,7 +393,6 @@ class _FirstNameInputState extends State<FirstNameInput> {
       });
     });
   }
-
 }
 
 class LastNameInput extends StatefulWidget {
@@ -404,8 +407,7 @@ class _LastNameInputState extends State<LastNameInput> {
   String? _lastNameError;
   late final TextEditingController _text = TextEditingController();
 
-  void setLastName()
-  {
+  void setLastName() {
     lastName = _text.text;
   }
 
@@ -430,8 +432,10 @@ class _LastNameInputState extends State<LastNameInput> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               hintText: 'Doe',
-              hintStyle: const TextStyle(color: Colors.black54, fontFamily: 'Open Sans'),
-              contentPadding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0), // Add left padding here
+              hintStyle: const TextStyle(
+                  color: Colors.black54, fontFamily: 'Open Sans'),
+              contentPadding: const EdgeInsets.fromLTRB(
+                  12.0, 8.0, 12.0, 8.0), // Add left padding here
               errorText: _lastNameError,
             ),
             onChanged: (value) {
@@ -479,7 +483,9 @@ class SignIn extends StatelessWidget {
           MaterialPageRoute(builder: (context) => const MyApp()),
         );
       },
-      child: const Text('Sign into Cohab', style: TextStyle(color: Colors.blue,fontFamily: 'Open Sans',fontSize: 17)),
+      child: const Text('Sign into Cohab',
+          style: TextStyle(
+              color: Colors.blue, fontFamily: 'Open Sans', fontSize: 17)),
     );
   }
 }
@@ -492,19 +498,16 @@ class RegisterButton extends StatelessWidget {
     return MaterialButton(
       onPressed: () {
         var check = checkAgain();
-        if(check == null)
-          {
+        if (check == null) {
           signUp(firstName, lastName, email, password);
-          }
-        else
-          {
-            // Display error message to the user
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(check),
-              ),
-            );
-          }
+        } else {
+          // Display error message to the user
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(check),
+            ),
+          );
+        }
       },
       color: const Color(0xFF14532d),
       shape: RoundedRectangleBorder(
@@ -515,7 +518,8 @@ class RegisterButton extends StatelessWidget {
         width: 350,
         child: Text(
           'Register',
-          style: TextStyle(color: Colors.white,fontSize: 17,fontFamily: 'Open Sans'),
+          style: TextStyle(
+              color: Colors.white, fontSize: 17, fontFamily: 'Open Sans'),
           textAlign: TextAlign.center, // Align text in the center horizontally
         ),
       ),
@@ -523,36 +527,33 @@ class RegisterButton extends StatelessWidget {
   }
 }
 
-checkAgain()
-{
-    String? errorMessage;
+checkAgain() {
+  String? errorMessage;
 
-    if (firstName.isEmpty) {
-      return errorMessage = 'Please enter your first name';
-    }
+  if (firstName.isEmpty) {
+    return errorMessage = 'Please enter your first name';
+  }
 
-    if (lastName.isEmpty) {
-      return errorMessage = 'Please enter your last name';
-    }
+  if (lastName.isEmpty) {
+    return errorMessage = 'Please enter your last name';
+  }
 
-    final RegExp emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegex.hasMatch(email)) {
-      return errorMessage = 'Please enter a valid email';
-    }
+  final RegExp emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
+  if (!emailRegex.hasMatch(email)) {
+    return errorMessage = 'Please enter a valid email';
+  }
 
-    if (password.isEmpty) {
-      errorMessage = 'Please enter a password';
-    } else if (password.length < 8 || password.length > 20) {
-      errorMessage = 'Password must be between 8 and 20 characters';
-    } else if (!password.contains(RegExp(r'[A-Z]'))) {
-      errorMessage = 'Password must contain at least one uppercase letter';
-    } else if (!password.contains(RegExp(r'[0-9]'))) {
-      errorMessage = 'Password must contain at least one number';
-    } else if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      errorMessage = 'Password must contain at least one special character';
-    }
+  if (password.isEmpty) {
+    errorMessage = 'Please enter a password';
+  } else if (password.length < 8 || password.length > 20) {
+    errorMessage = 'Password must be between 8 and 20 characters';
+  } else if (!password.contains(RegExp(r'[A-Z]'))) {
+    errorMessage = 'Password must contain at least one uppercase letter';
+  } else if (!password.contains(RegExp(r'[0-9]'))) {
+    errorMessage = 'Password must contain at least one number';
+  } else if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+    errorMessage = 'Password must contain at least one special character';
+  }
 
-    return errorMessage;
-
+  return errorMessage;
 }
-
