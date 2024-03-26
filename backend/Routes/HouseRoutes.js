@@ -12,6 +12,5 @@ router.post('/joinHouse', joinHouse);
 router.post('/updateHouse', updateHouse);
 router.post('/deleteHouse', deleteHouse);
 router.post('/modifyNoiseLevel', modifyNoiseLevel);
-// add event
  
 module.exports = router;

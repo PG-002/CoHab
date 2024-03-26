@@ -30,7 +30,7 @@ const UserSchema = new Schema({
             default : Date.now(),
             required : [true, 'Must include the time the user\'s location was last updated.']
         },
-        lattitude : {
+        latitude : {
             type : Number,
             default : 0,
             required : [true, 'Must include the user\'s lattitude.'] 

@@ -86,6 +86,31 @@ const updateUser = async (req, res) => {
     .catch((err) => res.json({ updated: false, error: err }));
 };
 
+const updatePassword = async (req, res) => {
+  const { userId, password } = req.body;
+
+  const hashedPassword = await hash(password);
+
+  if (hashedPassword.error)
+  {
+    res.status(201);
+    res.json({ error: hashedPassword.error });
+  }
+  else
+  {
+    await User.findOneAndUpdate({ _id : userId }, { password : hashedPassword.password })
+      .then(() => {
+        res.status(200);
+        res.json({ changed : true, error : '' });
+      })
+      .catch((e) => {
+        console.log(e);
+        res.status(201);
+        res.json({ changed : false, error : 'The password could not be updated.' });
+      });
+  }
+}
+
 const deleteUser = async (req, res) => {
   const { id } = req.body;
   const user = await User.findOne({ _id: id }).catch(() => null);
@@ -166,4 +191,4 @@ const decode = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, getHouse, updateUser, deleteUser, sendVerification, verifyUser, encode, decode };
+module.exports = { signup, login, getHouse, updateUser, updatePassword, deleteUser, sendVerification, verifyUser, encode, decode };
