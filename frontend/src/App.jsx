@@ -10,6 +10,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import Calendar from "./pages/calendar/Calendar";
+import Chat from "./pages/chat/Chat";
+import Tasklist from "./pages/tasklist/Tasklist";
+import Settings from "./pages/settings/Settings";
 
 if (localStorage.theme === "dark" || !("theme" in localStorage)) {
   document.documentElement.classList.add("dark");
@@ -25,7 +29,7 @@ if (localStorage.theme === "dark") {
 
 function App() {
   return (
-    <>
+    <div className="flex">
       <Router>
         <Routes>
           <Route path="*" element={<ErrorPage />} />
@@ -39,10 +43,42 @@ function App() {
                 <DashboardPage />
               </ProtectedRoute>
             }
+          ></Route>
+          <Route
+            path="/dashboard/calendar"
+            element={
+              <ProtectedRoute>
+                <Calendar />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/messages"
+            element={
+              <ProtectedRoute>
+                <Chat />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/tasklist"
+            element={
+              <ProtectedRoute>
+                <Tasklist />
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </Router>
-    </>
+    </div>
   );
 }
 
