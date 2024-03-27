@@ -26,15 +26,11 @@ Future<void> signUp(
     if (response.statusCode == 201) {
       // Successful signup
       token = json.decode(response.body);
-      //print('Token: ${token['token']}');
     } else {
       // Signup failed
-      token = json.decode(response.body);
-      //print('Signup failed: ${token['error']}');
     }
   } catch (e) {
     // Exception occurred
-    //print('Exception occurred: $e');
   }
 }
 
@@ -58,14 +54,10 @@ Future<void> login(String email, String password) async {
     if (response.statusCode == 201) {
       // Successful signup
       token = json.decode(response.body);
-      //print('Token: ${token['token']}');
     } else {
       // Signup failed
-      token = json.decode(response.body);
-      //print('Login failed: ${token['error']}');
     }
   } catch (e) {
     // Exception occurred
-    //print('Exception occurred: $e');
   }
 }

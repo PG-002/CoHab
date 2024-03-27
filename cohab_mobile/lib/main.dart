@@ -1,3 +1,4 @@
+import 'package:cohab_mobile/task_list.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'register.dart';
@@ -9,9 +10,11 @@ class LoginPage extends StatefulWidget {
   createState() => _LoginPageState();
 }
 
+String _email = '';
+String _password = '';
+
 class _LoginPageState extends State<LoginPage> {
-  String _email = '';
-  String _password = '';
+
 
   void _handleEmailChange(String value) {
     setState(() {
@@ -30,8 +33,6 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await login(_email, _password);
-
-      print(token);
       if (token is String) {
         // Login failed, token is an error message
         if (!context.mounted) return;
@@ -55,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
         }
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const MyApp()),
+          MaterialPageRoute(builder: (context) => const TaskListPage()),
         );
       }
     } catch (e) {
