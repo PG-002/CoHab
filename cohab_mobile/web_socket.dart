@@ -19,6 +19,6 @@ class SocketClient {
       'reconnectionDelayMax': 10000,
       'auth': {'token': ''}
     });
-    
+
   }
 }
