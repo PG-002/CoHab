@@ -1,7 +1,7 @@
 import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
-import 'login.dart';
+import 'main.dart';
 
 String firstName = '';
 String lastName = '';
