@@ -12,14 +12,17 @@ class _TaskListPageState extends State<TaskListPage> {
   @override
   Widget build(BuildContext context) {
     // Your widget build code goes here
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
-        body: MyListView(),
+          appBar: AppBar(
+            title: const Text('Task List'),
+            centerTitle: true, // Center the title
+          ),
+        body: const MyListView(),
         ),
     );
   }
 }
-
 class MyListView extends StatelessWidget {
   const MyListView({super.key});
 
