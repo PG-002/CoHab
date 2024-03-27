@@ -3,15 +3,16 @@ import 'package:http/http.dart' as http;
 
 var token;
 
-Future<void> signUp(String firstName, String lastName, String email, String password) async {
-  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/signup');
+Future<void> signUp(
+    String firstName, String lastName, String email, String password) async {
+  final Uri url =
+      Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/signup');
   final Map<String, String> body = {
     'firstName': firstName,
     'lastName': lastName,
     'email': email,
     'password': password,
   };
-
 
   try {
     final response = await http.post(
@@ -38,7 +39,8 @@ Future<void> signUp(String firstName, String lastName, String email, String pass
 }
 
 Future<void> login(String email, String password) async {
-  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/login');
+  final Uri url =
+      Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/login');
   final Map<String, String> body = {
     'email': email,
     'password': password,
@@ -61,11 +63,9 @@ Future<void> login(String email, String password) async {
       // Signup failed
       token = json.decode(response.body);
       //print('Login failed: ${token['error']}');
-
     }
   } catch (e) {
     // Exception occurred
     //print('Exception occurred: $e');
   }
 }
-
