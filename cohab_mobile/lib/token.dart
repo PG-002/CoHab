@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 var token;
+var userObj;
 
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
@@ -25,7 +28,7 @@ Future<void> signUp(
 
     if (response.statusCode == 201) {
       // Successful signup
-      token = json.decode(response.body);
+      token = response.body;
     } else {
       // Signup failed
     }
@@ -53,7 +56,12 @@ Future<void> login(String email, String password) async {
 
     if (response.statusCode == 201) {
       // Successful signup
-      token = json.decode(response.body);
+      token = response.body;
+      print(token);
+      userObj = JWT.decode(token);
+
+      print(userObj.payload.user._id);
+
     } else {
       // Signup failed
     }
@@ -61,3 +69,6 @@ Future<void> login(String email, String password) async {
     // Exception occurred
   }
 }
+
+}
+
