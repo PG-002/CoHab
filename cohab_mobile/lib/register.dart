@@ -1,7 +1,7 @@
-import 'package:cohab_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'main.dart';
+import 'task_list.dart';
 
 String firstName = '';
 String lastName = '';
@@ -160,7 +160,7 @@ class ForgotPassword extends StatelessWidget {
         // Navigate to ForgotPasswordScreen when text is tapped
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MyApp()),
+          MaterialPageRoute(builder: (context) => const TaskListPage()),
         );
       },
       child: const Text('Forgot Password?',
