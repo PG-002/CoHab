@@ -11,18 +11,20 @@ class TaskListPage extends StatefulWidget {
 class _TaskListPageState extends State<TaskListPage> {
   @override
   Widget build(BuildContext context) {
-    // Your widget build code goes here
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Task List'),
-            centerTitle: true, // Center the title
-          ),
-        body: const MyListView(),
+        appBar: AppBar(
+          title: const Text('Task List', style: TextStyle(color: Colors.white)), // Set text color to white
+          centerTitle: true,
+          elevation: 1, // Add a small elevation to have a visible border
+          backgroundColor: Colors.black, // Set background color to black
         ),
+        body: const MyListView(),
+      ),
     );
   }
 }
+
 class MyListView extends StatelessWidget {
   const MyListView({super.key});
 
@@ -31,7 +33,7 @@ class MyListView extends StatelessWidget {
     return ListView(
       children: const <Widget>[
         ListTile(
-          leading: Icon(Icons.star),
+          leading: Icon(Icons.add_circle),
           title: Text('Item 1'),
         ),
         ListTile(
