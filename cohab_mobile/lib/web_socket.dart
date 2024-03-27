@@ -13,13 +13,31 @@ class SocketClient {
   }
 
   static void _initializeSocket() {
-    _socket = io.io('http://localhost:5003', <String, dynamic>{
-      'transports': ['websocket'],
-      'autoConnect': true,
-      'reconnectionDelayMax': 10000,
-      'auth': {'token': 'your_token_here'}
-    });
+    _socket = io.io(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/',
+      <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': true,
+        'reconnectionDelayMax': 10000,
+        'auth': {'token': ''}
+      },
+    );
 
     // Add event listeners or other configurations here if needed
+    _socket!.onConnect((_) {
+      print('Connected to WebSocket');
+    });
+
+    _socket!.onDisconnect((_) {
+      //print('Disconnected from WebSocket');
+    });
+
+    _socket!.on('tasksChange', (data) {
+      // Handle updated tasks here
+      print('Tasks changed: $data');
+      // Update your UI or perform other tasks based on the updated tasks data
+    });
+
+    // Add more event listeners or configurations as needed
   }
 }
