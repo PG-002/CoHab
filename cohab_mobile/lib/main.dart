@@ -48,11 +48,12 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          width: MediaQuery.of(context).size.width * 0.8,
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,8 +61,10 @@ class _LoginPageState extends State<LoginPage> {
               const Text(
                 'Welcome to CoHab!',
                 style: TextStyle(
-                  fontSize: 24.0,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  fontFamily: 'Open Sans',
                 ),
               ),
               const SizedBox(height: 20.0),
@@ -97,12 +100,21 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 6.0),
-                  TextField(
-                    onChanged: _handlePasswordChange,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'At least 8 characters.',
-                      border: OutlineInputBorder(),
+                  SizedBox(
+                    width: 350, // Set width of the container
+                    child: Container(
+                      color: Colors.grey[200],
+                      child: TextFormField(
+                        onChanged: _handlePasswordChange,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          contentPadding: const EdgeInsets.fromLTRB(
+                              12.0, 8.0, 12.0, 8.0),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -116,6 +128,8 @@ class _LoginPageState extends State<LoginPage> {
                   'Forgot password?',
                   style: TextStyle(
                     color: Colors.blue,
+                    fontFamily: 'Open Sans',
+                    fontSize: 17,
                   ),
                 ),
               ),
@@ -148,6 +162,8 @@ class _LoginPageState extends State<LoginPage> {
                   'Don\'t have an account? Sign up',
                   style: TextStyle(
                     color: Colors.blue,
+                    fontFamily: 'Open Sans',
+                    fontSize: 17,
                   ),
                 ),
               ),
@@ -155,6 +171,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+        )
     );
   }
 }
