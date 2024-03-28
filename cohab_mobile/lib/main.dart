@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _email = value;
     });
+
   }
 
   void _handlePasswordChange(String value) {
@@ -26,20 +27,41 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit(context) async {
     try {
-      login(_email, _password);
+      await login(_email, _password);
 
-      if (decodedToken['user']['verified'] == true) {
+      if(check == false) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid email or password'),
+            duration: Duration(seconds: 1), // Adjust the duration as needed
+          ),
+        );
+        }
+      else if (decodedToken['user']['verified'] == true) {
+        _email = '';
+        _password = '';
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
+
+
       }
       else {
         //go to email verification screen
+        _email = '';
+        _password = '';
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Register()),
+        );
 
       }
+
     }
      catch (e) {
       // Handle any exceptions that may occur during login
@@ -83,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.grey[200],
                       child: TextFormField(
                         onChanged: _handleEmailChange,
-                        obscureText: true,
+                        obscureText: false,
                         decoration: InputDecoration(
                           hintText: 'Example@gmail.com',
                           hintStyle: const TextStyle(
@@ -145,8 +167,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 20.0),
-                MaterialButton(
-                  onPressed: _handleSubmit,
+              Builder(
+                builder: (context) => MaterialButton(
+                  onPressed: () => _handleSubmit(context),
                   color: const Color(0xFF14532d),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -158,10 +181,11 @@ class _LoginPageState extends State<LoginPage> {
                       'Login',
                       style: TextStyle(
                           color: Colors.white, fontSize: 18, fontFamily: 'Open Sans'),
-                      textAlign: TextAlign.center, // Align text in the center horizontally
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
+              ),
               const SizedBox(height: 20.0),
               TextButton(
                 onPressed: () {
