@@ -158,10 +158,6 @@ class ForgotPassword extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Navigate to ForgotPasswordScreen when text is tapped
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const TaskListPage()),
-        );
       },
       child: const Text('Forgot Password?',
           style: TextStyle(color: Colors.blue, fontSize: 17)),
@@ -479,10 +475,7 @@ class SignIn extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Navigate to ForgotPasswordScreen when text is tapped
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
+
       },
       child: const Text('Sign into Cohab',
           style: TextStyle(
@@ -501,6 +494,7 @@ class RegisterButton extends StatelessWidget {
         var check = checkAgain();
         if (check == null) {
           signUp(firstName, lastName, email, password);
+          // then go to the email verification screen
         } else {
           // Display error message to the user
           ScaffoldMessenger.of(context).showSnackBar(

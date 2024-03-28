@@ -1,4 +1,4 @@
-import 'package:cohab_mobile/task_list.dart';
+import 'package:cohab_mobile/homepage.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'register.dart';
@@ -27,14 +27,23 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _handleSubmit() {
-    login(_email, _password).then((_) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TaskListPage()),
-      );
-    }).catchError((e) {
+    try {
+      login(_email, _password);
+
+      if (decodedToken['user']['verified'] == true) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+      else {
+        //go to email verification screen
+
+      }
+    }
+     catch (e) {
       // Handle any exceptions that may occur during login
-    });
+    }
   }
 
   @override
