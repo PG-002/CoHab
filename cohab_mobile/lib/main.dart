@@ -79,11 +79,21 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 6.0),
-                  TextField(
-                    onChanged: _handleEmailChange,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+                  SizedBox(
+                    width: 350, // Set width of the container
+                    child: Container(
+                      color: Colors.grey[200],
+                      child: TextFormField(
+                        onChanged: _handleEmailChange,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          contentPadding: const EdgeInsets.fromLTRB(
+                              12.0, 8.0, 12.0, 8.0),
+                        ),
+                      ),
                     ),
                   ),
                 ],
