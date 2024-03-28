@@ -27,8 +27,12 @@ Future<void> signUp(
     );
 
     if (response.statusCode == 201) {
-      // Successful signup
-      token = response.body;
+      final jsonResponse = json.decode(response.body);
+      token = jsonResponse['token']; // Extracting the token string
+      decodedToken = JwtDecoder.decode(token);
+
+      //userId
+      userId = decodedToken['user']['_id'];
     } else {
       // Signup failed
     }
