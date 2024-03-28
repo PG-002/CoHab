@@ -56,7 +56,7 @@ class _RegisterState extends State<Register> {
                 const Align(
                   alignment: Alignment(-.95, 0),
                   child: Text(
-                    'First Name',
+                    '   First Name',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -69,7 +69,7 @@ class _RegisterState extends State<Register> {
                 const Align(
                   alignment: Alignment(-.95, 0),
                   child: Text(
-                    'Last Name',
+                    '   Last Name',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -82,7 +82,7 @@ class _RegisterState extends State<Register> {
                 const Align(
                   alignment: Alignment(-.95, 0),
                   child: Text(
-                    'Email',
+                    '   Email',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -95,7 +95,7 @@ class _RegisterState extends State<Register> {
                 const Align(
                   alignment: Alignment(-.95, 0),
                   child: Text(
-                    'Password',
+                    '   Password',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -474,12 +474,19 @@ class SignIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigate to ForgotPasswordScreen when text is tapped
-
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
       },
-      child: const Text('Sign into Cohab',
-          style: TextStyle(
-              color: Colors.blue, fontFamily: 'Open Sans', fontSize: 17)),
+      child: const Text(
+        'Sign into Cohab',
+        style: TextStyle(
+          color: Colors.blue,
+          fontFamily: 'Open Sans',
+          fontSize: 17,
+        ),
+      ),
     );
   }
 }
