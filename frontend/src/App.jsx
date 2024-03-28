@@ -3,24 +3,20 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage";
-import ProtectedRoute from "./components/ProtectedRoute";
+import SidebarLayout from "./pages/global/SidebarLayout";
+import ProtectedRoutes from "./components/ProtectedRoute";
+import Tasklist from "./pages/Tasklist";
+import Calendar from "./pages/Calendar";
+import Location from "./pages/Location";
+import Messages from "./pages/Messages";
+import Settings from "./pages/Settings";
+
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-  useLocation,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import Sidebar, { SidebarItem } from "./pages/global/Sidebar";
-import { LayoutDashboard } from "lucide-react";
-import SidebarDev from "./pages/SidebarDev";
-import SidebarLayout from "./pages/global/SidebarLayout";
-import ProtectedRoutes from "./components/ProtectedRoute";
-import Tasklist from "./pages/Tasklist";
-import Messages from "./pages/Messages";
-import Settings from "./pages/Settings";
 
 // if (localStorage.theme === "dark" || !("theme" in localStorage)) {
 //   document.documentElement.classList.add("dark");
@@ -64,8 +60,10 @@ function App() {
             <Route element={<SidebarLayout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/tasklist" element={<Tasklist />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/location" element={<Location />} />
               <Route path="/messages" element={<Messages />} />
-              <Route path="/settings" element={<Settings />} />\
+              <Route path="/settings" element={<Settings />} />
             </Route>
           </Route>
         </Routes>

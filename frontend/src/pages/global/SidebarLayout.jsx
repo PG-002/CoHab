@@ -6,6 +6,8 @@ import {
   ListChecks,
   MessageCircleMore,
   Settings,
+  LocateFixedIcon,
+  CalendarDays,
 } from "lucide-react";
 
 function SidebarLayout() {
@@ -31,6 +33,18 @@ function SidebarLayout() {
           alert
           link={"tasklist"}
           active={activePage == "/tasklist"}
+        ></SidebarItem>
+        <SidebarItem
+          icon={<CalendarDays size={25} className="text-black" />}
+          text={"Calendar"}
+          link={"calendar"}
+          active={activePage == "/calendar"}
+        ></SidebarItem>
+        <SidebarItem
+          icon={<LocateFixedIcon size={25} className="text-black" />}
+          text={"Roommate Location"}
+          link={"location"}
+          active={activePage == "/location"}
         ></SidebarItem>
         <SidebarItem
           icon={<MessageCircleMore size={25} className="text-black" />}
