@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 var token;
 var userId;
-var userObj;
+var decodedToken;
 
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
@@ -56,7 +56,10 @@ Future<void> login(String email, String password) async {
     if (response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
       token = jsonResponse['token']; // Extracting the token string
-      print(token);
+      decodedToken = JwtDecoder.decode(token);
+
+      //userId
+      userId = decodedToken['user']['_id'];
 
 
 
