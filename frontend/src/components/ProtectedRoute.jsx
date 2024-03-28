@@ -1,19 +1,20 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
 
 const isAuthenticated = () => {
-  const sessionId = sessionStorage.getItem('sessionId') || localStorage.getItem('sessionId');
+  const sessionId =
+    sessionStorage.getItem("sessionId") || localStorage.getItem("sessionId");
   // You might also want to validate that the session ID is still valid on the server-side
   return sessionId !== null; // Returns true if there is a sessionId
 };
 
 // This is your ProtectedRoute component
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoutes = ({ authenticated, children }) => {
   if (!isAuthenticated()) {
     // If the user is not authenticated, redirect to the login page
     return <Navigate to="/login" />;
   }
-  
-  return children; // If authenticated, render the children components
+
+  return <Outlet />; // If authenticated, render the children components
 };
 
-export default ProtectedRoute;
+export default ProtectedRoutes;

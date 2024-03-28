@@ -8,10 +8,10 @@ const DashboardPage = () => {
     navigate("/");
   };
   return (
-    <>
+    <div className="w-full">
       <h1>HELLO WORLD!</h1>
       <button onClick={LogOut}>Log Out</button>
-    </>
+    </div>
   );
 };
 

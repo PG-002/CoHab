@@ -1,6 +1,8 @@
 import test from "../assets/test.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import Sidebar, { SidebarItem } from "./global/Sidebar";
+import { LayoutDashboard } from "lucide-react";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -47,8 +49,8 @@ const LoginPage = () => {
   };
 
   return (
-    <>
-      <div className="flex h-screen w-screen">
+    <div className="flex flex-row w-screen">
+      <div className="flex h-screen w-full">
         <img className="hidden lg:flex" src={test} alt="Login visual" />
         <div className="w-full bg-gray-100 dark:bg-neutral-900 lg:w-1/2 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
@@ -168,7 +170,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
