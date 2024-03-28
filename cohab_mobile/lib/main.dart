@@ -144,22 +144,23 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 10.0),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
+                MaterialButton(
                   onPressed: _handleSubmit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF14532D),
+                  color: const Color(0xFF14532d),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
+                  padding: const EdgeInsets.symmetric(vertical: 13.0),
+                  child: const SizedBox(
+                    width: 350,
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                          color: Colors.white, fontSize: 17, fontFamily: 'Open Sans'),
+                      textAlign: TextAlign.center, // Align text in the center horizontally
                     ),
                   ),
                 ),
-              ),
               const SizedBox(height: 10.0),
               TextButton(
                 onPressed: () {
