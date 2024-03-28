@@ -14,8 +14,6 @@ String _email = '';
 String _password = '';
 
 class _LoginPageState extends State<LoginPage> {
-
-
   void _handleEmailChange(String value) {
     setState(() {
       _email = value;
@@ -28,45 +26,15 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _handleSubmit(BuildContext context) async {
-    // Call the login function with the provided email and password
-
-    try {
-      await login(_email, _password);
-      if (token is String) {
-        // Login failed, token is an error message
-        if (!context.mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(token),
-          ),
-        );
-      } else if (token is Map<String, dynamic> && token.containsKey('error')) {
-        // Login failed, token is a JSON object containing an error message
-        if (!context.mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(token['error']),
-          ),
-        );
-      } else {
-        // Login successful, navigate to the home screen or any other screen
-        if (!context.mounted) {
-          return;
-        }
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const TaskListPage()),
-        );
-      }
-    } catch (e) {
-      // Handle any exceptions that may occur during login
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('An error occurred. Please try again later.'),
-        ),
+  void _handleSubmit() {
+    login(_email, _password).then((_) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const TaskListPage()),
       );
-    }
+    }).catchError((e) {
+      // Handle any exceptions that may occur during login
+    });
   }
 
   @override
@@ -92,13 +60,13 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Email', // Add text here
+                    'Email',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 6.0), // Adjust the spacing as needed
+                  const SizedBox(height: 6.0),
                   TextField(
                     onChanged: _handleEmailChange,
                     decoration: const InputDecoration(
@@ -113,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Password', // Add text here
+                    'Password',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
@@ -138,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text(
                   'Forgot password?',
                   style: TextStyle(
-                    color: Colors.blue, // Set the text color to blue
+                    color: Colors.blue,
                   ),
                 ),
               ),
@@ -146,9 +114,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    _handleSubmit(context); // Pass the context here
-                  },
+                  onPressed: _handleSubmit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF14532D),
                   ),
@@ -172,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text(
                   'Don\'t have an account? Sign up',
                   style: TextStyle(
-                    color: Colors.blue, // Set the text color to blue
+                    color: Colors.blue,
                   ),
                 ),
               ),
