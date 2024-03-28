@@ -1,5 +1,5 @@
 name: cohab_mobile
-description: "A new Flutter project."
+description: "Mobile Roomate Assistant App"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -33,6 +33,7 @@ dependencies:
   http: ^1.2.1
   web_socket_channel: ^2.4.4
   jwt_decoder: ^2.0.1
+  lucide_icons: ^0.257.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
