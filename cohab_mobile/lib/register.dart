@@ -106,7 +106,6 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 5),
                 const PasswordInput(),
                 const SizedBox(height: 5),
                 const Align(
@@ -524,7 +523,7 @@ class RegisterButton extends StatelessWidget {
         child: Text(
           'Register',
           style: TextStyle(
-              color: Colors.white, fontSize: 17, fontFamily: 'Open Sans'),
+              color: Colors.white, fontSize: 18, fontFamily: 'Open Sans'),
           textAlign: TextAlign.center, // Align text in the center horizontally
         ),
       ),

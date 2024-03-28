@@ -56,7 +56,6 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
                 'Welcome to CoHab!',
@@ -67,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                   fontFamily: 'Open Sans',
                 ),
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 25.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -78,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 6.0),
                   SizedBox(
                     width: 350, // Set width of the container
                     child: Container(
@@ -87,6 +85,9 @@ class _LoginPageState extends State<LoginPage> {
                         onChanged: _handleEmailChange,
                         obscureText: true,
                         decoration: InputDecoration(
+                          hintText: 'Example@gmail.com',
+                          hintStyle: const TextStyle(
+                              color: Colors.black54, fontFamily: 'Open Sans'),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 25.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -109,7 +110,6 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 6.0),
                   SizedBox(
                     width: 350, // Set width of the container
                     child: Container(
@@ -118,6 +118,9 @@ class _LoginPageState extends State<LoginPage> {
                         onChanged: _handlePasswordChange,
                         obscureText: true,
                         decoration: InputDecoration(
+                          hintText: 'Enter your password',
+                          hintStyle: const TextStyle(
+                              color: Colors.black54, fontFamily: 'Open Sans'),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -129,21 +132,19 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0),
-              TextButton(
-                onPressed: () {
-                  // Implement your forgot password logic here
-                },
-                child: const Text(
-                  'Forgot password?',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontFamily: 'Open Sans',
-                    fontSize: 17,
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    // Implement your forgot password logic here
+                  },
+                  child: const Text(
+                    'Forgot password?',
+                      style: TextStyle(color: Colors.blue, fontSize: 17),
                   ),
                 ),
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 20.0),
                 MaterialButton(
                   onPressed: _handleSubmit,
                   color: const Color(0xFF14532d),
@@ -156,12 +157,12 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                          color: Colors.white, fontSize: 17, fontFamily: 'Open Sans'),
+                          color: Colors.white, fontSize: 18, fontFamily: 'Open Sans'),
                       textAlign: TextAlign.center, // Align text in the center horizontally
                     ),
                   ),
                 ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 20.0),
               TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -174,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                     color: Colors.blue,
                     fontFamily: 'Open Sans',
-                    fontSize: 17,
+                    fontSize: 18,
                   ),
                 ),
               ),
