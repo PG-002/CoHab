@@ -3,9 +3,9 @@ const { createToken, verifyToken, decodeToken } = require('../Middleware/Token')
 const User = require('../Models/User');
 
 const createHouse = async (req, res) => {
-    const { houseName } = req.body;
+    const { houseName, code } = req.body;
 
-    await House.create({ houseName : houseName, joinHouseCode : 'testcode' }).then(house => {
+    await House.create({ houseName : houseName, joinHouseCode : code }).then(house => {
         res.status(200);
         
         const token = createToken({ house : house });
