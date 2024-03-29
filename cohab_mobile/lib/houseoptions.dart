@@ -3,14 +3,9 @@ import 'joinahouse.dart';
 
 // Note to self: looks too bare, add perhaps an image or icon somewhere
 
-void main() {
-  runApp(MaterialApp(
-    home: HouseOptions(),
-  ));
-}
 
 class HouseOptions extends StatelessWidget {
-  HouseOptions({Key? key}) : super(key: key);
+  const HouseOptions({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,82 +21,124 @@ class HouseOptions extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 20),
-                Align(
+                const SizedBox(height: 20),
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.only(left:20), // Padding on the left of the screen
-                    child: Text(
-                      'Almost There!',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                      child: Center(
+                        child: Text(
+                          'Almost There!',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            fontFamily: 'Open Sans',
+                          ),
+                        ),
                       ),
-                    ),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 25),
                 Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20), // Equal padding on both sides
-                    child: Wrap(
+                    padding: const EdgeInsets.symmetric(horizontal: 20), // Equal padding on both sides
+                    child: const Wrap(
                       children: [
                         Text(
-                          'Join a house by entering an existing code, or create a house with you and your roommates:',
+                          'Join a house by entering an existing code',
                           style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Lexend',
                             color: Colors.black,
+                            fontSize: 18,
+                            fontFamily: 'Open Sans',
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 50), // Padding between texts and buttons
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 100), // Adjust as needed
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          height: 1,
+                          color: Colors.grey[400], // Color of the line
+                        ),
+                      ),
+                      const Text(
+                        'Or',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontFamily: 'Open Sans',
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 8),
+                          height: 1,
+                          color: Colors.grey[400], // Color of the line
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                    'Create a house with your roomates',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontFamily: 'Open Sans',
+                  ),
+                ),
+                const SizedBox(height: 50), // Padding between texts and buttons
                 SizedBox(
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => JoinAHouse()), // Redirects to joinahouse.dart
+                        MaterialPageRoute(builder: (context) => const JoinAHouse()), // Redirects to joinahouse.dart
                       );
                     },
-                    child: Text(
-                      'Join a House',
-                      style: TextStyle(fontSize: 16, color: Color(0xFFFFFFFF)),
-                    ),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Color(0xFFFFFFFF), // Text color (button)
-                      backgroundColor: Color(0xFF17650B),  // Button color
-                      padding: EdgeInsets.symmetric(vertical: 12),
+                      foregroundColor: const Color(0xFFFFFFFF), // Text color (button)
+                      backgroundColor: const Color(0xFF17650B),  // Button color
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6), 
                       ),
                     ),
+                    child: const Text(
+                      'Join a House',
+                      style: TextStyle(fontSize: 16, color: Color(0xFFFFFFFF)),
+                    ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
                       debugPrint('Create a House button pressed...');
                     },
-                    child: Text(
-                      'Create a House',
-                      style: TextStyle(fontSize: 16, color: Color(0xFFFFFFFF)),
-                    ),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Color(0xFFFFFFFF), // Text color (button)
-                      backgroundColor: Color(0xFF17650B),  // Button color
-                      padding: EdgeInsets.symmetric(vertical: 12),
+                      foregroundColor: const Color(0xFFFFFFFF), // Text color (button)
+                      backgroundColor: const Color(0xFF17650B),  // Button color
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
+                    ),
+                    child: const Text(
+                      'Create a House',
+                      style: TextStyle(fontSize: 16, color: Color(0xFFFFFFFF)),
                     ),
                   ),
                 ),
