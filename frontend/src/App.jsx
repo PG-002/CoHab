@@ -16,8 +16,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import JoinHome from "./pages/JoinHome";
-import CreateHome from "./pages/CreateHome";
+// import JoinHome from "./pages/JoinHome";
+// import CreateHome from "./pages/CreateHome";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 
@@ -33,13 +33,6 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 //   localStorage.theme = "dark";
 // }
 
-const isAuthenticated = () => {
-  const sessionId =
-    sessionStorage.getItem("sessionId") || localStorage.getItem("sessionId");
-  // You might also want to validate that the session ID is still valid on the server-side
-  return sessionId !== null; // Returns true if there is a sessionId
-};
-
 function App() {
   return (
     <div className="flex flex-row w-screen">
@@ -52,8 +45,8 @@ function App() {
             <Route path="/signup" element={<SignUpPage />} />
           </Route>
           <Route element={<AuthenticatedRoute />}>
-            <Route path="/joinhouse" element={<JoinHome />} />
-            <Route path="/createhouse" element={<CreateHome />} />
+            {/* <Route path="/joinhouse" element={<JoinHome />} />
+            <Route path="/createhouse" element={<CreateHome />} /> */}
             <Route element={<SidebarLayout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/tasklist" element={<Tasklist />} />
