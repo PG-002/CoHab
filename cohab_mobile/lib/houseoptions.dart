@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'joinahouse.dart'; 
 
+// Note to self: looks too bare, add perhaps an image or icon somewhere
+
 void main() {
   runApp(MaterialApp(
     home: HouseOptions(),
