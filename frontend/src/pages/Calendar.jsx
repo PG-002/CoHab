@@ -1,23 +1,33 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import { formatDate } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  useTheme,
-} from "@mui/material";
 // import Header from "../../components/Header";
 // import { tokens } from "../../theme";
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
+
+  const calendarRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (containerRef.current === null) {
+      return;
+    }
+    if (calendarRef.current === null) {
+      return;
+    }
+    const calendarApi = calendarRef.current.getApi();
+
+    const resizeObserver = new ResizeObserver(() => calendarApi.updateSize());
+    resizeObserver.observe(containerRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [calendarRef, containerRef]);
 
   const handleDateClick = (selected) => {
     const title = prompt("Please enter a new title for your event");
@@ -54,8 +64,9 @@ const Calendar = () => {
   };
 
   return (
-    <div className="w-full p-10 overflow-hidden">
+    <div ref={containerRef} className="bg-white w-full p-10 overflow-hidden">
       <FullCalendar
+        ref={calendarRef}
         height={"100%"}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
         headerToolbar={{
