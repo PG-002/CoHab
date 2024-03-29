@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'main.dart';
-import 'task_list.dart';
 
 String firstName = '';
 String lastName = '';
@@ -56,11 +55,12 @@ class _RegisterState extends State<Register> {
                 const Align(
                   alignment: Alignment(-.95, 0),
                   child: Text(
-                    'First Name',
+                    '   First Name',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -69,11 +69,12 @@ class _RegisterState extends State<Register> {
                 const Align(
                   alignment: Alignment(-.95, 0),
                   child: Text(
-                    'Last Name',
+                    '   Last Name',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -82,11 +83,12 @@ class _RegisterState extends State<Register> {
                 const Align(
                   alignment: Alignment(-.95, 0),
                   child: Text(
-                    'Email',
+                    '   Email',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -95,15 +97,15 @@ class _RegisterState extends State<Register> {
                 const Align(
                   alignment: Alignment(-.95, 0),
                   child: Text(
-                    'Password',
+                    '   Password',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(height: 5),
                 const PasswordInput(),
                 const SizedBox(height: 5),
                 const Align(
@@ -126,7 +128,7 @@ class _RegisterState extends State<Register> {
                       'Or if you have an account',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 17,
+                        fontSize: 18,
                         fontFamily: 'Open Sans',
                       ),
                     ),
@@ -158,10 +160,6 @@ class ForgotPassword extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Navigate to ForgotPasswordScreen when text is tapped
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const TaskListPage()),
-        );
       },
       child: const Text('Forgot Password?',
           style: TextStyle(color: Colors.blue, fontSize: 17)),
@@ -478,15 +476,19 @@ class SignIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigate to ForgotPasswordScreen when text is tapped
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       },
-      child: const Text('Sign into Cohab',
-          style: TextStyle(
-              color: Colors.blue, fontFamily: 'Open Sans', fontSize: 17)),
+      child: const Text(
+        'Sign into Cohab',
+        style: TextStyle(
+          color: Colors.blue,
+          fontFamily: 'Open Sans',
+          fontSize: 18,
+        ),
+      ),
     );
   }
 }
@@ -501,6 +503,7 @@ class RegisterButton extends StatelessWidget {
         var check = checkAgain();
         if (check == null) {
           signUp(firstName, lastName, email, password);
+          // then go to the email verification screen
         } else {
           // Display error message to the user
           ScaffoldMessenger.of(context).showSnackBar(
@@ -520,7 +523,7 @@ class RegisterButton extends StatelessWidget {
         child: Text(
           'Register',
           style: TextStyle(
-              color: Colors.white, fontSize: 17, fontFamily: 'Open Sans'),
+              color: Colors.white, fontSize: 18, fontFamily: 'Open Sans'),
           textAlign: TextAlign.center, // Align text in the center horizontally
         ),
       ),

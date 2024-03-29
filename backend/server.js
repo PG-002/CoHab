@@ -60,7 +60,6 @@ io.use(async (socket, next) => {
 // Connection event
 io.on('connect', socket => {
     socket.join(socket.room);
-    socket.emit('session', { sessionId : socket.sessionId });
     Session.addEventListeners(socket);
 });
 

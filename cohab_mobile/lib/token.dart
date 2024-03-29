@@ -1,7 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 var token;
+var userId;
+var decodedToken;
+
+bool check = false;
 
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
@@ -24,23 +29,22 @@ Future<void> signUp(
     );
 
     if (response.statusCode == 201) {
-      // Successful signup
-      token = json.decode(response.body);
-      //print('Token: ${token['token']}');
+      final jsonResponse = json.decode(response.body);
+      token = jsonResponse['token']; // Extracting the token string
+      decodedToken = JwtDecoder.decode(token);
+
+      //userId
+      userId = decodedToken['user']['_id'];
     } else {
       // Signup failed
-      token = json.decode(response.body);
-      //print('Signup failed: ${token['error']}');
     }
   } catch (e) {
     // Exception occurred
-    //print('Exception occurred: $e');
   }
 }
 
 Future<void> login(String email, String password) async {
-  final Uri url =
-      Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/login');
+  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/login');
   final Map<String, String> body = {
     'email': email,
     'password': password,
@@ -56,16 +60,25 @@ Future<void> login(String email, String password) async {
     );
 
     if (response.statusCode == 201) {
-      // Successful signup
-      token = json.decode(response.body);
-      //print('Token: ${token['token']}');
+      final jsonResponse = json.decode(response.body);
+      token = jsonResponse['token']; // Extracting the token string
+      decodedToken = JwtDecoder.decode(token);
+
+      //userId
+      userId = decodedToken['user']['_id'];
+      check = true;
     } else {
-      // Signup failed
-      token = json.decode(response.body);
-      //print('Login failed: ${token['error']}');
+      // Login failed
+      check = false;
     }
   } catch (e) {
     // Exception occurred
-    //print('Exception occurred: $e');
+    check = false;
   }
 }
+
+
+
+
+
+

@@ -39,5 +39,13 @@
   color: #888;
 }
 
-.fc-toolbar-title {
+@media screen and (max-width: 767px) {
+  .fc-toolbar.fc-header-toolbar {
+    flex-direction: column;
+  }
+  .fc-toolbar-chunk {
+    display: table-row;
+    text-align: center;
+    padding: 5px 0;
+  }
 }
