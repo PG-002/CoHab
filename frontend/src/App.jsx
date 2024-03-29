@@ -4,7 +4,6 @@ import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage";
 import SidebarLayout from "./pages/global/SidebarLayout";
-import ProtectedRoutes from "./components/AuthenticatedRoute";
 import Tasklist from "./pages/Tasklist";
 import Calendar from "./pages/Calendar";
 import Location from "./pages/Location";
