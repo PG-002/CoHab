@@ -50,29 +50,21 @@ const HouseSchema = new Schema({
                 type : String,
                 required : [true, 'Event must have a title.']
             },
-            date : {
+            start : {
                 type : Schema.Types.Date,
-                required : [true, 'Event must have a date.']
+                required : [true, 'Event must have a start date.']
             },
-            duration : {
-                type : Number,
-                required : [true, 'Event needs a duration.']
+            end : {
+                type : Schema.Types.Date,
+                required : [true, 'Event must have a start date.']
             },
-            event_location : {
-                type : String,
-                required : [true, 'Event needs a location.']
+            allDay : {
+                type : Boolean,
+                required : [true, 'Must indicate if event is all day.']
             },
-            longitude : {
-                type : Number,
-                required : [true, 'Longitude is required for this event.']
-            },
-            latitude : {
-                type : Number,
-                required : [true, 'Latitude is required for this event.']
-            },
-            whosGoing : {
-                type : [{ type : String }],
-                default : []
+            createdBy: {
+                type : Schema.Types.ObjectId,
+                required : [true, 'Event must have author.']
             }
         }],
         default : []
