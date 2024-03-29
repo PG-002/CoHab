@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'houseoptions.dart';
 import 'token.dart';
 import 'main.dart';
 
@@ -504,6 +505,10 @@ class RegisterButton extends StatelessWidget {
         if (check == null) {
           signUp(firstName, lastName, email, password);
           // then go to the email verification screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HouseOptions()),
+          );
         } else {
           // Display error message to the user
           ScaffoldMessenger.of(context).showSnackBar(
