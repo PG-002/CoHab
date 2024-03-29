@@ -7,8 +7,8 @@ const isAuthenticated = () => {
   return sessionId !== null; // Returns true if there is a sessionId
 };
 
-// This is your ProtectedRoute component
-const ProtectedRoutes = ({ authenticated, children }) => {
+// This is your AuthenticatedRoute component
+const AuthenticatedRoute = () => {
   if (!isAuthenticated()) {
     // If the user is not authenticated, redirect to the login page
     return <Navigate to="/login" />;
@@ -17,4 +17,4 @@ const ProtectedRoutes = ({ authenticated, children }) => {
   return <Outlet />; // If authenticated, render the children components
 };
 
-export default ProtectedRoutes;
+export default AuthenticatedRoute;
