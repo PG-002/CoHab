@@ -24,13 +24,11 @@ function SidebarLayout() {
           icon={<LayoutDashboard size={25} className="text-black" />}
           text={"Dashboard"}
           link={"dashboard"}
-          alert
           active={activePage == "/dashboard"}
         ></SidebarItem>
         <SidebarItem
           icon={<ListChecks size={25} className="text-black" />}
           text={"Task List"}
-          alert
           link={"tasklist"}
           active={activePage == "/tasklist"}
         ></SidebarItem>
