@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.2.1
-  web_socket_channel: ^2.4.4
+  socket_io_client: ^2.0.3+1
   jwt_decoder: ^2.0.1
   lucide_icons: ^0.257.0
   # The following adds the Cupertino Icons font to your application.
