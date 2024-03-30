@@ -1,5 +1,6 @@
 import 'package:cohab_mobile/homepage.dart';
 import 'package:cohab_mobile/houseoptions.dart';
+import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'register.dart';
@@ -213,6 +214,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 void main() {
+  init();
   runApp(const MyApp());
 }
 
