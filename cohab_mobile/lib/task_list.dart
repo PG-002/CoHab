@@ -1,51 +1,46 @@
-import 'token.dart';
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
-class TaskListPage extends StatefulWidget {
+class TaskListPage extends StatelessWidget {
   const TaskListPage({super.key});
 
   @override
-  createState() => _TaskListPageState();
-}
-
-class _TaskListPageState extends State<TaskListPage> {
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Task List', style: TextStyle(color: Colors.white)), // Set text color to white
-          centerTitle: true,
-          elevation: 1, // Add a small elevation to have a visible border
-          backgroundColor: Colors.black, // Set background color to black
-        ),
-        body: const MyListView(),
-      ),
+    return Scaffold(
+      body: TaskList(channel: IOWebSocketChannel.connect('wss://cohab-4fcf8ee594c1.herokuapp.com:5003')),
     );
   }
 }
 
-class MyListView extends StatelessWidget {
-  const MyListView({super.key});
+class TaskList extends StatefulWidget {
+  final WebSocketChannel channel;
+
+  const TaskList({super.key, required this.channel});
 
   @override
+  createState() => _TaskListState();
+}
+
+class _TaskListState extends State<TaskList> {
+  @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: const <Widget>[
-        ListTile(
-          leading: Icon(Icons.add_circle),
-          title: Text('Item 1'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Task List',
+          style: TextStyle(color: Colors.white),
         ),
-        ListTile(
-          leading: Icon(Icons.star),
-          title: Text('Item 2'),
-        ),
-        ListTile(
-          leading: Icon(Icons.star),
-          title: Text('Item 3'),
-        ),
-        // Add more ListTiles as needed
-      ],
+        centerTitle: true,
+        elevation: 1,
+        backgroundColor: Colors.black,
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    widget.channel.sink.close();
+    super.dispose();
   }
 }
