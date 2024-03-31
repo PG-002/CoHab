@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'houseoptions.dart';
+import 'homepage.dart';
+import 'join_house_api.dart';
 
 // Idea to self: Add a right arrow button below the text box.
 // When clicked, user proceeds to the landing page.
@@ -9,6 +11,8 @@ class JoinAHouse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController houseCodeController = TextEditingController();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -50,6 +54,16 @@ class JoinAHouse extends StatelessWidget {
                     hintText: 'House Code', // Placeholder text
                     hintStyle: TextStyle(color: Color(0x4D17650B)), // 30% opacity
                   ),
+                ),
+              ),
+              const SizedBox(height: 11), // Padding between text box and right arrow
+              Align(
+                alignment: Alignment.bottomRight,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_forward),
+                  onPressed: () {
+                    joinHouse(houseCodeController.text, context);               
+                  },
                 ),
               ),
             ],
