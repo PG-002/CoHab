@@ -42,6 +42,13 @@ void initState() {
     });
   }
 
+  // Function to toggle the completed status of a task
+  void toggleTaskCompletion(int index) {
+    setState(() {
+      tasks[index].completed = !tasks[index].completed;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,6 +83,7 @@ void initState() {
                     leading: Checkbox(
                       value: tasks[index].completed,
                       onChanged: (bool? value) {
+                        toggleTaskCompletion(index);
 
                       },
                     ),
@@ -119,6 +127,7 @@ class _TaskInputState extends State<TaskInput> {
   {
     task = _textController.text;
   }
+
 
   @override
   Widget build(BuildContext context) {
