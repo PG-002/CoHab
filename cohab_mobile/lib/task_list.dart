@@ -23,6 +23,24 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
+late List<Task> tasks;
+
+@override
+void initState() {
+  super.initState();
+  tasks = []; // Initialize tasks here
+}
+
+// Function to add a task to the tasks list
+  void addTask(String taskDescription) {
+    setState(() {
+      tasks.add(Task(
+        taskDescription: taskDescription, // Use taskDescription argument here
+        id: '${tasks.length + 1}',
+        completed: false,
+      ));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,19 +57,32 @@ class _TaskListState extends State<TaskList> {
       body: Column(
         children: [
           const SizedBox(height: 5),
-          const Row(
+          Row(
             children: [
-              SizedBox(width: 10),
-              TaskInput(),
-              SizedBox(width: 20),
-              AddTasksButton(),
+              const SizedBox(width: 10),
+              const TaskInput(),
+              const SizedBox(width: 20),
+              AddTasksButton(
+                onAddTask: addTask,
+              ),
             ],
           ),
           Expanded(
             child: ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return null;
+              itemCount: tasks.length,
+              itemBuilder: (BuildContext context, index) {
+                return Card(
+                  child: ListTile(
+                    leading: Checkbox(
+                      value: tasks[index].completed,
+                      onChanged: (bool? value) {
 
+                      },
+                    ),
+                    title: Text(tasks[index].taskDescription),
+                    trailing: const Icon(Icons.more_vert),
+                  ),
+                );
               },
 
             ),
@@ -62,26 +93,16 @@ class _TaskListState extends State<TaskList> {
   }
 }
 
-class TaskItem extends StatelessWidget {
-  const TaskItem({super.key});
+class Task {
+  String taskDescription;
+  String id;
+  bool completed;
 
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(task),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.edit), onPressed: () {  },
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete), onPressed: () {  },
-          ),
-        ],
-      ),
-    );
-  }
+  Task({
+    required this.taskDescription,
+    required this.id,
+    required this.completed,
+  });
 }
 
 class TaskInput extends StatefulWidget {
@@ -127,7 +148,8 @@ class _TaskInputState extends State<TaskInput> {
 }
 
 class AddTasksButton extends StatelessWidget {
-  const AddTasksButton({super.key});
+  const AddTasksButton({super.key, required this.onAddTask});
+  final Function(String) onAddTask;
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +163,7 @@ class AddTasksButton extends StatelessWidget {
             ),
           );
         } else {
-          // Perform action when the task is not empty
+          onAddTask(task);
         }
       },
       color: const Color(0xFF14532d),

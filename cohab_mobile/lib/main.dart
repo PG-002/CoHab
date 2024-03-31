@@ -214,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 void main() {
-  init();
+  initSocket();
   runApp(const MyApp());
 }
 
