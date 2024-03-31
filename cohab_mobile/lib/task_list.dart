@@ -23,7 +23,6 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-  List<Task> tasks = [];
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +49,11 @@ class _TaskListState extends State<TaskList> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
-                final task = tasks[index];
-                return const TaskItem(
-                );
+              itemBuilder: (BuildContext context, int index) {
+                return null;
+
               },
+
             ),
           ),
         ],
@@ -67,10 +65,10 @@ class _TaskListState extends State<TaskList> {
 class TaskItem extends StatelessWidget {
   const TaskItem({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      title: Text(task),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -156,12 +154,4 @@ class AddTasksButton extends StatelessWidget {
       ),
     );
   }
-}
-
-class Task {
-  final String id;
-  final String task;
-  final bool completed;
-
-  Task(this.id, this.task, this.completed);
 }
