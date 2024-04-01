@@ -34,7 +34,7 @@ const HouseSchema = new Schema({
                 required : [true, 'Message must contain a value.']
             },
             sentBy : {
-                type : Schema.Types.ObjectId,
+                type : String,
                 required : [true, 'Message must have an author.']
             },
             firstName : {
@@ -54,29 +54,26 @@ const HouseSchema = new Schema({
                 type : String,
                 required : [true, 'Event must have a title.']
             },
-            date : {
+            start : {
                 type : Schema.Types.Date,
-                required : [true, 'Event must have a date.']
+                required : [true, 'Event must have a start date.']
             },
-            duration : {
-                type : Number,
-                required : [true, 'Event needs a duration.']
+            end : {
+                type : Schema.Types.Date,
+                required : [true, 'Event must have a start date.']
             },
-            event_location : {
+            description : {
                 type : String,
-                required : [true, 'Event needs a location.']
+                required : [true, 'Event must have a description.'],
+                default : ''
             },
-            longitude : {
-                type : Number,
-                required : [true, 'Longitude is required for this event.']
+            allDay : {
+                type : Boolean,
+                required : [true, 'Must indicate if event is all day.']
             },
-            latitude : {
-                type : Number,
-                required : [true, 'Latitude is required for this event.']
-            },
-            whosGoing : {
-                type : [{ type : String }],
-                default : []
+            createdBy: {
+                type : Schema.Types.ObjectId,
+                required : [true, 'Event must have author.']
             }
         }],
         default : []
@@ -86,11 +83,11 @@ const HouseSchema = new Schema({
         default : []
     },
     rules : {
-        type : [{ type : String }],
+        type : [{ id : String, rule : String }],
         default : []
     },
     groceryNeeded : {
-        type : [{ type : String }],
+        type : [{ id : String, item : String }],
         default : []
     },
     noiseLevel : {

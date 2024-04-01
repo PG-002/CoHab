@@ -48,6 +48,84 @@ const login = async (req, res) => {
     .catch(() => res.json({ error: 'Error fetching user.' }));
 };
 
+const joinHouse = async (req, res) => {
+  const { userId, houseId, joinCode } = req.body;
+
+  const user = await User.findOne({ _id : userId })
+    .catch(() => null);
+
+  if(!user)
+  {
+    res.status(404);
+    res.json({ joined : false, error : 'User could not be found.' });
+    return;
+  }
+
+  const house = await House.findOne({ _id : houseId })
+    .catch(() => null);
+
+  if(!house)
+  {
+    res.status(404);
+    res.json({ joined : false, error : 'House could not be found.' });
+    return;
+  }
+
+  if(house.joinHouseCode === joinCode)
+  {
+      const userUpdated = User.findOneAndUpdate({ _id : userId }, { houseId : houseId })
+        .catch(() => null);
+      
+      const houseUpdated = House.findOneAndUpdate({ _id : houseId }, { $push : { members : user.firstName + ' ' + user.lastName } })
+        .catch(() => null);
+
+      if(userUpdated && houseUpdated)
+      {
+        res.status(200);
+        res.json({ joined : true, error : '' });
+      }
+      else
+      {
+        res.status(404);
+        res.json({ joined : false, error : 'Error putting the user into the house.' });
+      }   
+  }
+  else
+  {
+    res.status(404);
+    res.json({ joined : false, error : 'House code does not match.' });
+  }
+}
+
+const getHouse = async (req, res) => {
+  const { userId } = req.body;
+
+  await User.findOne({ _id : userId })
+    .then(async user => {
+      if(!user.houseID)
+      {
+        res.status(404);
+        res.json({ error : 'User is not part of a house.' });
+      }
+
+      const house = await House.findOne({ _id : user.houseID })
+        .catch(() => null);
+
+      if(!house)
+      {
+        res.status(404);
+        res.json({ error : 'Could not find house.' });
+      }
+
+      res.status(200);
+      res.json({ house : house, error : '' });
+    })
+    .catch(() => {
+      res.status(404);
+      res.json({ error : 'User not found.' })
+    })
+}
+
 const updateUser = async (req, res) => {
   const { id, fieldName, fieldValue } = req.body;
 
@@ -56,6 +134,30 @@ const updateUser = async (req, res) => {
     .then(() => res.json({ updated: true, error: '' }))
     .catch((err) => res.json({ updated: false, error: err }));
 };
+
+const updatePassword = async (req, res) => {
+  const { userId, password } = req.body;
+
+  const hashedPassword = await hash(password);
+
+  if (hashedPassword.error)
+  {
+    res.status(404);
+    res.json({ error: hashedPassword.error });
+  }
+  else
+  {
+    await User.findOneAndUpdate({ _id : userId }, { password : hashedPassword.password })
+      .then(() => {
+        res.status(200);
+        res.json({ changed : true, error : '' });
+      })
+      .catch((e) => {
+        res.status(404);
+        res.json({ changed : false, error : 'The password could not be updated.' });
+      });
+  }
+}
 
 const deleteUser = async (req, res) => {
   const { id } = req.body;
@@ -116,9 +218,14 @@ const verifyUser = async (req, res) => {
   }
 };
 
+const encode = async (req, res) => {
+  res.status(200);
+  res.json({ token : createToken(req.body) });
+}
+
 const decode = async (req, res) => {
   const { token } = req.body;
-
+  console.log(req.body);
   if (await verifyToken(token))
   {
     res.status(200);
@@ -132,4 +239,4 @@ const decode = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, updateUser, deleteUser, sendVerification, verifyUser, decode };
+module.exports = { signup, login, joinHouse, getHouse, updateUser, updatePassword, deleteUser, sendVerification, verifyUser, encode, decode };

@@ -3,9 +3,9 @@ const { createToken, verifyToken, decodeToken } = require('../Middleware/Token')
 const User = require('../Models/User');
 
 const createHouse = async (req, res) => {
-    const { houseName } = req.body;
+    const { houseName, code } = req.body;
 
-    await House.create({ houseName : houseName, joinHouseCode : 'testcode' }).then(house => {
+    await House.create({ houseName : houseName, joinHouseCode : code }).then(house => {
         res.status(200);
         
         const token = createToken({ house : house });
@@ -72,4 +72,19 @@ const deleteHouse = async (req, res) => {
         .catch(err => res.json({ deleted : false, error : err }));
 }
 
-module.exports = { createHouse, joinHouse, updateHouse, deleteHouse };
+const modifyNoiseLevel = async (req, res) => {
+    const { id, newLevel } = req.body;
+    const house = await House.findOne({ _id : id }).catch(() => null);
+
+    if(!house)
+    {
+        res.status(200);
+        res.json({ deleted : false, error : 'House does not exist.' });
+        return;
+    }
+    await House.updateOne({ _id : id }, { noiseLevel : newLevel })
+        .then(() => res.json({ updated : true, error : '' }))
+        .catch(err => res.json({ updated : false, error: err }));
+}
+
+module.exports = { createHouse, joinHouse, updateHouse, deleteHouse, modifyNoiseLevel };

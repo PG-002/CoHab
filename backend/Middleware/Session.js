@@ -2,20 +2,8 @@ const User = require('../Models/User');
 const { verifyToken, decodeToken } = require('../Middleware/Token');
 
 module.exports = io => {
-    const sessions = {};
-    
-    const createSession = (user, room) => {
-        const id = Date.now().toString(16);
-        sessions[id] = { user : user, room : room };
-        return id;
-    };
 
-    const getSession = async (token) => {
-        // console.log('the token in getSession is ' + token);
-        if (!token)
-            return;
-            
-
+    const auth = async (token) => {
         if(!verifyToken(token))
         {
             console.log("The token was not verified");
@@ -23,23 +11,29 @@ module.exports = io => {
         }
             
         const payload = decodeToken(token).payload;
-        console.log(payload);
-        const userId = payload.user._id;
+        // console.log(payload);
+        // const userId = payload.user._id;
         console.log('userId is ' + userId);
+        const userId = payload.userId;
 
         const user = await User.findOne({ _id : userId })
             .catch(() => null);
 
         if(!user)
             return { error : 'Could not fetch user.' };
-        
+
         return { user : user, room : user.houseID, error : '' };
-    };
+    }
 
     const addEventListeners = socket => {
         require('../Listeners/GroupChat')(socket, io);
         require('../Listeners/Tasks')(socket, io);
+        require('../Listeners/Rules')(socket, io);
+        require('../Listeners/Groceries')(socket, io);
+        require('../Listeners/Reminders')(socket, io);
+        require('../Listeners/Events')(socket, io);
+        require('../Listeners/Location')(socket, io);
     };
 
-    return { getSession, addEventListeners };
+    return { auth, addEventListeners };
 }

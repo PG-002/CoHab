@@ -1,8 +1,8 @@
 const ErrorPage = () => {
   return (
-    <div style={{ padding: 20 }}>
+    <div className="w-full flex flex-col" style={{ padding: 20 }}>
       <h2>404: Page Not Found</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adip.</p>
+      <p>Bruh yo page don't exist</p>
     </div>
   );
 };

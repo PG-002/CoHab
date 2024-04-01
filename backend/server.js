@@ -27,8 +27,8 @@ app.use((req, res, next) => {
 
 if(env.NODE_ENV === 'production')
 {
-    app.use(express.static(path.join(__dirname, "../frontend/build")));
-    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../frontend', 'build', 'index.html')));
+    app.use(express.static(path.join(__dirname, "../frontend/dist")));
+    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../frontend/dist', 'index.html')));
 }
 
 // Routes
@@ -46,14 +46,11 @@ const Session = require('../backend/Middleware/Session')(io);
 // Authenticates client
 io.use(async (socket, next) => {
     const token = socket.handshake.auth.token ? socket.handshake.auth.token : socket.handshake.headers.token;
-    const session = await Session.getSession(token);
-    if (!session)
-        return;
+    const session = await Session.auth(token);
 
     if(session.error)
         return next(new Error(session.error));
 
-    socket.sessionId = session.sessionId;
     socket.user = session.user;
     socket.room = session.room;
     console.log('the socket room is ' + socket.room);
@@ -63,7 +60,6 @@ io.use(async (socket, next) => {
 // Connection event
 io.on('connect', socket => {
     socket.join(socket.room);
-    socket.emit('session', { sessionId : socket.sessionId });
     Session.addEventListeners(socket);
 });
 

@@ -37,15 +37,18 @@ const SignUpPage = () => {
       });
 
       console.log(JSONPayload);
-      const response = await fetch("http://localhost:5003/api/users/signup", {
-        // this is just for now, eventually will need to do actual URL
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // has to follow same format as in UserController.js
-        body: JSONPayload,
-      });
+      const response = await fetch(
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/signup",
+        {
+          // this is just for now, eventually will need to do actual URL
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // has to follow same format as in UserController.js
+          body: JSONPayload,
+        }
+      );
 
       if (response.ok) {
         // Registration was successful
@@ -123,7 +126,7 @@ const SignUpPage = () => {
 
               <button
                 type="submit"
-                className="w-full bg-green-900 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+                className="w-full bg-green-900 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
               >
                 Sign Up
               </button>
