@@ -9,10 +9,12 @@ var decodedToken;
 
 bool check = false;
 
-Future<void> joinHouse(String joinHouseCode, BuildContext context) async {
-  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/');
+Future<bool> joinHouse(String joinHouseCode) async {
+  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/joinHouse');
   final Map<String, dynamic> body = {
-    'joinHouseCode': joinHouseCode,
+    'userId' : userId,
+    'houseId' : houseId,
+    'joinCode': joinCode,
   };
 
   try {
@@ -25,16 +27,21 @@ Future<void> joinHouse(String joinHouseCode, BuildContext context) async {
     );
 
     if (response.statusCode == 200) {
-      // Joined house successfully, next, go to homepage
-      final jsonResponse = json.decode(response.body);
-      token = jsonResponse['token']; // Extracting the token string
-      decodedToken = JwtDecoder.decode(token);
-      userId = decodedToken['user']['_id'];
-
+      // Joined house successfully
+      // final jsonResponse = json.decode(response.body);
+      // token = jsonResponse['token']; // Extracting the token string
+      // decodedToken = JwtDecoder.decode(token);
+      // userId = decodedToken['user']['_id'];
+      check = true;
+      return true;
     } else {
       // Join failed
+      check = false;
+      return false;
     }
   } catch (e) {
     // Exception occurred
+    check = false;
+    return false;
   }
 }
