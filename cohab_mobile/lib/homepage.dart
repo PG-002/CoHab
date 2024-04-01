@@ -26,16 +26,16 @@ class _HomePageState extends State<HomePage> {
                 // First Icon Button
                 SizedBox(
                   width: 120,
-                  child: Material(
-                    color: const Color(0xFF14532d), // Fill the button with green color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: const BorderSide(color: Color(0xFF14532d)), // Green border
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        // Add your onPressed logic here
-                      },
+                  child: InkWell(
+                    onTap: () {
+                      // Add your onPressed logic here
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF14532d), // Fill the button with green color
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(color: const Color(0xFF14532d)), // Green border
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -63,25 +63,28 @@ class _HomePageState extends State<HomePage> {
                 // Second Icon Button
                 SizedBox(
                   width: 120,
-                  child: Material(
-                    color: const Color(0xFF14532d), // Fill the button with green color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: const BorderSide(color: Color(0xFF14532d)), // Green border
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const TaskListPage()),
-                        );
-                      },
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const TaskListPage()),
+                      );
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF14532d), // Fill the button with green color
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(color: const Color(0xFF14532d)), // Green border
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
                             onPressed: () {
-                              // Add your onPressed logic here
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const TaskListPage()),
+                              );
                             },
                             icon: const Icon(
                               LucideIcons.listChecks,
@@ -108,16 +111,16 @@ class _HomePageState extends State<HomePage> {
                 // Third Icon Button
                 SizedBox(
                   width: 120,
-                  child: Material(
-                    color: const Color(0xFF14532d), // Fill the button with green color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: const BorderSide(color: Color(0xFF14532d)), // Green border
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        // Add your onPressed logic here
-                      },
+                  child: InkWell(
+                    onTap: () {
+                      // Add your onPressed logic here
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF14532d), // Fill the button with green color
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(color: const Color(0xFF14532d)), // Green border
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -145,16 +148,16 @@ class _HomePageState extends State<HomePage> {
                 // Fourth Icon Button
                 SizedBox(
                   width: 120,
-                  child: Material(
-                    color: const Color(0xFF14532d), // Fill the button with green color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: const BorderSide(color: Color(0xFF14532d)), // Green border
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        // Add your onPressed logic here
-                      },
+                  child: InkWell(
+                    onTap: () {
+                      // Add your onPressed logic here
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF14532d), // Fill the button with green color
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(color: const Color(0xFF14532d)), // Green border
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

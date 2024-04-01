@@ -31,7 +31,6 @@ Future<void> joinHouse(String joinHouseCode, BuildContext context) async {
       decodedToken = JwtDecoder.decode(token);
       userId = decodedToken['user']['_id'];
 
-      Navigator.pushReplacementNamed(context, '/homepage');
     } else {
       // Join failed
     }
