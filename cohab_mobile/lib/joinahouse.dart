@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-import 'houseoptions.dart';
+import 'package:cohab_mobile/web_socket.dart';
+import 'package:flutter/rendering.dart';
 import 'homepage.dart';
 import 'join_house_api.dart';
 
-// Idea to self: Add a right arrow button below the text box.
-// When clicked, user proceeds to the landing page.
-
-class JoinAHouse extends StatelessWidget {
+class JoinAHouse extends StatefulWidget {
+  // const JoinAHouse({super.key});
   const JoinAHouse({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController houseCodeController = TextEditingController();
+  _JoinAHouseState createState() => _JoinAHouseState();
+}
 
+class _JoinAHouseState extends State<JoinAHouse> {
+
+  @override
+  Widget build(BuildContext context) {
+  
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -61,8 +65,20 @@ class JoinAHouse extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: IconButton(
                   icon: const Icon(Icons.arrow_forward),
-                  onPressed: () {
-                    joinHouse(houseCodeController.text, context);               
+                  onPressed: () async {
+                    if (check) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HomePage()),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Invalid/Wrong House Code'),
+                        duration: Duration(seconds: 1), 
+                      ),
+                    );
+                    }
                   },
                 ),
               ),
