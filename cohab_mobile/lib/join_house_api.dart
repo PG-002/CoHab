@@ -9,12 +9,12 @@ var decodedToken;
 
 bool check = false;
 
-Future<bool> joinHouse(String joinHouseCode) async {
+Future<bool> joinHouse(String joinHouseCode, BuildContext context) async {
   final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/joinHouse');
   final Map<String, dynamic> body = {
     'userId' : userId,
-    'houseId' : houseId,
-    'joinCode': joinCode,
+    'houseId' : decodedToken['user']['houseId'],
+    'joinCode': decodedToken['user']['joinCode'],
   };
 
   try {
