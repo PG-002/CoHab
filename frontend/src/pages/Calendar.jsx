@@ -8,9 +8,7 @@ import listPlugin from "@fullcalendar/list";
 // import Header from "../../components/Header";
 // import { tokens } from "../../theme";
 
-const Calendar = () => {
-  const [currentEvents, setCurrentEvents] = useState([]);
-
+const Calendar = ({ events, updateEvents }) => {
   const calendarRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -64,7 +62,10 @@ const Calendar = () => {
   };
 
   return (
-    <div ref={containerRef} className="bg-white w-full p-10 overflow-hidden">
+    <div
+      ref={containerRef}
+      className="bg-white text-black w-full p-10 overflow-hidden"
+    >
       <FullCalendar
         ref={calendarRef}
         height={"100%"}
@@ -81,19 +82,8 @@ const Calendar = () => {
         dayMaxEvents={true}
         select={handleDateClick}
         eventClick={handleEventClick}
-        eventsSet={(events) => setCurrentEvents(events)}
-        initialEvents={[
-          {
-            id: "12315",
-            title: "All-day event",
-            date: "2022-09-14",
-          },
-          {
-            id: "5123",
-            title: "Timed event",
-            date: "2022-09-28",
-          },
-        ]}
+        eventsSet={(events) => updateEvents(events)}
+        initialEvents={events}
       />
     </div>
   );
