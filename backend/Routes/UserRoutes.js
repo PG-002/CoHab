@@ -14,7 +14,7 @@ router.delete('/deleteUser', deleteUser);
 
 // Verification Operations
 router.post('/sendVerification', sendVerification);
-router.get('/verifyUser', verifyUser);
+router.post('/verifyUser', verifyUser);
 
 router.get('/encode', encode);
 router.get('/decode', decode);
