@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import './Chat.css';
 import Messages from "./Messages";
+import SendMessageForm from "./SendMessageForm";
 
 function Chat({socket}) {
 
@@ -15,7 +16,6 @@ function Chat({socket}) {
     };
 
     const decodedToken = jwtDecode(localStorage.getItem('sessionId'));
-    const currentUserId = decodedToken.user._id;
     const [currentMessage, setCurrentMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
@@ -39,13 +39,16 @@ function Chat({socket}) {
     }
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = (messageContent) => {
     const messageDate = new Date(); 
 
     socket.emit('sendMessage', 
     {   date: messageDate, 
-        message: currentMessage, 
-        sentBy: decodedToken.user._id });
+        message: messageContent, 
+        sentBy: decodedToken.user._id,
+        firstName : decodedToken.user.firstName });
+        console.log("sentBy is " + decodedToken.user._id);
+        console.log("ID is " +  decodedToken.user._id);
     setCurrentMessage(''); 
   };
 
@@ -54,15 +57,14 @@ function Chat({socket}) {
   };
 
   return (
-    <div>
+    <div className="message-list-container">
       <h2>Group Chat</h2>
-      <div id="message-list">
-      <Messages messages={messages} userId={currentUserId} onDelete={handleDeleteMessage} />
+      <div>
+      <Messages messages={messages} userID={decodedToken.user._id} onDelete={handleDeleteMessage} />
       </div>
-      <textarea value={currentMessage} onChange={(e) => setCurrentMessage(e.target.value)}> </textarea>
-      <button onClick={handleSendMessage} disabled={!currentMessage.trim()}> Send </button>
-      <button onClick={LogOut}>Log Out</button>
-      <button><Link to="/dashboard" className="text-white dark:text-white hover:underline">Dashboard</Link></button>
+      <div className='chat-container'>
+      <SendMessageForm sendMessage={handleSendMessage} />
+      </div>
     </div>
   );
 }

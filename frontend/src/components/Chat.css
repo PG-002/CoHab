@@ -1,38 +1,108 @@
+  .message-list-container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    overflow-y: auto;
+    height: 100vh; 
+    width: 100vw;
+    background: var(--secondary-color);
+  }
+
+.message-list {
+    flex-grow: 1; /* This allows it to take up any available space */
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    overflow-y: auto;
+    height: calc(100% - 600px); /* Adjust height to account for input form */
+    background: var(--secondary-color);
+    /* background-color: green; */
+}
+
+.message {
+    padding: 0.5em;
+    margin-bottom: 10px;
+    clear: both;
+    display: flex;
+    flex-direction: column; /* Stack sender name and message bubble */
+    align-items: flex-start; /* Align items to the left by default */
+    margin-bottom: 10px;
+}
+
+.sender-id {
+    font-size: 0.85em;
+    color: var(--main-text-color);
+    margin-bottom: 0.25em;
+}
+
+.message-bubble {
+    background-color: var(--main-color);
+    padding: 10px 15px;
+    border-radius: 20px;
+    display: inline-block; /* Display as an inline block */
+    margin-bottom: 2px; 
+    max-width: 40%; /* Adjust the width as needed */
+    word-wrap: break-word; /* Break long words onto the next line */
+    overflow-wrap: break-word; /* Break long words to prevent overflow */
+    white-space: normal;
+}
+
+.message-text {
+    background: var(--main-color);
+    color: var(--secondary-color);
+    display: inline-block;
+    padding: 0.5em;
+    border-radius: 15px;
+    max-width: 80%; /* Adjust based on your preference */
+}
+
+.my-message {
+    text-align: right;
+    align-items: flex-end;
+}
+
+.my-message .my-message-text {
+    background: #b0c7d6; /* Lighter blue color to differentiate user's messages */
+}
+
+.other-message {
+    text-align: left;
+    align-self: flex-start;
+  }
+
+.other-message-text {
+    background: var(--main-color);
+}
+
+.delete-button {
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    padding: 0;
+}
+
+
+.my-message .message-bubble {
+    background-color: #436850; /* Dark green bubble for the current user */
+    color: white;
+}
+
+.other-message .message-bubble {
+    color: white;
+}
+
+.sender-name {
+    color: var(--main-text-color);
+    font-size: 0.85em;
+    margin-bottom: 4px;
+}
+
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 10vh;
   }
-  
-  #message-list {
-    flex-grow: 1;
-    overflow: auto;
-  }
-  
-  .message-item {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .message-input {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: black;
-    padding: 10px;
-    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .message-input textarea {
-    width: calc(100% - 100px);
-    margin-right: 10px;
-    border: 1px solid #ccc; /* Gray border */
-    border-radius: 8px; /* Rounded corners */
-    padding: 5px; /* Padding inside the textarea */
-  }
-  
-  .message-input button {
-    width: 90px;
-  }
-  

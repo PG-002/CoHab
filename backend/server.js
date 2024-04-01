@@ -49,8 +49,6 @@ io.use(async (socket, next) => {
     const session = await Session.getSession(token);
     if (!session)
         return;
-        
-        
 
     if(session.error)
         return next(new Error(session.error));
