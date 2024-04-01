@@ -33,18 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await login(_email, _password);
 
-      if(check == false) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Invalid email or password'),
-            duration: Duration(seconds: 1), // Adjust the duration as needed
-          ),
-        );
-        }
-      else if (decodedToken['user']['verified'] == true) {
-        _email = '';
-        _password = '';
-        await initSocket();
+      if (decodedToken['user']['verified'] == true) {
+        //await initSocket();
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const HouseOptions()),
@@ -54,9 +44,7 @@ class _LoginPageState extends State<LoginPage> {
       }
       else {
         //go to email verification screen
-        _email = '';
-        _password = '';
-        await initSocket();
+        //await initSocket();
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const HouseOptions()),
@@ -67,6 +55,12 @@ class _LoginPageState extends State<LoginPage> {
     }
      catch (e) {
       // Handle any exceptions that may occur during login
+       ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+           content: Text('$e'), // Show the exception message on the SnackBar
+           duration: const Duration(seconds: 1), // Adjust the duration as needed
+         ),
+       );
     }
   }
 
