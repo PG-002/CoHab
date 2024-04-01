@@ -9,7 +9,6 @@ const LoginPage = () => {
   // const [email, setEmail] = useState('');
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { setUser } = useUser();
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   // const handleEmailChange = (e) => setEmail(e.target.value);
@@ -38,11 +37,6 @@ const LoginPage = () => {
       if (response.ok && response.status == 201) {
         const data = await response.json();
         localStorage.setItem("sessionId", data.token);
-
-        setUser({
-          token: data.token,
-        });
-        
         navigate("/dashboard");
       } else if (response.status === 404) {
         alert("Login failed: User not found");

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import './Chat.css';
-import Messages from "./Messages";
-import SendMessageForm from "./SendMessageForm";
+import '../components/Chat.css';
+import Messages from "../components/Messages";
+import SendMessageForm from "../components/SendMessageForm";
 
 function Chat({socket}) {
 
@@ -30,14 +30,6 @@ function Chat({socket}) {
       socket.off('groupChatChange');
     };
   }, [socket]);
-
-  const handleKeyDown = (e) => {
-    // Check if Enter key is pressed and there is non-whitespace content
-    if (e.key === 'Enter' && currentMessage.trim()) {
-      e.preventDefault(); // Prevent the default behavior (new line)
-      handleSendMessage(); // Send the message
-    }
-  };
 
   const handleSendMessage = (messageContent) => {
     const messageDate = new Date(); 

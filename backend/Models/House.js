@@ -39,7 +39,7 @@ const HouseSchema = new Schema({
             },
             firstName : {
                 type : String,
-                required : [true, 'Message must have a name.']
+                required : [true, 'Author must have a name.']
             },
             date : {
                 type : Schema.Types.Date,

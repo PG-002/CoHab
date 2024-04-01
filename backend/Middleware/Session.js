@@ -4,6 +4,10 @@ const { verifyToken, decodeToken } = require('../Middleware/Token');
 module.exports = io => {
 
     const auth = async (token) => {
+
+        if (!token)
+            return;
+
         if(!verifyToken(token))
         {
             console.log("The token was not verified");
@@ -12,9 +16,9 @@ module.exports = io => {
             
         const payload = decodeToken(token).payload;
         // console.log(payload);
-        // const userId = payload.user._id;
+        const userId = payload.user._id;
         console.log('userId is ' + userId);
-        const userId = payload.userId;
+        // const userId = payload.userId;
 
         const user = await User.findOne({ _id : userId })
             .catch(() => null);
@@ -22,7 +26,7 @@ module.exports = io => {
         if(!user)
             return { error : 'Could not fetch user.' };
 
-        return { user : user, room : user.houseID, error : '' };
+        return { user : user, room : user.houseId, error : '' };
     }
 
     const addEventListeners = socket => {

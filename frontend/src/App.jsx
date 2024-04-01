@@ -4,10 +4,10 @@ import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage";
 import SidebarLayout from "./pages/global/SidebarLayout";
-import Tasklist from "./pages/Tasklist";
+import TodoList from "./pages/TodoList";
 import Calendar from "./pages/Calendar";
 import Location from "./pages/Location";
-import Messages from "./pages/Messages";
+import Chat from "./pages/Chat";
 import Settings from "./pages/Settings";
 
 import {
@@ -63,10 +63,10 @@ function App() {
             <Route path="/createhouse" element={<CreateHome />} /> */}
             <Route element={<SidebarLayout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/tasklist" element={<Tasklist />} />
+              <Route path="/tasklist" element={<TodoList socket={socket}/>} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/location" element={<Location />} />
-              <Route path="/messages" element={<Messages />} />
+              <Route path="/messages" element={<Chat socket={socket}/>} />
               <Route path="/settings" element={<Settings />} />
             </Route>
           </Route>

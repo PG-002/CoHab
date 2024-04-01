@@ -48,9 +48,12 @@ io.use(async (socket, next) => {
     const token = socket.handshake.auth.token ? socket.handshake.auth.token : socket.handshake.headers.token;
     const session = await Session.auth(token);
 
+    if (!session)
+        return;
+
     if(session.error)
         return next(new Error(session.error));
-
+    
     socket.user = session.user;
     socket.room = session.room;
     console.log('the socket room is ' + socket.room);
