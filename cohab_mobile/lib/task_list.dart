@@ -23,19 +23,19 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-late List<Task> tasks;
+  late List<Task> tasks;
 
-@override
-void initState() {
-  super.initState();
-  tasks = []; // Initialize tasks here
-}
+  @override
+  void initState() {
+    super.initState();
+    tasks = []; // Initialize tasks here
+  }
 
-// Function to add a task to the tasks list
+  // Function to add a task to the tasks list
   void addTask(String taskDescription) {
     setState(() {
       tasks.add(Task(
-        taskDescription: taskDescription, // Use taskDescription argument here
+        taskDescription: taskDescription,
         id: '${tasks.length + 1}',
         completed: false,
       ));
@@ -48,6 +48,89 @@ void initState() {
       tasks[index].completed = !tasks[index].completed;
     });
   }
+
+  // Function to delete a task
+  void deleteTask(int index) {
+    setState(() {
+      tasks.removeAt(index);
+    });
+  }
+
+  // Function to show dialog for modifying a task
+  void showModifyTaskDialog(BuildContext context, int index) {
+    TextEditingController taskController =
+    TextEditingController(text: tasks[index].taskDescription);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Modify Task'),
+          content: TextField(
+            controller: taskController,
+            decoration: const InputDecoration(labelText: 'Task Description'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                String updatedTaskDescription = taskController.text;
+                if (updatedTaskDescription.isNotEmpty) {
+                  setState(() {
+                    tasks[index].taskDescription = updatedTaskDescription;
+                  });
+                  Navigator.pop(context); // Close the dialog
+                }
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
+  // Function to display the options menu when "more_vert" icon is pressed
+  void showOptionsMenu(BuildContext context, int index) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text('Modify'),
+                onTap: () {
+                  Navigator.pop(context); // Close the bottom sheet
+                  // Add code to modify task here
+                  showModifyTaskDialog(context, index); // Show modify task dialog
+
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text('Delete'),
+                onTap: () {
+                  Navigator.pop(context); // Close the bottom sheet
+                  deleteTask(index); // Delete the task
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,15 +167,18 @@ void initState() {
                       value: tasks[index].completed,
                       onChanged: (bool? value) {
                         toggleTaskCompletion(index);
-
                       },
                     ),
                     title: Text(tasks[index].taskDescription),
-                    trailing: const Icon(Icons.more_vert),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.more_vert),
+                      onPressed: () {
+                        showOptionsMenu(context, index);
+                      },
+                    ),
                   ),
                 );
               },
-
             ),
           ),
         ],
@@ -100,7 +186,6 @@ void initState() {
     );
   }
 }
-
 class Task {
   String taskDescription;
   String id;
