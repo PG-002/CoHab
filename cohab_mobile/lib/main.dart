@@ -1,5 +1,5 @@
-import 'package:cohab_mobile/houseoptions.dart';
-import 'package:cohab_mobile/web_socket.dart';
+import 'package:cohab_mobile/email_verify.dart';
+import 'package:cohab_mobile/task_list.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'register.dart';
@@ -11,15 +11,14 @@ class LoginPage extends StatefulWidget {
   createState() => _LoginPageState();
 }
 
-String _email = '';
-String _password = '';
-
 class _LoginPageState extends State<LoginPage> {
+  String _email = '';
+  String _password = '';
+
   void _handleEmailChange(String value) {
     setState(() {
       _email = value;
     });
-
   }
 
   void _handlePasswordChange(String value) {
@@ -28,37 +27,41 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Future<void> _handleSubmit(context) async {
+  void _handleSubmit(BuildContext context) async {
+
     try {
       await login(_email, _password);
 
-      if (decodedToken['user']['verified'] == true) {
-        //await initSocket();
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HouseOptions()),
+      if (userId == null) {
+        // Login failed, show error message
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login failed. Please check your credentials.'),
+          ),
         );
-
-
+      } else {
+        if (!userIsVerified(decodedToken)) {
+          // User is not verified, navigate to the verification page
+          if (!context.mounted) return;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const VerificationPage()),
+          );
+        } else {
+          if (!context.mounted) return;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const TaskListPage()),
+          );
+        }
       }
-      else {
-        //go to email verification screen
-        //await initSocket();
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HouseOptions()),
-        );
-
-      }
-
-    }
-    catch (e) {
-      // Handle any exceptions that may occur during login
-      //print('$e');
+    } catch (e) {
+      
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('$e'), // Show the exception message on the SnackBar
-          duration: const Duration(seconds: 1), // Adjust the duration as needed
+        const SnackBar(
+          content: Text('An error occurred. Please try again later.'),
         ),
       );
     }
@@ -66,144 +69,116 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Welcome to CoHab!',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    fontFamily: 'Open Sans',
-                  ),
+    return Scaffold(
+      body: Center(
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Welcome to CoHab!',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(height: 25.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Email',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 350, // Set width of the container
-                      child: Container(
-                        color: Colors.grey[200],
-                        child: TextFormField(
-                          onChanged: _handleEmailChange,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            hintText: 'Example@gmail.com',
-                            hintStyle: const TextStyle(
-                                color: Colors.black54, fontFamily: 'Open Sans'),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            contentPadding: const EdgeInsets.fromLTRB(
-                                12.0, 8.0, 12.0, 8.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 25.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Password',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 350, // Set width of the container
-                      child: Container(
-                        color: Colors.grey[200],
-                        child: TextFormField(
-                          onChanged: _handlePasswordChange,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            hintText: 'Enter your password',
-                            hintStyle: const TextStyle(
-                                color: Colors.black54, fontFamily: 'Open Sans'),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            contentPadding: const EdgeInsets.fromLTRB(
-                                12.0, 8.0, 12.0, 8.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      // Implement your forgot password logic here
-                    },
-                    child: const Text(
-                      'Forgot password?',
-                      style: TextStyle(color: Colors.blue, fontSize: 17),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                Builder(
-                  builder: (context) => MaterialButton(
-                    onPressed: () => _handleSubmit(context),
-                    color: const Color(0xFF14532d),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 13.0),
-                    child: const SizedBox(
-                      width: 350,
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 18, fontFamily: 'Open Sans'),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Register()),
-                    );
-                  },
-                  child: const Text(
-                    'Don\'t have an account? Sign up',
+              ),
+              const SizedBox(height: 20.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Email', // Add text here
                     style: TextStyle(
-                      color: Colors.blue,
-                      fontFamily: 'Open Sans',
-                      fontSize: 18,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 6.0), // Adjust the spacing as needed
+                  TextField(
+                    onChanged: _handleEmailChange,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Password', // Add text here
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 6.0),
+                  TextField(
+                    onChanged: _handlePasswordChange,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'At least 8 characters.',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20.0),
+              TextButton(
+                onPressed: () {
+                  // Implement your forgot password logic here
+                },
+                child: const Text(
+                  'Forgot password?',
+                  style: TextStyle(
+                    color: Colors.blue, // Set the text color to blue
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _handleSubmit(context); // Pass the context here
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF14532D),
+                  ),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 10.0),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Register()),
+                  );
+                },
+                child: const Text(
+                  'Don\'t have an account? Sign up',
+                  style: TextStyle(
+                    color: Colors.blue, // Set the text color to blue
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -226,4 +201,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
