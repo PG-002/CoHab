@@ -16,7 +16,7 @@ module.exports = io => {
         if(!user)
             return { error : 'Could not fetch user.' };
 
-        return { user : user, room : user.houseID, error : '' };
+        return { user : user, room : user.houseId, error : '' };
     }
 
     const addEventListeners = socket => {

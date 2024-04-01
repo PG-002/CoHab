@@ -102,13 +102,13 @@ const getHouse = async (req, res) => {
 
   await User.findOne({ _id : userId })
     .then(async user => {
-      if(!user.houseID)
+      if(!user.houseId)
       {
         res.status(404);
         res.json({ error : 'User is not part of a house.' });
       }
 
-      const house = await House.findOne({ _id : user.houseID })
+      const house = await House.findOne({ _id : user.houseId })
         .catch(() => null);
 
       if(!house)
@@ -169,7 +169,7 @@ const deleteUser = async (req, res) => {
     return;
   }
 
-  const house = await House.findOne({ _id: user.houseID }).catch((err) => null);
+  const house = await House.findOne({ _id: user.houseId }).catch((err) => null);
 
   if (house)
     await House.updateOne(
