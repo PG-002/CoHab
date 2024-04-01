@@ -1,6 +1,7 @@
 import 'package:cohab_mobile/email_verify.dart';
 import 'package:cohab_mobile/homepage.dart';
 import 'package:cohab_mobile/houseoptions.dart';
+import 'package:cohab_mobile/messages.dart';
 import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
         //await initSocket();
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const VerificationPage()),
+          MaterialPageRoute(builder: (context) => const MessagesPage()),
         );
 
       }
