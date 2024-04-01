@@ -37,9 +37,11 @@ Future<void> signUp(
       userId = decodedToken['user']['_id'];
     } else {
       // Signup failed
+      throw 'Signup failed';
     }
   } catch (e) {
     // Exception occurred
+    throw 'Signup failed';
   }
 }
 

@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
       else if (decodedToken['user']['verified'] == true) {
         _email = '';
         _password = '';
-
+        await initSocket();
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const HouseOptions()),
@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
         //go to email verification screen
         _email = '';
         _password = '';
-
+        await initSocket();
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const HouseOptions()),
@@ -214,7 +214,6 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 void main() {
-  initSocket();
   runApp(const MyApp());
 }
 
