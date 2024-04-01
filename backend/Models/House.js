@@ -58,6 +58,11 @@ const HouseSchema = new Schema({
                 type : Schema.Types.Date,
                 required : [true, 'Event must have a start date.']
             },
+            description : {
+                type : String,
+                required : [true, 'Event must have a description.'],
+                default : ''
+            },
             allDay : {
                 type : Boolean,
                 required : [true, 'Must indicate if event is all day.']
