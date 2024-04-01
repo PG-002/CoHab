@@ -48,6 +48,55 @@ const login = async (req, res) => {
     .catch(() => res.json({ error: 'Error fetching user.' }));
 };
 
+const joinHouse = async (req, res) => {
+  const { userId, houseId, joinCode } = req.body;
+
+  const user = await User.findOne({ _id : userId })
+    .catch(() => null);
+
+  if(!user)
+  {
+    res.status(404);
+    res.json({ joined : false, error : 'User could not be found.' });
+    return;
+  }
+
+  const house = await House.findOne({ _id : houseId })
+    .catch(() => null);
+
+  if(!house)
+  {
+    res.status(404);
+    res.json({ joined : false, error : 'House could not be found.' });
+    return;
+  }
+
+  if(house.joinHouseCode === joinCode)
+  {
+      const userUpdated = User.findOneAndUpdate({ _id : userId }, { houseId : houseId })
+        .catch(() => null);
+      
+      const houseUpdated = House.findOneAndUpdate({ _id : houseId }, { $push : { members : user.firstName + ' ' + user.lastName } })
+        .catch(() => null);
+
+      if(userUpdated && houseUpdated)
+      {
+        res.status(200);
+        res.json({ joined : true, error : '' });
+      }
+      else
+      {
+        res.status(404);
+        res.json({ joined : false, error : 'Error putting the user into the house.' });
+      }   
+  }
+  else
+  {
+    res.status(404);
+    res.json({ joined : false, error : 'House code does not match.' });
+  }
+}
+
 const getHouse = async (req, res) => {
   const { userId } = req.body;
 
@@ -148,7 +197,7 @@ const sendVerification = async (req, res) => {
 
 const verifyUser = async (req, res) => {
   const { id, code } = req.body;
-  const user = await User.findOne({ _id: id })
+  const user = await User.findOne({ _id : id })
     .catch(() => null);
 
   res.status(200);
@@ -158,7 +207,7 @@ const verifyUser = async (req, res) => {
   {
     const verificationError = await verifyCode(user, code);
     if (verificationError)
-      res.json({ verfied: false, error: verificationError });
+      res.json({ verfied : false, error : verificationError });
     else
       await deleteCode(user, code)
         .then(async (deleteRespose) =>
@@ -190,4 +239,4 @@ const decode = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, getHouse, updateUser, updatePassword, deleteUser, sendVerification, verifyUser, encode, decode };
+module.exports = { signup, login, joinHouse, getHouse, updateUser, updatePassword, deleteUser, sendVerification, verifyUser, encode, decode };
