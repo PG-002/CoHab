@@ -1,3 +1,4 @@
+import 'package:cohab_mobile/email_verify.dart';
 import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
 import 'houseoptions.dart';
@@ -508,10 +509,10 @@ class RegisterButton extends StatelessWidget {
             signUp(firstName, lastName, email, password)
                 .then((_) {
               // Go to the email verification screen after successful signup
-              initSocket();
+              //initSocket();
               Navigator.push(
                 currentContext,
-                MaterialPageRoute(builder: (context) => const HouseOptions()),
+                MaterialPageRoute(builder: (context) => const VerificationPage()),
               );
             })
                 .catchError((e) {

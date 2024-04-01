@@ -1,3 +1,5 @@
+import 'package:cohab_mobile/email_verify.dart';
+import 'package:cohab_mobile/homepage.dart';
 import 'package:cohab_mobile/houseoptions.dart';
 import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
@@ -33,12 +35,23 @@ class _LoginPageState extends State<LoginPage> {
       await login(_email, _password);
 
       if (decodedToken['user']['verified'] == true) {
-        //await initSocket();
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HouseOptions()),
-        );
 
+        if(decodedToken['user']['houseId'] == null)
+          {
+            //await initSocket();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HouseOptions()),
+            );
+          }
+        else
+          {
+            //await initSocket();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          }
 
       }
       else {
@@ -46,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
         //await initSocket();
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HouseOptions()),
+          MaterialPageRoute(builder: (context) => const VerificationPage()),
         );
 
       }
