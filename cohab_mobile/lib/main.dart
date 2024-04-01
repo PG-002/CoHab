@@ -1,4 +1,3 @@
-import 'package:cohab_mobile/homepage.dart';
 import 'package:cohab_mobile/houseoptions.dart';
 import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +53,8 @@ class _LoginPageState extends State<LoginPage> {
 
     }
      catch (e) {
+      print(_email);
+      print(_password);
       // Handle any exceptions that may occur during login
        ScaffoldMessenger.of(context).showSnackBar(
          SnackBar(
