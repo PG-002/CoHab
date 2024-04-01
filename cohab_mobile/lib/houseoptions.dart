@@ -1,3 +1,4 @@
+import 'package:cohab_mobile/homepage.dart';
 import 'package:cohab_mobile/task_list.dart';
 import 'package:flutter/material.dart';
 import 'joinahouse.dart'; 
@@ -128,6 +129,10 @@ class HouseOptions extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       debugPrint('Create a House button pressed...');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HomePage()), // Redirects to joinahouse.dart
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: const Color(0xFFFFFFFF), // Text color (button)
