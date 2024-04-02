@@ -10,7 +10,7 @@ const DashboardPage = ({ houseInfo, setHouseInfo }) => {
           userId: userId,
         });
         const response = await fetch(
-          "http://localhost:5003/api/users/gethouse",
+          "http://https://cohab-4fcf8ee594c1.herokuapp.com/api/users/gethouse",
           {
             // Adjust URL as necessary
             method: "POST",

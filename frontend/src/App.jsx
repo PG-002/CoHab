@@ -25,7 +25,7 @@ import EventModal from "./components/EventsModal";
 import Modal from "react-modal";
 import io from "socket.io-client";
 
-const socket = io("http://127.0.0.1:5003", {
+const socket = io("https://https://cohab-4fcf8ee594c1.herokuapp.com/", {
   transports: ["websocket"],
   auth: {
     token: localStorage.getItem("sessionId"),
