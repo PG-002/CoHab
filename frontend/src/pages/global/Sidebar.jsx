@@ -69,9 +69,6 @@ export function SidebarItem({ icon, text, active, alert, link }) {
 
   const handleLogOut = () => {
     localStorage.removeItem("sessionId");
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("houseInfo");
-    localStorage.removeItem("eventInfo");
     navigate("/login");
   };
 
