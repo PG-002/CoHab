@@ -1,5 +1,4 @@
 import 'package:cohab_mobile/homepage.dart';
-import 'package:cohab_mobile/task_list.dart';
 import 'package:flutter/material.dart';
 import 'joinahouse.dart'; 
 
@@ -106,7 +105,7 @@ class HouseOptions extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const TaskListPage()), // Redirects to joinahouse.dart
+                        MaterialPageRoute(builder: (context) => const JoinAHouse()), // Redirects to joinahouse.dart
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -131,7 +130,7 @@ class HouseOptions extends StatelessWidget {
                       debugPrint('Create a House button pressed...');
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const HomePage()), // Redirects to joinahouse.dart
+                        MaterialPageRoute(builder: (context) => const HomePage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

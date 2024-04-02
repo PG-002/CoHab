@@ -1,3 +1,4 @@
+import 'package:cohab_mobile/calendar.dart';
 import 'package:cohab_mobile/task_list.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -20,15 +21,18 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // First Icon Button
                 SizedBox(
                   width: 120,
                   child: InkWell(
                     onTap: () {
-                      // Add your onPressed logic here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                      );
                     },
                     child: Ink(
                       decoration: BoxDecoration(
@@ -39,11 +43,14 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              // Add your onPressed logic here
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                              );
                             },
-                            icon: const Icon(
+                            child: const Icon(
                               LucideIcons.layoutDashboard,
                               color: Colors.white,
                               size: 48,
@@ -52,6 +59,96 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(height: 8),
                           const Text(
                             'Dashboard',
+                            style: TextStyle(color: Colors.white, fontSize: 17),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 40),
+                SizedBox(
+                  width: 120,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                      );
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF14532d), // Fill the button with green color
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(color: const Color(0xFF14532d)), // Green border
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                              );
+                            },
+                            child: const Icon(
+                              LucideIcons.locateFixed,
+                              color: Colors.white,
+                              size: 48,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Locator',
+                            style: TextStyle(color: Colors.white, fontSize: 17),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 80),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // First Icon Button
+                SizedBox(
+                  width: 120,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                      );
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF14532d), // Fill the button with green color
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(color: const Color(0xFF14532d)), // Green border
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                              );
+                            },
+                            child: const Icon(
+                              LucideIcons.calendarDays,
+                              color: Colors.white,
+                              size: 48,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Calendar',
                             style: TextStyle(color: Colors.white, fontSize: 17),
                           ),
                         ],
@@ -79,14 +176,14 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(
-                            onPressed: () {
+                          InkWell(
+                            onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => const TaskListPage()),
                               );
                             },
-                            icon: const Icon(
+                            child: const Icon(
                               LucideIcons.listChecks,
                               color: Colors.white,
                               size: 48,
@@ -124,11 +221,11 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(
-                            onPressed: () {
+                          InkWell(
+                            onTap: () {
                               // Add your onPressed logic here
                             },
-                            icon: const Icon(
+                            child: const Icon(
                               LucideIcons.settings,
                               color: Colors.white,
                               size: 48,
@@ -161,11 +258,11 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(
-                            onPressed: () {
+                          InkWell(
+                            onTap: () {
                               // Add your onPressed logic here
                             },
-                            icon: const Icon(
+                            child: const Icon(
                               LucideIcons.messageCircle,
                               color: Colors.white,
                               size: 48,

@@ -6,9 +6,18 @@ const VerificationEntrySchema = new Schema({
         type : String,
         required : [true, 'User must be associated with this verification.']
     },
+    type : {
+        type : String,
+        required : [true, 'Code must have a type.']
+    },
     code : {
         type : String,
         required : [true, 'Must have verification code.']
+    },
+    houseId : {
+        type : Schema.Types.ObjectId,
+        required : [true, 'A houseId is required.'],
+        default : null
     },
     expDate : {
         type : Schema.Types.Date,

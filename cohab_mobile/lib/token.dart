@@ -6,6 +6,8 @@ var token;
 var userId;
 var decodedToken;
 
+bool check = false;
+
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
   final Uri url =
@@ -35,11 +37,9 @@ Future<void> signUp(
       userId = decodedToken['user']['_id'];
     } else {
       // Signup failed
-      throw 'Signup failed';
     }
   } catch (e) {
     // Exception occurred
-    throw 'Signup failed';
   }
 }
 
@@ -66,14 +66,14 @@ Future<void> login(String email, String password) async {
 
       //userId
       userId = decodedToken['user']['_id'];
-
+      check = true;
     } else {
       // Login failed
-      throw 'Invalid Email or Password';
+      check = false;
     }
   } catch (e) {
     // Exception occurred
-    throw 'Invalid Email or Password';
+    check = false;
   }
 }
 

@@ -1,9 +1,16 @@
 const House = require("../Models/House");
 
 module.exports = (socket, io) => {
+
+    const messageObj = message => ({
+        message : message,
+        sentBy : socket.user.firstName,
+        email : socket.user.email,
+        date : Date.now()
+    });
+
     socket.on('sendMessage', async message => {
-        console.log("Entered send ");
-        await House.findOneAndUpdate({ _id : socket.room }, { $push : { groupChat : message } }, {new : true})
+        await House.findOneAndUpdate({ _id : socket.room }, { $push : { groupChat : messageObj(message) } }, { new : true })
             .then(messages => io.to(socket.room).emit('groupChatChange', { messages : messages }))
             .catch(err => console.log(err));
     });

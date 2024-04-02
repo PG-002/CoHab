@@ -1,5 +1,5 @@
+import 'package:cohab_mobile/homepage.dart';
 import 'package:cohab_mobile/houseoptions.dart';
-import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'register.dart';
@@ -32,18 +32,30 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await login(_email, _password);
 
-      if (decodedToken['user']['verified'] == true) {
-        //await initSocket();
+      if(check == false) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid email or password'),
+            duration: Duration(seconds: 1), // Adjust the duration as needed
+          ),
+        );
+        }
+      else if (decodedToken['user']['verified'] == true) {
+        _email = '';
+        _password = '';
+
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HouseOptions()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
 
 
       }
       else {
         //go to email verification screen
-        //await initSocket();
+        _email = '';
+        _password = '';
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const HouseOptions()),
@@ -53,22 +65,14 @@ class _LoginPageState extends State<LoginPage> {
 
     }
      catch (e) {
-      print(_email);
-      print(_password);
       // Handle any exceptions that may occur during login
-       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
-           content: Text('$e'), // Show the exception message on the SnackBar
-           duration: const Duration(seconds: 1), // Adjust the duration as needed
-         ),
-       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return
-      Scaffold(
+    return MaterialApp(
+      home: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
         child: SingleChildScrollView(
@@ -204,6 +208,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+        )
     );
   }
 }

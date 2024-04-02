@@ -1,5 +1,5 @@
+import 'token.dart';
 import 'package:flutter/material.dart';
-import 'web_socket.dart';
 
 String task = '';
 
@@ -19,7 +19,7 @@ class TaskList extends StatefulWidget {
   const TaskList({super.key});
 
   @override
-   createState() => _TaskListState();
+  createState() => _TaskListState();
 }
 
 class _TaskListState extends State<TaskList> {
@@ -95,8 +95,6 @@ class _TaskListState extends State<TaskList> {
     );
   }
 
-
-
   // Function to display the options menu when "more_vert" icon is pressed
   void showOptionsMenu(BuildContext context, int index) {
     showModalBottomSheet(
@@ -111,9 +109,7 @@ class _TaskListState extends State<TaskList> {
                 title: const Text('Modify'),
                 onTap: () {
                   Navigator.pop(context); // Close the bottom sheet
-                  // Add code to modify task here
                   showModifyTaskDialog(context, index); // Show modify task dialog
-
                 },
               ),
               ListTile(
@@ -130,7 +126,6 @@ class _TaskListState extends State<TaskList> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +223,7 @@ class _TaskInputState extends State<TaskInput> {
         ),
         onChanged: (value) {
           setTask();
-          },
+        },
       ),
     );
   }

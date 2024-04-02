@@ -20,7 +20,7 @@ const UserSchema = new Schema({
         required : [true, 'Password is required.']
     },
     houseId : {
-        type : Schema.Types.ObjectId,
+        type : String,
         default : null,
         required : false
     },
