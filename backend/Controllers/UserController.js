@@ -69,7 +69,7 @@ const getHouse = async (req, res) => {
     .then(async user => {
       if(!user.houseId)
       {
-        res.status(404);
+        res.status(200);
         res.json({ error : 'User is not part of a house.' });
         return;
       }
@@ -79,7 +79,7 @@ const getHouse = async (req, res) => {
 
       if(!house)
       {
-        res.status(404);
+        res.status(200);
         res.json({ error : 'Could not find house.' });
         return;
       }
@@ -88,7 +88,7 @@ const getHouse = async (req, res) => {
       res.json({ house : house, error : '' });
     })
     .catch(() => {
-      res.status(404);
+      res.status(200);
       res.json({ error : 'User not found.' })
     })
 }
