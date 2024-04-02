@@ -19,7 +19,7 @@ const UserSchema = new Schema({
         type : String,
         required : [true, 'Password is required.']
     },
-    houseID : {
+    houseId : {
         type : String,
         default : null,
         required : false

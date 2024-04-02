@@ -48,7 +48,7 @@ const Session = require('../backend/Middleware/Session')(io);
 io.use(async (socket, next) => {
     const token = socket.handshake.auth.token ? socket.handshake.auth.token : socket.handshake.headers.token;
     const session = await Session.auth(token);
-
+    
     if(session.error)
         return next(new Error(session.error));
 
