@@ -49,37 +49,35 @@ const HouseSchema = new Schema(
       ],
       default: [],
     },
-    events: {
-      type: [
-        {
-          title: {
-            type: String,
-            required: [true, "Event must have a title."],
-          },
-          start: {
-            type: Schema.Types.Date,
-            required: [true, "Event must have a start date."],
-          },
-          end: {
-            type: Schema.Types.Date,
-            required: [true, "Event must have a start date."],
-          },
-          description: {
-            type: String,
-            required: [true, "Event must have a description."],
-            default: "",
-          },
-          allDay: {
-            type: Boolean,
-            required: [true, "Must indicate if event is all day."],
-          },
-          createdBy: {
-            type: Schema.Types.ObjectId,
-            required: [true, "Event must have author."],
-          },
-        },
-      ],
-      default: [],
+    events : {
+        type : [{
+            title : {
+                type : String,
+                required : [true, 'Event must have a title.']
+            },
+            start : {
+                type : Schema.Types.Date,
+                required : [true, 'Event must have a start date.']
+            },
+            end : {
+                type : Schema.Types.Date,
+                required : [true, 'Event must have a start date.']
+            },
+            description : {
+                type : String,
+                required : [true, 'Event must have a description.'],
+                default : ''
+            },
+            allDay : {
+                type : Boolean,
+                required : [true, 'Must indicate if event is all day.']
+            },
+            createdBy: {
+                type : Schema.Types.ObjectId,
+                required : [true, 'Event must have author.']
+            }
+        }],
+        default : []
     },
     tasks: {
       type: [{ id: String, task: String, completed: Boolean }],

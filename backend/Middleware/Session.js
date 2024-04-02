@@ -11,10 +11,10 @@ module.exports = (io) => {
     const user = await User.findOne({ _id: userId }).catch(() => null);
 
     if (!user) return { error: "Could not fetch user." };
-
-    return { user: user, room: user.houseID, error: "" };
-  };
-
+    
+    return { user : user, room : user.houseId, error : '' };
+}
+ 
   const addEventListeners = (socket) => {
     require("../Listeners/GroupChat")(socket, io);
     require("../Listeners/Tasks")(socket, io);
@@ -26,4 +26,4 @@ module.exports = (io) => {
   };
 
   return { auth, addEventListeners };
-};
+}

@@ -52,6 +52,7 @@ module.exports = (socket, io) => {
       .catch((err) => console.log(err));
   });
 
+
   socket.on("deleteEvent", async (event) => {
     await House.findOneAndUpdate(
       { _id: socket.room },

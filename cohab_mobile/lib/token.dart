@@ -6,12 +6,10 @@ var token;
 var userId;
 var decodedToken;
 
-bool check = false;
-
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
   final Uri url =
-      Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/signup');
+  Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/signup');
   final Map<String, String> body = {
     'firstName': firstName,
     'lastName': lastName,
@@ -37,9 +35,11 @@ Future<void> signUp(
       userId = decodedToken['user']['_id'];
     } else {
       // Signup failed
+      throw 'Signup failed';
     }
   } catch (e) {
     // Exception occurred
+    throw 'Signup failed';
   }
 }
 
@@ -64,21 +64,14 @@ Future<void> login(String email, String password) async {
       token = jsonResponse['token']; // Extracting the token string
       decodedToken = JwtDecoder.decode(token);
 
-      //userId
-      userId = decodedToken['user']['_id'];
-      check = true;
+        userId = decodedToken['user']['_id'];
+
     } else {
       // Login failed
-      check = false;
+      throw 'Invalid Email or Password';
     }
   } catch (e) {
     // Exception occurred
-    check = false;
+    throw 'Invalid Email or Password';
   }
 }
-
-
-
-
-
-

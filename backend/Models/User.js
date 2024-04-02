@@ -19,8 +19,8 @@ const UserSchema = new Schema({
         type : String,
         required : [true, 'Password is required.']
     },
-    houseID : {
-        type : String,
+    houseId : {
+        type : Schema.Types.ObjectId,
         default : null,
         required : false
     },
