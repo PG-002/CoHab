@@ -34,6 +34,8 @@ dependencies:
   web_socket_channel: ^2.4.4
   jwt_decoder: ^2.0.1
   lucide_icons: ^0.257.0
+  flutter_neat_and_clean_calendar: ^0.3.0+12
+  intl: ^0.19.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
