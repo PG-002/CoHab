@@ -18,9 +18,24 @@ module.exports = (socket, io) => {
             .catch(err => console.log(err));
     });
 
+<<<<<<< HEAD
     socket.on('deleteEvent', async event => {
         await House.findOneAndUpdate({ _id : socket.room }, { $pull : { events : event } }, { new : true })
             .then(house => io.to(socket.room).emit('eventsChange', { events : house.events }))
             .catch(err => console.log(err));
     });
 }
+=======
+  socket.on("deleteEvent", async (event) => {
+    await House.findOneAndUpdate(
+      { _id: socket.room },
+      { $pull: { events: event } },
+      { new: true }
+    )
+      .then((house) =>
+        io.to(socket.room).emit("eventsChange", { events: house.events })
+      )
+      .catch((err) => console.log(err));
+  });
+};
+>>>>>>> parent of a54ab03 (Merge branch 'main' into Calendar)

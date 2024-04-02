@@ -27,7 +27,7 @@ const joinHouse = async (req, res) => {
     const house = await House.where({ joinHouseCode: joinHouseCode }).findOne();
 
     const user = await User.where({ _id: _id }).findOne();
-    await User.updateOne({ _id : _id }, { houseId : house._id });
+    await User.updateOne({ _id : _id }, {houseID: house._id });
 
     await House.updateOne({ joinHouseCode : joinHouseCode }, {$inc: { amountOfUsers : 1 }, $push: { members : fullName }}).then(() => {
         res.status(200);
@@ -35,7 +35,7 @@ const joinHouse = async (req, res) => {
             id : user._id,
             firstname: user.firstName,
             lastname: user.lastName,
-            houseId : house._id
+            houseID : house._id
         }});
     }).catch(e => {
         console.log(e);
@@ -64,7 +64,7 @@ const deleteHouse = async (req, res) => {
         return;
     }
 
-    await User.updateMany({ houseId : id }, { houseId : null }).catch(() => null);
+    await User.updateMany({ houseID : id }, { houseID : null }).catch(() => null);
 
     res.status(200);
     await House.deleteOne({ _id : id })

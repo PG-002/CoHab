@@ -1,7 +1,4 @@
-import 'package:cohab_mobile/email_verify.dart';
-import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
-import 'houseoptions.dart';
 import 'token.dart';
 import 'main.dart';
 
@@ -20,7 +17,8 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      home: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
@@ -149,6 +147,7 @@ class _RegisterState extends State<Register> {
             ),
           ),
         ),
+      ),
     );
   }
 }
@@ -501,41 +500,15 @@ class RegisterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () {
-        // Get the current BuildContext before the async operation
-        final currentContext = context;
-        try {
-          var check = checkAgain();
-          if (check == null) {
-            signUp(firstName, lastName, email, password)
-                .then((_) {
-              // Go to the email verification screen after successful signup
-              //initSocket();
-              Navigator.push(
-                currentContext,
-                MaterialPageRoute(builder: (context) => const VerificationPage()),
-              );
-            })
-                .catchError((e) {
-              // Catch and display signup exception
-              ScaffoldMessenger.of(currentContext).showSnackBar(
-                const SnackBar(
-                  content: Text('Signup failed'),
-                ),
-              );
-            });
-          } else {
-            // Display error message to the user
-            ScaffoldMessenger.of(currentContext).showSnackBar(
-              SnackBar(
-                content: Text(check),
-              ),
-            );
-          }
-        } catch (e) {
-          // Catch and display any synchronous errors
-          ScaffoldMessenger.of(currentContext).showSnackBar(
+        var check = checkAgain();
+        if (check == null) {
+          signUp(firstName, lastName, email, password);
+          // then go to the email verification screen
+        } else {
+          // Display error message to the user
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error: $e'),
+              content: Text(check),
             ),
           );
         }

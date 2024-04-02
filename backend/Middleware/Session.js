@@ -10,6 +10,7 @@ module.exports = io => {
         const payload = decodeToken(token).payload;
         const userId = payload.userId;
 
+<<<<<<< HEAD
         const user = await User.findOne({ _id : userId })
             .catch(() => null);
 
@@ -31,3 +32,22 @@ module.exports = io => {
 
     return { auth, addEventListeners };
 }
+=======
+    if (!user) return { error: "Could not fetch user." };
+
+    return { user: user, room: user.houseID, error: "" };
+  };
+
+  const addEventListeners = (socket) => {
+    require("../Listeners/GroupChat")(socket, io);
+    require("../Listeners/Tasks")(socket, io);
+    require("../Listeners/Rules")(socket, io);
+    require("../Listeners/Groceries")(socket, io);
+    require("../Listeners/Reminders")(socket, io);
+    require("../Listeners/Events")(socket, io);
+    require("../Listeners/Location")(socket, io);
+  };
+
+  return { auth, addEventListeners };
+};
+>>>>>>> parent of a54ab03 (Merge branch 'main' into Calendar)
