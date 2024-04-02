@@ -1,3 +1,4 @@
+import 'package:cohab_mobile/calendar.dart';
 import 'package:cohab_mobile/task_list.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -28,7 +29,10 @@ class _HomePageState extends State<HomePage> {
                   width: 120,
                   child: InkWell(
                     onTap: () {
-                      // Add your onPressed logic here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                      );
                     },
                     child: Ink(
                       decoration: BoxDecoration(
@@ -41,17 +45,20 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           InkWell(
                             onTap: () {
-                              // Add your onPressed logic here
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                              );
                             },
                             child: const Icon(
-                              LucideIcons.layoutDashboard,
+                              LucideIcons.calendarDays,
                               color: Colors.white,
                               size: 48,
                             ),
                           ),
                           const SizedBox(height: 8),
                           const Text(
-                            'Dashboard',
+                            'Calendar',
                             style: TextStyle(color: Colors.white, fontSize: 17),
                           ),
                         ],
