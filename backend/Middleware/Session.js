@@ -10,7 +10,6 @@ module.exports = io => {
         const payload = decodeToken(token).payload;
         const userId = payload.userId;
 
-<<<<<<< HEAD
         const user = await User.findOne({ _id : userId })
             .catch(() => null);
 
