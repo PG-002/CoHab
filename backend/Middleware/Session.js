@@ -1,37 +1,15 @@
-const User = require('../Models/User');
-const { verifyToken, decodeToken } = require('../Middleware/Token');
+const User = require("../Models/User");
+const { verifyToken, decodeToken } = require("../Middleware/Token");
 
-module.exports = io => {
+module.exports = (io) => {
+  const auth = async (token) => {
+    if (!verifyToken(token)) return { error: "Token could not be verified." };
 
-    const auth = async (token) => {
-        if(!verifyToken(token))
-            return { error : 'Token could not be verified.' };
+    const payload = decodeToken(token).payload;
+    const userId = payload.userId;
 
-        const payload = decodeToken(token).payload;
-        const userId = payload.userId;
+    const user = await User.findOne({ _id: userId }).catch(() => null);
 
-        const user = await User.findOne({ _id : userId })
-            .catch(() => null);
-
-        if(!user)
-            return { error : 'Could not fetch user.' };
-
-        return { user : user, room : user.houseId, error : '' };
-    }
-
-    const addEventListeners = socket => {
-        require('../Listeners/GroupChat')(socket, io);
-        require('../Listeners/Tasks')(socket, io);
-        require('../Listeners/Rules')(socket, io);
-        require('../Listeners/Groceries')(socket, io);
-        require('../Listeners/Reminders')(socket, io);
-        require('../Listeners/Events')(socket, io);
-        require('../Listeners/Location')(socket, io);
-    };
-
-    return { auth, addEventListeners };
-}
-=======
     if (!user) return { error: "Could not fetch user." };
 
     return { user: user, room: user.houseID, error: "" };
@@ -49,4 +27,3 @@ module.exports = io => {
 
   return { auth, addEventListeners };
 };
->>>>>>> parent of a54ab03 (Merge branch 'main' into Calendar)
