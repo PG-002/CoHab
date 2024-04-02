@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Sidebar, { SidebarItem } from "./global/Sidebar";
 import { LayoutDashboard } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -22,21 +23,24 @@ const LoginPage = () => {
         password: password,
       });
 
-      const response = await fetch(
-        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/login",
-        {
-          // Adjust URL as necessary
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSONPayload,
-        }
-      );
+      const response = await fetch("http://localhost:5003/api/users/login", {
+        // Adjust URL as necessary
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSONPayload,
+      });
 
       if (response.ok && response.status == 201) {
         const data = await response.json();
-        localStorage.setItem("sessionId", data.token);
+        const token = data.token;
+        localStorage.setItem("sessionId", token);
+
+        const decoded = jwtDecode(token);
+        localStorage.setItem("userInfo", JSON.stringify(decoded.user));
+        console.log(JSON.parse(localStorage.getItem("userInfo"))._id);
+
         navigate("/dashboard");
       } else if (response.status === 404) {
         alert("Login failed: User not found");
