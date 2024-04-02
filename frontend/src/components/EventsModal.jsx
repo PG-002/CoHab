@@ -100,14 +100,14 @@ export default function EventModal({
                 placeholder="Add title"
                 value={title}
                 required
-                className="text-white border-0 text-xl font-semibold p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+                className="bg-white border-0 text-xl font-semibold p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
                 onChange={(e) => setTitle(e.target.value)}
               />
               <div className="flex flex-row text-black">
                 <Clock className="mr-3 text-gray-400"></Clock>
                 <div className="flex md:flex-row flex-col items-center">
                   <DatePicker
-                    className="text-sm text-white p-1"
+                    className="bg-white text-sm text-center font-bold p-1 hover:cursor-pointer hover:bg-gray-200 rounded-lg border-gray-300 border-2"
                     showTimeSelect={!allDay}
                     selected={startDate}
                     dateFormat={!allDay ? "MM/dd/yyyy hh:mm a" : "MM/dd/yyyy"}
@@ -116,9 +116,9 @@ export default function EventModal({
                       setEndDate(date);
                     }}
                   />
-                  <Minus></Minus>
+                  <Minus className="mx-2"></Minus>
                   <DatePicker
-                    className=" text-sm text-white p-1"
+                    className="bg-white text-sm font-bold text-center p-1 hover:cursor-pointer hover:bg-gray-200 rounded-lg border-gray-300 border-2"
                     showTimeSelect={!allDay}
                     selected={
                       endDate
@@ -135,15 +135,30 @@ export default function EventModal({
                 </div>
               </div>
 
-              <div className="flex flex-row pl-10">
+              <div className="flex flex-row pl-10 bg-white">
                 <input
                   type="checkbox"
-                  className="size-6"
+                  className="appearance-none peer size-6 rounded-lg bg-white border-2 border-gray-400 shrink-0 checked:bg-blue-800 checked:border-0 cursor-pointer"
                   defaultChecked={allDay}
                   onChange={() => {
                     setAllDay((prevState) => !prevState);
                   }}
                 />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="absolute size-6 hidden peer-checked:block text-white font-extrabold pointer-events-none"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m4.5 12.75 6 6 9-13.5"
+                  />
+                </svg>
+
                 <p className="text-black ml-2">All Day?</p>
               </div>
 
@@ -155,7 +170,7 @@ export default function EventModal({
                   placeholder="Add a description"
                   value={description}
                   required
-                  className="text-white text-xs md:text-base  border-0 text-gray-600 p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+                  className="bg-white text-xs md:text-base  border-0 text-gray-600 p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
