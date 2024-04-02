@@ -9,7 +9,6 @@ const DashboardPage = ({ houseInfo, setHouseInfo }) => {
         const JSONPayload = JSON.stringify({
           userId: userId,
         });
-
         const response = await fetch(
           "http://localhost:5003/api/users/gethouse",
           {
@@ -21,7 +20,6 @@ const DashboardPage = ({ houseInfo, setHouseInfo }) => {
             body: JSONPayload,
           }
         );
-
         if (response.ok && response.status == 200) {
           const data = await response.json();
           setHouseInfo(data.house);
@@ -34,15 +32,10 @@ const DashboardPage = ({ houseInfo, setHouseInfo }) => {
         console.error("Login error", error);
       }
     };
-
     fetchHouseInfo();
   }, []);
 
-  return (
-    <div className="w-screen text-left overflow-hidden text-white">
-      {console.log(houseInfo)}
-    </div>
-  );
+  return <div className="w-screen text-left overflow-hidden text-white"></div>;
 };
 
 export default DashboardPage;

@@ -9,7 +9,7 @@ import EventModal from "../components/EventsModal";
 // import Header from "../../components/Header";
 // import { tokens } from "../../theme";
 
-const Calendar = ({ events, updateEvents }) => {
+const Calendar = ({ deleteEvent, updateEvent, events, addEvent }) => {
   const calendarRef = useRef();
   const containerRef = useRef();
   const [showModal, setShowEventModal] = useState(false);
@@ -46,22 +46,39 @@ const Calendar = ({ events, updateEvents }) => {
 
   const handleSubmitEvent = ({ type, calendarEvent, originalEvent }) => {
     if (type === "update") {
-      originalEvent.setDates(calendarEvent.start, calendarEvent.end);
-      originalEvent.setAllDay(calendarEvent.allDay);
-      originalEvent.setProp("title", calendarEvent.title);
-      originalEvent.setExtendedProp("description", calendarEvent.description);
+      console.log(originalEvent.extendedProps._id);
+      const newEvent = {
+        _id: originalEvent.extendedProps._id,
+        title: calendarEvent.title,
+        start: calendarEvent.start,
+        end: calendarEvent.end,
+        allDay: calendarEvent.allDay,
+        description: calendarEvent.description,
+      };
+
+      console.log(newEvent);
+      updateEvent(newEvent);
     } else if (type === "push") {
       const { title, description, start, end, allDay } = calendarEvent;
-      const calendarApi = calendarRef.current.getApi();
-      calendarApi.addEvent({
+      const newEvent = {
         title,
         start,
         end,
         allDay,
         description,
-      });
+      };
+      addEvent(newEvent);
     } else if (type === "delete") {
+      const newEvent = {
+        _id: originalEvent.extendedProps._id,
+        title: originalEvent.title,
+        start: originalEvent.start,
+        end: originalEvent.end,
+        allDay: originalEvent.allDay,
+        description: originalEvent.description,
+      };
       originalEvent.remove();
+      deleteEvent(newEvent);
     }
   };
 
@@ -98,8 +115,8 @@ const Calendar = ({ events, updateEvents }) => {
         dayMaxEvents={true}
         select={handleDateClick}
         eventClick={handleEventClick}
-        eventsSet={(events) => updateEvents(events)}
-        initialEvents={events}
+        eventAdd={addEvent}
+        events={events}
       />
     </div>
   );

@@ -22,9 +22,15 @@ import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import { useEffect, useState } from "react";
 import EventModal from "./components/EventsModal";
-import Datepicker from "./components/DatePicker";
 import Modal from "react-modal";
-// import { socket } from "./socket";
+import io from "socket.io-client";
+
+const socket = io("http://127.0.0.1:5003", {
+  transports: ["websocket"],
+  auth: {
+    token: localStorage.getItem("sessionId"),
+  },
+});
 
 // if (localStorage.theme === "dark" || !("theme" in localStorage)) {
 //   document.documentElement.classList.add("dark");
@@ -39,7 +45,6 @@ import Modal from "react-modal";
 // }
 
 function App() {
-  // const [isConnected, setIsConnected] = useState(socket.connected);
   Modal.setAppElement("#root");
   const localHouseInfo = localStorage.getItem("houseInfo")
     ? JSON.parse(localStorage.getItem("houseInfo"))
@@ -52,20 +57,27 @@ function App() {
   const [houseInfo, setHouseInfo] = useState(localHouseInfo);
   const [events, setEvents] = useState(localEventInfo);
 
-  const handleEventUpdate = (eventList) => {
-    const parsedList = [];
-    eventList.map((event) => {
-      parsedList.push({
-        title: event.title,
-        start: event.start,
-        end: event.end,
-        allDay: event.allDay,
-        description: event.extendedProps.description,
-      });
+  useEffect(() => {
+    socket.on("connect", (e) => {
+      console.log("check 2", socket.connected);
     });
-    setEvents(parsedList);
-    console.log(parsedList);
-    localStorage.setItem("eventsInfo", JSON.stringify(parsedList));
+
+    socket.on("eventsChange", (e) => {
+      setEvents(e.events);
+      localStorage.setItem("eventsInfo", JSON.stringify(e.events));
+    });
+  }, []);
+
+  const handleEventSubmit = (event) => {
+    socket.emit("createEvent", event);
+  };
+
+  const handleEventUpdate = (event) => {
+    socket.emit("modifyEvent", event);
+  };
+
+  const handleEventDelete = (event) => {
+    socket.emit("deleteEvent", event);
   };
 
   const handleHouseUpdate = (house) => {
@@ -83,9 +95,7 @@ function App() {
             path="/componentDev"
             element={
               <EventModal
-                selectedEvent={
-                  JSON.parse(localStorage.getItem("eventsInfo"))[0]
-                }
+                selectedEvent={events ? events[0] : null}
               ></EventModal>
             }
           />
@@ -112,7 +122,12 @@ function App() {
               <Route
                 path="/calendar"
                 element={
-                  <Calendar events={events} updateEvents={handleEventUpdate} />
+                  <Calendar
+                    events={events}
+                    addEvent={handleEventSubmit}
+                    updateEvent={handleEventUpdate}
+                    deleteEvent={handleEventDelete}
+                  />
                 }
               />
               <Route path="/location" element={<Location />} />
