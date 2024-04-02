@@ -23,17 +23,14 @@ const LoginPage = () => {
         password: password,
       });
 
-      const response = await fetch(
-        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/login",
-        {
-          // Adjust URL as necessary
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSONPayload,
-        }
-      );
+      const response = await fetch("https://cohab-4fcf8ee594c1.herokuapp.com/api/users/login", {
+        // Adjust URL as necessary
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSONPayload,
+      });
 
       if (response.ok && response.status == 201) {
         const data = await response.json();
