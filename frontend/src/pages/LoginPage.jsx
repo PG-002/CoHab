@@ -23,7 +23,7 @@ const LoginPage = () => {
         password: password,
       });
 
-      const response = await fetch("http://localhost:5003/api/users/login", {
+      const response = await fetch("http://cohab-4fcf8ee594c1.herokuapp.com/api/users/login", {
         // Adjust URL as necessary
         method: "POST",
         headers: {
