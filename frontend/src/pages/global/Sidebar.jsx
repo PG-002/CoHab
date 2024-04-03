@@ -3,7 +3,7 @@ import { ChevronFirst, ChevronLast, LogOut, MoreVertical } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 const SidebarContext = createContext();
 
-function Sidebar({ children }) {
+function Sidebar({ userInfo, children }) {
   const [expanded, setExpanded] = useState(true);
 
   return (
@@ -11,7 +11,7 @@ function Sidebar({ children }) {
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
-            src="https://img.logoipsum.com/243.svg"
+            src="https://img.logoipsum.com/285.svg"
             className={`overflow-hidden transiton-all object-contain ${
               expanded ? "w-32" : "w-0"
             }`}
@@ -39,7 +39,7 @@ function Sidebar({ children }) {
         </SidebarContext.Provider>
         <div className="border-t flex p-3 items-center justify-center">
           <img
-            src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
+            src={`https://ui-avatars.com/api/?name=${`${userInfo.firstName} + ${userInfo.lastName}`}&background=bbf7d0&color=052e16&bold=true`}
             alt="user avatar"
             className="size-10 rounded-md"
           />
@@ -49,8 +49,10 @@ function Sidebar({ children }) {
             }`}
           >
             <div className="mx-auto leading-4">
-              <h4 className="text-black font-semibold">John Doe</h4>
-              <span className="text-xs text-gray-600">JohnDoe@gmail.com</span>
+              <h4 className="text-black font-semibold">
+                {userInfo.firstName} {userInfo.lastName}
+              </h4>
+              <span className="text-xs text-gray-600">{userInfo.email}</span>
             </div>
             {/* <MoreVertical className="text-red-500" size={20}></MoreVertical> */}
           </div>
@@ -83,8 +85,8 @@ export function SidebarItem({ icon, text, active, alert, link }) {
           to={`/${link}`}
           className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md curosr-pointer transition-colors group ${
             active
-              ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800  "
-              : "hover:bg-indigo-50 text-gray-600"
+              ? "bg-gradient-to-tr from-green-200 to-green-100 text-green-800  "
+              : "hover:bg-green-50 text-gray-600"
           }`}
         >
           {icon}
@@ -97,7 +99,7 @@ export function SidebarItem({ icon, text, active, alert, link }) {
           </span>
           {alert && (
             <div
-              className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${
+              className={`absolute right-2 w-2 h-2 rounded bg-green-400 ${
                 expanded ? "" : "top-2"
               }`}
             />
@@ -105,7 +107,7 @@ export function SidebarItem({ icon, text, active, alert, link }) {
           {!expanded && (
             <div
               className={`whitespace-nowrap absolute left-full rounded-md px-2 py-1 ml-6 
-        bg-indigo-100 text-indigo-800 invisible opactiy-2 -translate-x-3 transition-all 
+        bg-green-100 text-green-800 invisible opactiy-2 -translate-x-3 transition-all 
         group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
             >
               {text}
