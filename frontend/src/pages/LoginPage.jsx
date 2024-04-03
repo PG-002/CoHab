@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Sidebar, { SidebarItem } from "./global/Sidebar";
 import { LayoutDashboard } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
 
 const LoginPage = ({ setUser }) => {
   const [email, setEmail] = useState("");
