@@ -12,8 +12,7 @@ function Chat({socket}) {
 
 
     useEffect(() => {
-      const sessionId = localStorage.getItem('sessionId');
-      fetch('http://localhost:5003/api/users/getHouse', {
+      fetch('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getHouse', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

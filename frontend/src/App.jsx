@@ -41,7 +41,7 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 // }
 
 function App() {
-  const socket = io('http://localhost:5003',
+  const socket = io('https://cohab-4fcf8ee594c1.herokuapp.com/',
   {
     transports: ['websocket'],
     auth: {

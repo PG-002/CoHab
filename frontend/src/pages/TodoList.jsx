@@ -25,7 +25,7 @@ function TodoList({ socket }) {
       const userId = decodedToken.userId;
   
       try {
-        const response = await fetch('http://localhost:5003/api/users/getHouse', {
+        const response = await fetch('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getHouse', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
