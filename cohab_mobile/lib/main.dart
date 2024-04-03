@@ -33,11 +33,6 @@ class _LoginPageState extends State<LoginPage> {
       await login(_email, _password);
       print(decodedToken);
 
-      Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const HouseOptions()),
-           );
-
       if (decodedToken['verified'] == true) {
         Navigator.push(
           context,

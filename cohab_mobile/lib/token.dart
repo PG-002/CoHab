@@ -69,6 +69,7 @@ Future<void> login(String email, String password) async {
       userId = decodedToken['userId'];
 
       print(userId);
+      print(decodedToken['firstName']);
 
     } else if(response.statusCode == 404) {
       // Login failed
@@ -116,7 +117,6 @@ Future<void> joinHouse(String code) async {
   catch (e) {
     // Exception occurred
     print(e);
-    throw 'Code Invalid';
   }
 }
 
