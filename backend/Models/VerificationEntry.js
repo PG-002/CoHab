@@ -16,7 +16,6 @@ const VerificationEntrySchema = new Schema({
     },
     houseId : {
         type : Schema.Types.ObjectId,
-        required : [true, 'A houseId is required.'],
         default : null
     },
     expDate : {

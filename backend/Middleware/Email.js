@@ -43,7 +43,7 @@ const sendCode = async (user) => {
                     .catch(() => ({ sent : false, error : 'Email could not be sent.' })))
             .catch(() => ({ sent : false, error : 'Verification code could not be updated.' }));
 
-    return await VerificationEntry.create({ userId : user._id, code : code, expDate : getExpDate() })
+    return await VerificationEntry.create({ userId : user._id, type: type, code : code, expDate : getExpDate() })
         .then(async () =>
             await transporter.sendMail(mailOptions)
                 .then(() => ({ sent : true , error : '' }))
