@@ -26,7 +26,7 @@ module.exports = (socket, io) => {
   });
 
   socket.on('deleteEvent', async (event) => {
-    await House.findOneByIdAndUpdate({ _id : socket.room }, { $pull : { events : event } }, { new : true })
+    await House.findByIdAndUpdate({ _id : socket.room }, { $pull : { events : event } }, { new : true })
       .then((house) => io.to(socket.room).emit('eventsChange', { events : house.events }))
       .catch((err) => console.log(err));
   });
