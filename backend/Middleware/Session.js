@@ -6,7 +6,7 @@ module.exports = (io) => {
     if (!token)
       return;
     
-    if(!verifyToken(token))
+    if(!token || !verifyToken(token))
       return { error : 'Token could not be verified.' };
 
     const payload = decodeToken(token).payload;

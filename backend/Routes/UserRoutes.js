@@ -6,7 +6,6 @@ const router = express.Router();
 // User CRUD Operations
 router.post('/signup', signup);
 router.post('/login', login);
-// router.post('/joinHouse', joinHouse);
 router.post('/getHouse', getHouse);
 router.post('/updateUser', updateUser);
 router.post('/updatePassword', updatePassword);
