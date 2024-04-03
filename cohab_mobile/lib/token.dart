@@ -138,15 +138,17 @@ Future<void> sendCode() async {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
       var sent = jsonResponse['sent'];
 
       if (sent == false) {
-        throw 'User Not Found';
+        throw Exception('Failed to send verification code');
       }
     }
-  }
-  catch (e) {
+  } catch (e) {
     // Exception occurred
+    print('$e');
+    // You might want to handle this error in your UI
   }
 }
 
