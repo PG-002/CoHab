@@ -33,7 +33,7 @@ const createHouse = async (req, res) => {
     }
 
     await User.findByIdAndUpdate(userId, { houseId : house._id })
-        .then(() => res.json({ token : createToken({ house : house }), error : '' }))
+        .then(() => res.json({ token : createToken(house), error : '' }))
         .catch(() => res.json({ token : null, error : 'User could not be put into house.' }));
 }
 

@@ -3,11 +3,15 @@ const House = require('../Models/House');
 module.exports = (socket, io) => {
     const taskObj = task => ({
         task : task.task,
+        createdBy : socket.user.createdBy,
+        assignedTo : task.assignedTo,
         completed : task.completed
     });
 
     const updateObj = task => ({
         'tasks.$.task' : task.task,
+        'tasks.$.createdBy' : task.createdBy,
+        'taskes.$.assignedTo' : task.assignedTo,
         'tasks.$.completed' : task.completed
     });
 

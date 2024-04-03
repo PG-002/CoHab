@@ -65,32 +65,25 @@ const login = async (req, res) => {
 const getHouse = async (req, res) => {
   const { userId } = req.body;
 
-  await User.findOne({ _id : userId })
-    .then(async user => {
+  res.status(200);
+
+  await User.findById(userId)
+    .then(user => {
       if(!user.houseId)
       {
-        res.status(200);
-        res.json({ error : 'User is not part of a house.' });
+        res.json({ token : null, error : 'User is not in a house.' });
         return;
       }
 
-      const house = await House.findOne({ _id : user.houseId })
+      const house = House.findById(user.houseId)
         .catch(() => null);
 
       if(!house)
-      {
-        res.status(200);
-        res.json({ error : 'Could not find house.' });
-        return;
-      }
-
-      res.status(200);
-      res.json({ house : house, error : '' });
+        res.json({ token : null, error : 'House does not exist.' });
+      else
+        res.json({ token : createToken(house), error : '' });
     })
-    .catch(() => {
-      res.status(200);
-      res.json({ error : 'User not found.' })
-    })
+    .catch(() => res.json({ token : null, error : 'User does not exist.' }));
 }
 
 const updateUser = async (req, res) => {

@@ -76,6 +76,8 @@ const HouseSchema = new Schema({
     tasks : {
         type : [{
             task : String,
+            createdBy : String,
+            assignedTo : String,
             completed : Boolean
         }],
         default : []
