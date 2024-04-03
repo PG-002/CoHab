@@ -12,25 +12,55 @@ function TodoList({ socket }) {
       navigate("/");
   };
 
+  useEffect(() => {
+    // Fetch tasks on mount
+    const fetchTasks = async () => {
+      const sessionId = localStorage.getItem('sessionId');
+      if (!sessionId) {
+        navigate('/login'); // Redirect to login if no session
+        return;
+      }
+  
+      const decodedToken = jwtDecode(sessionId);
+      const userId = decodedToken.userId;
+  
+      try {
+        const response = await fetch('http://localhost:5003/api/users/getHouse', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch tasks');
+        }
+  
+        const data = await response.json();
+        if (data.house) {
+          setTasks(data.house.tasks); // or however the tasks are stored in your "house" object
+        } else {
+          console.error('House not found:', data.error);
+          // Possibly handle a redirect or error state
+        }
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+        navigate('/login'); // Redirect or handle error
+      }
+    };
+  
+    fetchTasks();
+  }, [navigate]);
+
   const [todo, setTodo] = useState("");
   const [tasks, setTasks] = useState([]); 
   const [isEditing, setIsEditing] = useState(null);
   const [editText, setEditText] = useState("");
 
-  useEffect(() => {
-      // Listening for tasks updates from the server
       socket.on('tasksChange', (data) => {
-          console.log("I am changing!");
-          console.log(tasks);
-          console.log(data.tasks.tasks);
           setTasks(data.tasks);
       });
-
-      // Clean up the listener when the component unmounts
-      return () => {
-          socket.off('tasksChange');
-      };
-  }, [socket]); // Empty dependency array means this will run once on mount
 
   const handleAddTask = (e) => {
       e.preventDefault();

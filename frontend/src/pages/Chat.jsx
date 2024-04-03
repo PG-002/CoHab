@@ -10,10 +10,36 @@ function Chat({socket}) {
 
     const navigate = useNavigate();
 
-    const LogOut = () => {
-        localStorage.removeItem("sessionId");
-        navigate("/");
-    };
+
+    useEffect(() => {
+      const sessionId = localStorage.getItem('sessionId');
+      fetch('http://localhost:5003/api/users/getHouse', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userId: decodedToken.userId }),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.house) {
+      setMessages(data.house.groupChat);
+    } else {
+      // Handle the case where the house is not found
+      console.error('House not found:', data.error);
+    }
+  })
+  .catch(error => {
+    console.error('Error fetching house:', error);
+    navigate('/login'); // Redirect on error or handle differently
+  });
+  console.log("I am being mounted");
+}, [navigate]);
 
     const decodedToken = jwtDecode(localStorage.getItem('sessionId'));
     const [currentMessage, setCurrentMessage] = useState('');
@@ -21,13 +47,13 @@ function Chat({socket}) {
 
 
     socket.on('groupChatChange', (data) => {
-      console.log(data.messages);
+      // console.log(data.messages);
       setMessages(data.messages); 
   });
 
   const handleSendMessage = (messageContent) => {
     const messageDate = new Date(); 
-    console.log(messageContent);
+    // console.log(messageContent);
     socket.emit('sendMessage', messageContent);
         // console.log("sentBy is " + decodedToken.firstName);
         // console.log("email is " +  decodedToken.email);
