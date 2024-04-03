@@ -4,10 +4,10 @@ import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage";
 import SidebarLayout from "./pages/global/SidebarLayout";
-import Tasklist from "./pages/Tasklist";
+import TodoList from "./pages/TodoList";
 import Calendar from "./pages/Calendar";
 import Location from "./pages/Location";
-import Messages from "./pages/Messages";
+import Chat from "./pages/Chat";
 import Settings from "./pages/Settings";
 
 import {
@@ -16,6 +16,13 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+// import DashboardPage from './pages/DashboardPage';
+// import ErrorPage from "./pages/ErrorPage";
+// import ProtectedRoute from "./components/ProtectedRoute";
+// import { UserProvider } from './components/UserContext';
+// import TodoList from './components/TodoList';
+import io from 'socket.io-client';
+// import Chat from './components/Chat';
 // import JoinHome from "./pages/JoinHome";
 // import CreateHome from "./pages/CreateHome";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
@@ -34,6 +41,13 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 // }
 
 function App() {
+  const socket = io('http://localhost:5003',
+  {
+    transports: ['websocket'],
+    auth: {
+      token: localStorage.getItem('sessionId'),
+    },
+  });
   return (
     <div className="flex flex-row w-screen">
       <Router>
@@ -49,10 +63,10 @@ function App() {
             <Route path="/createhouse" element={<CreateHome />} /> */}
             <Route element={<SidebarLayout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/tasklist" element={<Tasklist />} />
+              <Route path="/tasklist" element={<TodoList socket={socket}/>} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/location" element={<Location />} />
-              <Route path="/messages" element={<Messages />} />
+              <Route path="/messages" element={<Chat socket={socket}/>} /> 
               <Route path="/settings" element={<Settings />} />
             </Route>
           </Route>

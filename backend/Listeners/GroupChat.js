@@ -10,6 +10,8 @@ module.exports = (socket, io) => {
     });
 
     socket.on('sendMessage', async message => {
+        console.log('entered send');
+        // console.log(message);
         await House.findOneAndUpdate({ _id : socket.room }, { $push : { groupChat : messageObj(message) } }, { new : true })
             .then(house => io.to(socket.room).emit('groupChatChange', { messages : house.groupChat }))
             .catch(err => console.log(err));

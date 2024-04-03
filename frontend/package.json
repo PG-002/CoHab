@@ -22,6 +22,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.2",
+    "socket.io-client": "^4.7.5",
     "serve": "^14.2.1",
     "yup": "^1.4.0"
   },

@@ -3,12 +3,15 @@ const { verifyToken, decodeToken } = require('../Middleware/Token');
 
 module.exports = (io) => {
   const auth = async (token) => {
+    if (!token)
+      return;
     
     if(!token || !verifyToken(token))
       return { error : 'Token could not be verified.' };
 
     const payload = decodeToken(token).payload;
     const userId = payload.userId;
+    console.log(userId);
 
     const user = await User.findById({ _id : userId })
       .catch(() => null);

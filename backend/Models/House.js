@@ -39,7 +39,7 @@ const HouseSchema = new Schema({
             },
             email : {
                 type : String,
-                required : [true, 'Message must have attaached email.']
+                required : [true, 'Message must have attached email.']
             },
             date : {
                 type : Schema.Types.Date,
