@@ -9,40 +9,17 @@ import Calendar from "./pages/Calendar";
 import Location from "./pages/Location";
 import Chat from "./pages/Chat";
 import Settings from "./pages/Settings";
-
+import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-// import DashboardPage from './pages/DashboardPage';
-// import ErrorPage from "./pages/ErrorPage";
-// import ProtectedRoute from "./components/ProtectedRoute";
-// import { UserProvider } from './components/UserContext';
-// import TodoList from './components/TodoList';
 import io from "socket.io-client";
-// import Chat from './components/Chat';
-// import JoinHome from "./pages/JoinHome";
-// import CreateHome from "./pages/CreateHome";
-import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
-import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import { useEffect, useState } from "react";
-import EventModal from "./components/EventsModal";
 import Modal from "react-modal";
-import io from "socket.io-client";
-
-// if (localStorage.theme === "dark" || !("theme" in localStorage)) {
-//   document.documentElement.classList.add("dark");
-// } else {
-//   document.documentElement.classList.remove("dark");
-// }
-
-// if (localStorage.theme === "dark") {
-//   localStorage.theme = "light";
-// } else {
-//   localStorage.theme = "dark";
-// }
 
 function App() {
   Modal.setAppElement("#root");
@@ -156,7 +133,7 @@ function App() {
                 path="/dashboard"
                 element={<DashboardPage houseInfo={houseInfo} />}
               />
-              <Route path="/tasklist" element={<Tasklist />} />
+              <Route path="/tasklist" element={<TodoList />} />
               <Route
                 path="/calendar"
                 element={
