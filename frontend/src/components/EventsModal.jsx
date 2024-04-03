@@ -100,7 +100,7 @@ export default function EventModal({
                 placeholder="Add title"
                 value={title}
                 required
-                className="bg-white border-0 text-xl font-semibold p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+                className="bg-white border-0 text-black text-xl font-semibold p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
                 onChange={(e) => setTitle(e.target.value)}
               />
               <div className="flex flex-row text-black">
@@ -148,13 +148,13 @@ export default function EventModal({
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                   className="absolute size-6 hidden peer-checked:block text-white font-extrabold pointer-events-none"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="m4.5 12.75 6 6 9-13.5"
                   />
                 </svg>

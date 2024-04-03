@@ -25,13 +25,6 @@ import EventModal from "./components/EventsModal";
 import Modal from "react-modal";
 import io from "socket.io-client";
 
-const socket = io("https://https://cohab-4fcf8ee594c1.herokuapp.com/", {
-  transports: ["websocket"],
-  auth: {
-    token: localStorage.getItem("sessionId"),
-  },
-});
-
 // if (localStorage.theme === "dark" || !("theme" in localStorage)) {
 //   document.documentElement.classList.add("dark");
 // } else {
@@ -54,19 +47,62 @@ function App() {
     ? JSON.parse(localStorage.getItem("eventsInfo"))
     : {};
 
+  const localUserInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("eventsInfo"))
+    : null;
+
   const [houseInfo, setHouseInfo] = useState(localHouseInfo);
+  const [user, setUser] = useState(localUserInfo);
   const [events, setEvents] = useState(localEventInfo);
+  const [socket, setSocket] = useState(null);
+  const [socketError, setSocketError] = useState(null);
+
+  const handleLogin = () => {
+    const connectSocket = io("https://cohab-4fcf8ee594c1.herokuapp.com/", {
+      transports: ["websocket"],
+      auth: {
+        token: localStorage.getItem("sessionId"),
+      },
+    });
+
+    setSocket(connectSocket);
+    setSocketError(null);
+  };
+
+  const handleLogOut = () => {
+    socket.disconnect();
+  };
 
   useEffect(() => {
-    socket.on("connect", (e) => {
-      console.log("check 2", socket.connected);
-    });
+    if (user && !socket) {
+      handleLogin();
+    }
 
-    socket.on("eventsChange", (e) => {
-      setEvents(e.events);
-      localStorage.setItem("eventsInfo", JSON.stringify(e.events));
-    });
-  }, []);
+    if (socket) {
+      socket.once("connect", () => {
+        console.log("Socket Connected");
+      });
+
+      socket.on("disconnet", () => {
+        console.log("Socket Disconnected");
+      });
+
+      socket.on("error", (err) => {
+        setSocketError(err?.message);
+        console.log(err?.message);
+      });
+
+      socket.on("eventsChange", (e) => {
+        setEvents(e.events);
+        localStorage.setItem("eventsInfo", JSON.stringify(e.events));
+      });
+    }
+
+    return () => {
+      socket?.off();
+      socket?.disconnect();
+    };
+  }, [socket, user]);
 
   const handleEventSubmit = (event) => {
     socket.emit("createEvent", event);
@@ -102,21 +138,24 @@ function App() {
           <Route element={<UnauthenticatedRoute />}>
             <Route path="*" element={<ErrorPage />} />
             <Route path="/" element={<Navigate replace to="/login" />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage setUser={setUser} />} />
             <Route path="/signup" element={<SignUpPage />} />
           </Route>
           <Route element={<AuthenticatedRoute />}>
             {/* <Route path="/joinhouse" element={<JoinHome />} />
             <Route path="/createhouse" element={<CreateHome />} /> */}
-            <Route element={<SidebarLayout />}>
+            <Route
+              element={
+                <SidebarLayout
+                  houseInfo={houseInfo}
+                  setHouseInfo={handleHouseUpdate}
+                  setEvents={setEvents}
+                />
+              }
+            >
               <Route
                 path="/dashboard"
-                element={
-                  <DashboardPage
-                    houseInfo={houseInfo}
-                    setHouseInfo={handleHouseUpdate}
-                  />
-                }
+                element={<DashboardPage houseInfo={houseInfo} />}
               />
               <Route path="/tasklist" element={<Tasklist />} />
               <Route
