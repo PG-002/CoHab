@@ -45,7 +45,7 @@ function App() {
   {
     transports: ['websocket'],
     auth: {
-      token: localStorage.getItem('sessionId'), // Retrieve the token from local storage
+      token: localStorage.getItem('sessionId'),
     },
   });
   return (
@@ -66,7 +66,7 @@ function App() {
               <Route path="/tasklist" element={<TodoList socket={socket}/>} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/location" element={<Location />} />
-              <Route path="/messages" element={<Chat socket={socket}/>} />
+              <Route path="/messages" element={<Chat socket={socket}/>} /> 
               <Route path="/settings" element={<Settings />} />
             </Route>
           </Route>

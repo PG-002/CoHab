@@ -24,13 +24,7 @@ function TodoList({ socket }) {
           console.log(tasks);
           console.log(data.tasks.tasks);
           setTasks(data.tasks);
-          console.log(data.tasks) // Update the local state with the new tasks
       });
-
-      // Send an event to join the room using the stored houseID when component mounts
-      // Ideally, the houseID should be passed down as a prop to this component
-      // or retrieved from a global state/store or secure storage.
-      socket.emit('requestTask');
 
       // Clean up the listener when the component unmounts
       return () => {

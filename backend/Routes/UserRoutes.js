@@ -6,7 +6,7 @@ const router = express.Router();
 // User CRUD Operations
 router.post('/signup', signup);
 router.post('/login', login);
-router.post('/joinHouse', joinHouse);
+// router.post('/joinHouse', joinHouse);
 router.post('/getHouse', getHouse);
 router.post('/updateUser', updateUser);
 router.post('/updatePassword', updatePassword);
@@ -14,7 +14,7 @@ router.post('/deleteUser', deleteUser);
 
 // Verification Operations
 router.post('/sendVerification', sendVerification);
-router.get('/verifyUser', verifyUser);
+router.post('/verifyUser', verifyUser);
 
 router.post('/encode', encode);
 router.post('/decode', decode);

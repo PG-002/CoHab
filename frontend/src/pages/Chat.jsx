@@ -19,28 +19,18 @@ function Chat({socket}) {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
-  useEffect(() => {
-    socket.on('groupChatChange', (data) => {
-        console.log(data.messages.groupChat);
-      setMessages(data.messages.groupChat); 
-    });
 
-    // Clean up the listener when the component unmounts
-    return () => {
-      socket.off('groupChatChange');
-    };
-  }, [socket]);
+    socket.on('groupChatChange', (data) => {
+      console.log(data.messages);
+      setMessages(data.messages); 
+  });
 
   const handleSendMessage = (messageContent) => {
     const messageDate = new Date(); 
-
-    socket.emit('sendMessage', 
-    {   date: messageDate, 
-        message: messageContent, 
-        sentBy: decodedToken.user._id,
-        firstName : decodedToken.user.firstName });
-        console.log("sentBy is " + decodedToken.user._id);
-        console.log("ID is " +  decodedToken.user._id);
+    console.log(messageContent);
+    socket.emit('sendMessage', messageContent);
+        // console.log("sentBy is " + decodedToken.firstName);
+        // console.log("email is " +  decodedToken.email);
     setCurrentMessage(''); 
   };
 
@@ -52,7 +42,7 @@ function Chat({socket}) {
     <div className="message-list-container">
       <h2>Group Chat</h2>
       <div>
-      <Messages messages={messages} userID={decodedToken.user._id} onDelete={handleDeleteMessage} />
+      <Messages messages={messages} userID={decodedToken.email} onDelete={handleDeleteMessage} />
       </div>
       <div className='chat-container'>
       <SendMessageForm sendMessage={handleSendMessage} />

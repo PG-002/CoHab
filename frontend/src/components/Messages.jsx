@@ -16,12 +16,12 @@ function Messages({ messages, userID, onDelete }) {
     <>
       <ul className="message-list">
         {messages.map((message, index) => {
-          const ownedByCurrentUser = message.sentBy === userID;
+          const ownedByCurrentUser = message.email === userID;
           const messageClass = ownedByCurrentUser ? 'my-message' : 'other-message';
           return (
             <li key={index} className={messageClass}>
               {!ownedByCurrentUser && (
-                <div className="sender-name">{message.firstName}</div>
+                <div className="sender-name">{message.sentBy}</div>
               )}
               <div className={`message-bubble ${ownedByCurrentUser ? 'my-bubble' : 'other-bubble'}`}>
                 <p>{message.message}</p>
