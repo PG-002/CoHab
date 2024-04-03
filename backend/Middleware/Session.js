@@ -3,15 +3,12 @@ const { verifyToken, decodeToken } = require('../Middleware/Token');
 
 module.exports = (io) => {
   const auth = async (token) => {
-    if (!token)
-      return;
     
     if(!token || !verifyToken(token))
       return { error : 'Token could not be verified.' };
 
     const payload = decodeToken(token).payload;
     const userId = payload.userId;
-    console.log(userId);
 
     const user = await User.findById({ _id : userId })
       .catch(() => null);
@@ -30,10 +27,9 @@ module.exports = (io) => {
     require('../Listeners/GroupChat')(socket, io);
     require('../Listeners/Tasks')(socket, io);
     require('../Listeners/Rules')(socket, io);
-    require('../Listeners/Groceries')(socket, io);
-    require('../Listeners/Reminders')(socket, io);
     require('../Listeners/Events')(socket, io);
     require('../Listeners/Location')(socket, io);
+    require('../Listeners/NoiseLevel')(socket, io);
   };
 
   return { auth, addEventListeners };

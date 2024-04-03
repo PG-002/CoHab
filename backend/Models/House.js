@@ -6,10 +6,6 @@ const HouseSchema = new Schema({
         type : String,
         required : [true, 'House requires a name.']
     },
-    amountOfUsers : {
-        type : Number,
-        default : 0
-    },
     members : {
         type : [{ type : String }],
         default : []

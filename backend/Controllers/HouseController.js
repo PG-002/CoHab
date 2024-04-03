@@ -4,19 +4,37 @@ const User = require('../Models/User');
 const { sendInvite, getHouse, deleteCode } = require('../Middleware/Email');
 
 const createHouse = async (req, res) => {
-    const { houseName, code } = req.body;
+    const { userId, houseName } = req.body;
 
-    await House.create({ houseName : houseName, joinHouseCode : code }).then(house => {
-        res.status(200);
-        
-        const token = createToken({ house : house });
+    const user = await User.findById(userId)
+        .catch(() => null);
 
-        res.json({token : token});
-    }).catch(err => {
-        console.log(err);
-        res.status(200);
-        res.json({error : err});
-    })
+    res.status(200);
+
+    if(!user)
+    {
+        res.json({ token : null, error : 'User does not exist.' });
+        return;
+    }
+
+    if(!user.verified)
+    {
+        res.json({ token : null, error : 'This user is not verified.' });
+        return;
+    }
+
+    const house = await House.create({ houseName : houseName, members : [user.firstName + ' ' + user.lastName] })
+        .catch(() => null);
+
+    if(!house)
+    {
+        res.json({ token : null, error : 'House could not be created.' });
+        return;
+    }
+
+    await User.findByIdAndUpdate(userId, { houseId : house._id })
+        .then(() => res.json({ token : createToken({ house : house }), error : '' }))
+        .catch(() => res.json({ token : null, error : 'User could not be put into house.' }));
 }
 
 const sendJoinCode = async (req, res) => {
