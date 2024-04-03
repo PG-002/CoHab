@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-var token;
-var userId;
-var decodedToken;
+late var token;
+late String userId;
+late var decodedToken;
 
-bool check = false;
 
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
@@ -34,12 +33,14 @@ Future<void> signUp(
       decodedToken = JwtDecoder.decode(token);
 
       //userId
-      userId = decodedToken['user']['_id'];
+      userId = decodedToken['userId'];
     } else {
       // Signup failed
+      throw 'Signup failed';
     }
   } catch (e) {
     // Exception occurred
+    throw 'Signup failed';
   }
 }
 
@@ -65,15 +66,57 @@ Future<void> login(String email, String password) async {
       decodedToken = JwtDecoder.decode(token);
 
       //userId
-      userId = decodedToken['user']['_id'];
-      check = true;
-    } else {
+      userId = decodedToken['userId'];
+
+      print(userId);
+
+    } else if(response.statusCode == 404) {
       // Login failed
-      check = false;
+      throw 'Invalid Email';
     }
-  } catch (e) {
+    else
+      {
+        throw 'Invalid Password';
+      }
+  }
+
+  catch (e) {
     // Exception occurred
-    check = false;
+  }
+}
+
+Future<void> joinHouse(String code) async {
+
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/joinHouse');
+  final Map<String, String> body = {
+    'userId': userId,
+    'houseId': code,
+    'firstName': decodedToken['firstName'],
+    'lastName': decodedToken['lastName']
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    print(response.body);
+
+    final jsonResponse = json.decode(response.body);
+
+     if (jsonResponse['joined'] == true) {
+      print("YUESEFES");
+     }
+  }
+  catch (e) {
+    // Exception occurred
+    print(e);
+    throw 'Code Invalid';
   }
 }
 
