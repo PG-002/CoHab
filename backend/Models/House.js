@@ -84,14 +84,6 @@ const HouseSchema = new Schema({
         }],
         default : []
     },
-    rules : {
-        type : [{ id : String, rule : String }],
-        default : []
-    },
-    groceryNeeded : {
-        type : [{ id : String, item : String }],
-        default : []
-    },
     noiseLevel : {
         type : Number,
         default : 0
