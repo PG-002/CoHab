@@ -123,6 +123,7 @@ function App() {
             <Route
               element={
                 <SidebarLayout
+                  userInfo={user}
                   houseInfo={houseInfo}
                   setHouseInfo={handleHouseUpdate}
                   setEvents={setEvents}
@@ -133,7 +134,7 @@ function App() {
                 path="/dashboard"
                 element={<DashboardPage houseInfo={houseInfo} />}
               />
-              <Route path="/tasklist" element={<TodoList socket={socket}/>} />
+              <Route path="/tasklist" element={<TodoList socket={socket} />} />
               <Route
                 path="/calendar"
                 element={

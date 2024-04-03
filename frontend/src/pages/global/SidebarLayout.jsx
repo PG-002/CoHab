@@ -10,8 +10,9 @@ import {
   CalendarDays,
 } from "lucide-react";
 
-function SidebarLayout({ houseInfo, setHouseInfo }) {
+function SidebarLayout({ userInfo, houseInfo, setHouseInfo }) {
   const [activePage, setActivePage] = useState("/login");
+
   let location = useLocation();
 
   useEffect(() => {
@@ -52,7 +53,7 @@ function SidebarLayout({ houseInfo, setHouseInfo }) {
   }, [location]);
   return (
     <div className="w-screen flex flex-row">
-      <Sidebar>
+      <Sidebar userInfo={userInfo}>
         <SidebarItem
           icon={<LayoutDashboard size={25} className="text-black" />}
           text={"Dashboard"}
