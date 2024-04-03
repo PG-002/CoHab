@@ -133,7 +133,7 @@ function App() {
                 path="/dashboard"
                 element={<DashboardPage houseInfo={houseInfo} />}
               />
-              <Route path="/tasklist" element={<TodoList />} />
+              <Route path="/tasklist" element={<TodoList socket={socket}/>} />
               <Route
                 path="/calendar"
                 element={
