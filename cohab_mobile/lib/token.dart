@@ -120,8 +120,66 @@ Future<void> joinHouse(String code) async {
   }
 }
 
+Future<void> sendCode() async {
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/sendVerification');
+  final Map<String, String> body = {
+    'id': userId,
+  };
 
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
 
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      var sent = jsonResponse['sent'];
+
+      if (sent == false) {
+        throw 'User Not Found';
+      }
+    }
+  }
+  catch (e) {
+    // Exception occurred
+  }
+}
+
+Future<void> verifyUser(String code) async {
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyUser');
+  final Map<String, String> body = {
+    'id': userId,
+    'code': code,
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      var verified = jsonResponse['verified'];
+
+      if (verified == false) {
+        throw 'Unable to Verify User';
+      }
+    }
+  }
+  catch (e) {
+    // Exception occurred
+  }
+}
 
 
 

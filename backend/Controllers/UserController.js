@@ -158,7 +158,7 @@ const verifyUser = async (req, res) => {
   {
     const verificationError = await verifyCode(user, code);
     if (verificationError)
-      res.json({ verfied: false, error: verificationError });
+      res.json({ verified: false, error: verificationError });
     else
       await deleteCode(user, code)
         .then(async (deleteRespose) =>
