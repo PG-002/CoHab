@@ -36,7 +36,6 @@ const SignUpPage = () => {
         password: password,
       });
 
-      console.log(JSONPayload);
       const response = await fetch(
         "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/signup",
         {

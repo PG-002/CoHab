@@ -10,9 +10,42 @@ import {
   CalendarDays,
 } from "lucide-react";
 
-function SidebarLayout() {
+function SidebarLayout({ houseInfo, setHouseInfo }) {
   const [activePage, setActivePage] = useState("/login");
   let location = useLocation();
+
+  useEffect(() => {
+    const fetchHouseInfo = async () => {
+      try {
+        const userId = JSON.parse(localStorage.getItem("userInfo")).userId;
+        const JSONPayload = JSON.stringify({
+          userId: userId,
+        });
+        const response = await fetch(
+          "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getHouse",
+          {
+            // Adjust URL as necessary
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSONPayload,
+          }
+        );
+        if (response.ok && response.status == 200) {
+          const data = await response.json();
+          setHouseInfo(data.house);
+        } else if (response.status === 404) {
+          alert("Login failed: User not found");
+        } else {
+          throw new Error(response.status);
+        }
+      } catch (error) {
+        console.error("Login error", error);
+      }
+    };
+    fetchHouseInfo();
+  }, []);
 
   useEffect(() => {
     setActivePage(location.pathname);

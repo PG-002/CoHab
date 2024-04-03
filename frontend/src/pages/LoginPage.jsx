@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Sidebar, { SidebarItem } from "./global/Sidebar";
 import { LayoutDashboard } from "lucide-react";
 
-const LoginPage = () => {
+const LoginPage = ({ setUser }) => {
   const [email, setEmail] = useState("");
   // const [email, setEmail] = useState('');
   const [password, setPassword] = useState("");
@@ -36,7 +36,13 @@ const LoginPage = () => {
 
       if (response.ok && response.status == 201) {
         const data = await response.json();
-        localStorage.setItem("sessionId", data.token);
+        const token = data.token;
+        localStorage.setItem("sessionId", token);
+
+        const decoded = jwtDecode(token);
+        localStorage.setItem("userInfo", JSON.stringify(decoded));
+        setUser(decoded);
+
         navigate("/dashboard");
       } else if (response.status === 404) {
         alert("Login failed: User not found");

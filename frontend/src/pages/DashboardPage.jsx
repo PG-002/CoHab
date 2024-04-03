@@ -1,18 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 
-const DashboardPage = () => {
-  const navigate = useNavigate();
-
-  const LogOut = () => {
-    localStorage.removeItem("sessionId");
-    navigate("/");
-  };
-  return (
-    <div className="w-full">
-      <h1>HELLO WORLD!</h1>
-      <button onClick={LogOut}>Log Out</button>
-    </div>
-  );
+const DashboardPage = ({ houseInfo }) => {
+  return <div className="w-screen text-left overflow-hidden text-white"></div>;
 };
 
 export default DashboardPage;
