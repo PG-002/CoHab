@@ -1,5 +1,4 @@
 import 'package:cohab_mobile/houseoptions.dart';
-import 'package:cohab_mobile/register.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 
@@ -27,9 +26,8 @@ class _VerificationPageState extends State<VerificationPage> {
   }
 
   void _handleEmail(BuildContext context) async {
-    //print(_verificationCode);
     try {
-
+      await verifyUser(_verificationCode);
 
       Navigator.pushReplacement(
         context,
