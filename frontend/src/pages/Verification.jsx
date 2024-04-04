@@ -7,19 +7,27 @@ const VerficationPage = ({ setUser }) => {
   const [codeResponse, setCodeResponse] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+
+    if (JSON.parse(userInfo).verified) {
+      navigate("/dashboard");
+    }
+  }, []);
+
   const handleClick = () => {
     const userInfo = localStorage.getItem("userInfo");
 
     if (userInfo) {
-      sendCode(JSON.parse(userInfo).userId);
+      sendCode(JSON.parse(userInfo).email);
     } else {
       console.error("user not found");
     }
   };
 
-  const sendCode = async (id) => {
+  const sendCode = async (email) => {
     try {
-      const JSONPayload = JSON.stringify({ id });
+      const JSONPayload = JSON.stringify({ email });
       console.log(JSONPayload);
 
       const response = await fetch(
@@ -46,13 +54,13 @@ const VerficationPage = ({ setUser }) => {
     }
   };
 
-  const sendVerification = async (id, code) => {
+  const sendVerification = async (email, code) => {
     try {
-      const JSONPayload = JSON.stringify({ id, code });
+      const JSONPayload = JSON.stringify({ email, code });
       console.log(JSONPayload);
 
       const response = await fetch(
-        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyUser",
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyCode",
         {
           // Adjust URL as necessary
           method: "POST",
@@ -99,7 +107,7 @@ const VerficationPage = ({ setUser }) => {
     const userInfo = localStorage.getItem("userInfo");
 
     if (userInfo) {
-      sendVerification(JSON.parse(userInfo).userId, code);
+      sendVerification(JSON.parse(userInfo).email, code);
     } else {
       console.error("user not found");
     }
