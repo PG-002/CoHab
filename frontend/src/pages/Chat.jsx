@@ -69,18 +69,20 @@ function Chat({ socket }) {
   };
 
   return (
-    <div className="message-list-container">
-      <h2>Group Chat</h2>
-      <div>
-        <Messages
-          messages={messages}
-          userID={decodedToken.email}
-          onDelete={handleDeleteMessage}
-        />
+    <div className="flex flex-col w-full h-screen bg-[#ADBC9F] text-black font-bold">
+      <h2 className=" bg-white font-bold text-black border-b-2 border white text-xs sm:text-sm md:text-base lg:text-lg ">
+        Group Chat
+      </h2>
+      <div className="message-list-container pt-4 pb-1 flex flex-col justify-between w-full h-full">
+        <div>
+          <Messages
+            messages={messages}
+            userID={decodedToken.email}
+            onDelete={handleDeleteMessage}
+          />
+        </div>
       </div>
-      <div className="chat-container">
-        <SendMessageForm sendMessage={handleSendMessage} />
-      </div>
+      <SendMessageForm sendMessage={handleSendMessage} />
     </div>
   );
 }

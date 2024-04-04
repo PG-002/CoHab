@@ -1,5 +1,5 @@
-import './Chat.css';
-import { useRef, useEffect } from 'react';
+import "./Chat.css";
+import { useRef, useEffect } from "react";
 
 function Messages({ messages, userID, onDelete }) {
   const messagesEndRef = useRef(null);
@@ -14,19 +14,30 @@ function Messages({ messages, userID, onDelete }) {
 
   return (
     <>
-      <ul className="message-list">
+      <ul className="message-list px-4">
         {messages.map((message, index) => {
           const ownedByCurrentUser = message.email === userID;
-          const messageClass = ownedByCurrentUser ? 'my-message' : 'other-message';
+          const messageClass = ownedByCurrentUser
+            ? "my-message"
+            : "other-message";
           return (
             <li key={index} className={messageClass}>
               {!ownedByCurrentUser && (
                 <div className="sender-name">{message.sentBy}</div>
               )}
-              <div className={`message-bubble ${ownedByCurrentUser ? 'my-bubble' : 'other-bubble'}`}>
+              <div
+                className={`message-bubble ${
+                  ownedByCurrentUser ? "my-bubble" : "other-bubble"
+                }`}
+              >
                 <p>{message.message}</p>
                 {ownedByCurrentUser && (
-                  <button onClick={() => onDelete(message)} className="delete-button">Delete</button>
+                  <button
+                    onClick={() => onDelete(message)}
+                    className="delete-button"
+                  >
+                    Delete
+                  </button>
                 )}
               </div>
             </li>
