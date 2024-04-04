@@ -33,7 +33,7 @@ const createHouse = async (req, res) => {
     }
 
     await User.findByIdAndUpdate(userId, { houseId : house._id })
-        .then(() => res.json({ token : createToken(house), error : '' }))
+        .then(() => res.json({ token : createToken({ house : house }), error : '' }))
         .catch(() => res.json({ token : null, error : 'User could not be put into house.' }));
 }
 
@@ -74,13 +74,14 @@ const sendJoinCode = async (req, res) => {
 const join = async (req, res) => {
     const { userId, code } = req.body;
 
+    res.status(200);
+
     const user = User.findById(userId)
         .catch(() => null);
 
     if(!user)
     {
-        res.status(404);
-        res.json({ houseId : null, error : 'User does not exist.' });
+        res.json({ token : null, error : 'User does not exist.' });
         return;
     }
 
@@ -88,17 +89,24 @@ const join = async (req, res) => {
 
     if(verificationError)
     {
-        res.status(404);
-        res.json(verificationError);
+        res.json({ token : null, error : verificationError  });
         return;
     }
 
-    const houseId = getHouse(userId, code);
+    const houseId = await getHouse(userId, code);
 
     if(!houseId)
     {
-        res.status(404);
-        res.json({ houseId : null, error : 'Could not get the houseId.' });
+        res.json({ token : null, error : 'Could not get the houseId.' });
+        return;
+    }
+
+    const house = await House.findById(houseId)
+        .catch(() => null);
+
+    if(!house)
+    {
+        res.json({ token : null, error : 'Could not fetch house.' });
         return;
     }
 
@@ -108,20 +116,13 @@ const join = async (req, res) => {
 
     if(updateErr)
     {
-        res.status(404);
-        res.json({ houseId : null, error : 'User could not be updated.' });
+        res.json({ token : null, error : 'User could not be updated.' });
         return;
     }
 
     await deleteCode(user, code)
-        .then(() => {
-            res.status(200);
-            res.json({ houseId : houseId, error : '' });
-        })
-        .catch(() => {
-            res.status(404);
-            res.json({ houseId : null, error : 'VerificationEntry could not be deleted.' });
-        });
+        .then(() => res.json({ token : createToken({ house : house }), error : '' }))
+        .catch(() => res.json({ token : null, error : 'VerificationEntry could not be deleted.' }));
 };
 
 const updateHouse = async (req, res) => {

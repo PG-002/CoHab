@@ -68,20 +68,20 @@ const getHouse = async (req, res) => {
   res.status(200);
 
   await User.findById(userId)
-    .then(user => {
+    .then(async user => {
       if(!user.houseId)
       {
         res.json({ token : null, error : 'User is not in a house.' });
         return;
       }
 
-      const house = House.findById(user.houseId)
+      const house = await House.findById(user.houseId)
         .catch(() => null);
 
       if(!house)
         res.json({ token : null, error : 'House does not exist.' });
       else
-        res.json({ token : createToken(house), error : '' });
+        res.json({ token : createToken({ house : house }), error : '' });
     })
     .catch(() => res.json({ token : null, error : 'User does not exist.' }));
 }
