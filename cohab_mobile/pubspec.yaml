@@ -31,7 +31,6 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.2.1
-  web_socket_channel: ^2.4.4
   jwt_decoder: ^2.0.1
   lucide_icons: ^0.257.0
   flutter_neat_and_clean_calendar: ^0.3.0+12

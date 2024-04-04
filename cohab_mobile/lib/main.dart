@@ -35,11 +35,22 @@ class _LoginPageState extends State<LoginPage> {
       print(decodedToken);
 
       if (decodedToken['verified'] == true) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HouseOptions()),
-        );
 
+        if(decodedToken['houseId'] == null)
+          {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HouseOptions()),
+            );
+          }
+
+        else
+          {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          }
 
       }
       else {

@@ -1,6 +1,5 @@
 import 'package:cohab_mobile/verification.dart';
 import 'package:flutter/material.dart';
-import 'houseoptions.dart';
 import 'token.dart';
 import 'main.dart';
 

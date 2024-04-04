@@ -1,9 +1,6 @@
 import 'package:cohab_mobile/create_house.dart';
-import 'package:cohab_mobile/homepage.dart';
 import 'package:flutter/material.dart';
 import 'joinahouse.dart'; 
-
-// Note to self: looks too bare, add perhaps an image or icon somewhere
 
 
 class HouseOptions extends StatelessWidget {
