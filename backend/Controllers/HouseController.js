@@ -1,48 +1,129 @@
 const House = require('../Models/House')
-const { createToken, verifyToken, decodeToken } = require('../Middleware/Token');
+const { createToken } = require('../Middleware/Token');
 const User = require('../Models/User');
+const { sendInvite, getHouse, deleteCode } = require('../Middleware/Email');
 
 const createHouse = async (req, res) => {
-    const { houseName, code } = req.body;
+    const { userId, houseName } = req.body;
 
-    await House.create({ houseName : houseName, joinHouseCode : code }).then(house => {
-        res.status(200);
-        
-        const token = createToken({ house : house });
+    const user = await User.findById(userId)
+        .catch(() => null);
 
-        res.json({token : token});
-    }).catch(err => {
-        console.log(err);
-        res.status(200);
-        res.json({error : err});
-    })
+    res.status(200);
+
+    if(!user)
+    {
+        res.json({ token : null, error : 'User does not exist.' });
+        return;
+    }
+
+    if(!user.verified)
+    {
+        res.json({ token : null, error : 'This user is not verified.' });
+        return;
+    }
+
+    const house = await House.create({ houseName : houseName, members : [user.firstName + ' ' + user.lastName] })
+        .catch(() => null);
+
+    if(!house)
+    {
+        res.json({ token : null, error : 'House could not be created.' });
+        return;
+    }
+
+    await User.findByIdAndUpdate(userId, { houseId : house._id })
+        .then(() => res.json({ token : createToken({ house : house }), error : '' }))
+        .catch(() => res.json({ token : null, error : 'User could not be put into house.' }));
 }
 
-const joinHouse = async (req, res) => {
+const sendJoinCode = async (req, res) => {
+    const { houseId, email } =  req.body;
 
-    // _id is the user's id
-    const { joinHouseCode, firstName, lastName, _id } = req.body;
-    const fullName = firstName + ' ' + lastName;
+    const user = User.findOne({ email : email })
+        .catch(() => null);
 
-    const house = await House.where({ joinHouseCode: joinHouseCode }).findOne();
+    const house = House.findById(houseId)
+        .catch(() => null);
 
-    const user = await User.where({ _id: _id }).findOne();
-    await User.updateOne({ _id : _id }, {houseID: house._id });
+    if(!house)
+    {
+        res.status(404);
+        res.json({ sent : false, error : 'House does not exist.' });
+        return;
+    }
 
-    await House.updateOne({ joinHouseCode : joinHouseCode }, {$inc: { amountOfUsers : 1 }, $push: { members : fullName }}).then(() => {
-        res.status(200);
-        res.json({user : {
-            id : user._id,
-            firstname: user.firstName,
-            lastname: user.lastName,
-            houseID : house._id
-        }});
-    }).catch(e => {
-        console.log(e);
-        res.status(200);
-        res.json({ Error: e })
-    });
+    if(!user)
+    {   
+        res.status(404);
+        res.json({ sent : false, error : 'User does not exist.' });
+        return;
+    }
+
+    if(!user.verified)
+    {
+        res.status(404);
+        res.json({ sent : false, error : 'This user has not confirmed their email.' });
+        return;
+    }
+
+    res.status(200);
+    res.json(await sendInvite(user, house));
 }
+
+const join = async (req, res) => {
+    const { userId, code } = req.body;
+
+    res.status(200);
+
+    const user = User.findById(userId)
+        .catch(() => null);
+
+    if(!user)
+    {
+        res.json({ token : null, error : 'User does not exist.' });
+        return;
+    }
+
+    const verificationError = await verifyCode(user, code);
+
+    if(verificationError)
+    {
+        res.json({ token : null, error : verificationError  });
+        return;
+    }
+
+    const houseId = await getHouse(userId, code);
+
+    if(!houseId)
+    {
+        res.json({ token : null, error : 'Could not get the houseId.' });
+        return;
+    }
+
+    const house = await House.findById(houseId)
+        .catch(() => null);
+
+    if(!house)
+    {
+        res.json({ token : null, error : 'Could not fetch house.' });
+        return;
+    }
+
+    const updateErr = User.findByIdAndUpdate(userId, { houseId : houseId })
+        .then(() => null)
+        .catch(err => err);
+
+    if(updateErr)
+    {
+        res.json({ token : null, error : 'User could not be updated.' });
+        return;
+    }
+
+    await deleteCode(user, code)
+        .then(() => res.json({ token : createToken({ house : house }), error : '' }))
+        .catch(() => res.json({ token : null, error : 'VerificationEntry could not be deleted.' }));
+};
 
 const updateHouse = async (req, res) => {
     const { id, fieldName, fieldValue } = req.body;
@@ -55,7 +136,8 @@ const updateHouse = async (req, res) => {
 
 const deleteHouse = async (req, res) => {
     const { id } = req.body;
-    const house = await House.findOne({ _id : id }).catch(() => null);
+    const house = await House.findById(id)
+        .catch(() => null);
 
     if(!house)
     {
@@ -64,7 +146,7 @@ const deleteHouse = async (req, res) => {
         return;
     }
 
-    await User.updateMany({ houseID : id }, { houseID : null }).catch(() => null);
+    await User.updateMany({ houseId : id }, { houseId : null }).catch(() => null);
 
     res.status(200);
     await House.deleteOne({ _id : id })
@@ -72,19 +154,4 @@ const deleteHouse = async (req, res) => {
         .catch(err => res.json({ deleted : false, error : err }));
 }
 
-const modifyNoiseLevel = async (req, res) => {
-    const { id, newLevel } = req.body;
-    const house = await House.findOne({ _id : id }).catch(() => null);
-
-    if(!house)
-    {
-        res.status(200);
-        res.json({ deleted : false, error : 'House does not exist.' });
-        return;
-    }
-    await House.updateOne({ _id : id }, { noiseLevel : newLevel })
-        .then(() => res.json({ updated : true, error : '' }))
-        .catch(err => res.json({ updated : false, error: err }));
-}
-
-module.exports = { createHouse, joinHouse, updateHouse, deleteHouse, modifyNoiseLevel };
+module.exports = { createHouse, sendJoinCode, join, updateHouse, deleteHouse };

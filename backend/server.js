@@ -6,7 +6,6 @@ const path = require('path');
 require('dotenv').config();
 const env = process.env;
 const PORT = env.PORT || 5003;
-
 // Connection to MongoDB
 const mongoose = require('mongoose');
 mongoose.connect(env.MONGODB_URI, { dbName : 'Co-habDB'})
@@ -51,7 +50,7 @@ io.use(async (socket, next) => {
 
     if(session.error)
         return next(new Error(session.error));
-
+    
     socket.user = session.user;
     socket.room = session.room;
     next();

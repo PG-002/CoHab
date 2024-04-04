@@ -6,10 +6,6 @@ const HouseSchema = new Schema({
         type : String,
         required : [true, 'House requires a name.']
     },
-    amountOfUsers : {
-        type : Number,
-        default : 0
-    },
     members : {
         type : [{ type : String }],
         default : []
@@ -37,6 +33,10 @@ const HouseSchema = new Schema({
                 type : String,
                 required : [true, 'Message must have an author.']
             },
+            email : {
+                type : String,
+                required : [true, 'Message must have attached email.']
+            },
             date : {
                 type : Schema.Types.Date,
                 required : [true, 'Date must be included with the message.']
@@ -58,6 +58,10 @@ const HouseSchema = new Schema({
                 type : Schema.Types.Date,
                 required : [true, 'Event must have a start date.']
             },
+            description : {
+                type : String,
+                required : false
+            },
             allDay : {
                 type : Boolean,
                 required : [true, 'Must indicate if event is all day.']
@@ -70,24 +74,17 @@ const HouseSchema = new Schema({
         default : []
     },
     tasks : {
-        type : [{ id : String, task : String, completed : Boolean }],
-        default : []
-    },
-    rules : {
-        type : [{ id : String, rule : String }],
-        default : []
-    },
-    groceryNeeded : {
-        type : [{ id : String, item : String }],
+        type : [{
+            task : String,
+            createdBy : String,
+            assignedTo : String,
+            completed : Boolean
+        }],
         default : []
     },
     noiseLevel : {
         type : Number,
         default : 0
-    },
-    joinHouseCode : {
-        type : String,
-        required : [true, 'House code required.']
     }
 }, { versionKey : false });
 

@@ -6,16 +6,16 @@ const router = express.Router();
 // User CRUD Operations
 router.post('/signup', signup);
 router.post('/login', login);
-router.get('/getHouse', getHouse);
-router.put('/updateUser', updateUser);
-router.put('/updatePassword', updatePassword);
-router.delete('/deleteUser', deleteUser);
+router.post('/getHouse', getHouse);
+router.post('/updateUser', updateUser);
+router.post('/updatePassword', updatePassword);
+router.post('/deleteUser', deleteUser);
 
 // Verification Operations
 router.post('/sendVerification', sendVerification);
-router.get('/verifyUser', verifyUser);
+router.post('/verifyUser', verifyUser);
 
-router.get('/encode', encode);
-router.get('/decode', decode);
+router.post('/encode', encode);
+router.post('/decode', decode);
 
 module.exports = router;

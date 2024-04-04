@@ -9,17 +9,57 @@ import {
   LocateFixedIcon,
   CalendarDays,
 } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
 
-function SidebarLayout() {
+function SidebarLayout({ userInfo, houseInfo, setHouseInfo }) {
   const [activePage, setActivePage] = useState("/login");
+
   let location = useLocation();
+
+  useEffect(() => {
+    const fetchHouseInfo = async () => {
+      try {
+        const userId = JSON.parse(localStorage.getItem("userInfo")).userId;
+        const JSONPayload = JSON.stringify({
+          userId: userId,
+        });
+        const response = await fetch(
+          "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getHouse",
+          {
+            // Adjust URL as necessary
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSONPayload,
+          }
+        );
+        if (response.ok && response.status == 200) {
+          const data = await response.json();
+          if (data.token) {
+            const decoded = jwtDecode(data.token);
+            setHouseInfo(decoded.house);
+          } else {
+            console.err("Invalid Response, no token");
+          }
+        } else if (response.status === 404) {
+          alert("House Fetch failed: User not found");
+        } else {
+          throw new Error(response.status);
+        }
+      } catch (error) {
+        console.error("House Fetch error", error);
+      }
+    };
+    fetchHouseInfo();
+  }, []);
 
   useEffect(() => {
     setActivePage(location.pathname);
   }, [location]);
   return (
     <div className="w-screen flex flex-row">
-      <Sidebar>
+      <Sidebar userInfo={userInfo}>
         <SidebarItem
           icon={<LayoutDashboard size={25} className="text-black" />}
           text={"Dashboard"}

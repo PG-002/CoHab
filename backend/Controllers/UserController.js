@@ -4,17 +4,29 @@ const { hash, compare } = require('../Middleware/PasswordHash');
 const { sendCode, verifyCode, deleteCode } = require('../Middleware/Email');
 const { createToken, verifyToken, decodeToken } = require('../Middleware/Token');
 
+const retUserObj = user => ({
+  userId : user._id,
+  firstName : user.firstName,
+  lastName : user.lastName,
+  email : user.email,
+  houseId : user.houseId,
+  verified : user.verified,
+  location : user.location,
+  error : ''
+});
+
 const signup = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   const hashedPassword = await hash(password);
 
-  if (hashedPassword.error)
-    res.json({ error: hashedPassword.error });
-  else {
-    await User.create({ firstName: firstName, lastName: lastName, email: email, password: hashedPassword.password })
+  if(hashedPassword.error)
+    res.json({ error : hashedPassword.error });
+  else
+  {
+    await User.create({ firstName : firstName, lastName : lastName, email : email, password : hashedPassword.password })
       .then(user => {
         res.status(201);
-        res.json({ token: createToken({ user: user, error: '' }) });
+        res.json({ token : createToken(retUserObj(user)) });
       })
       .catch(e => {
         res.status(404);
@@ -26,55 +38,52 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  await User.findOne({ email: email })
+  await User.findOne({ email : email })
     .then(async (user) => {
-      if (!user) {
+      if(!user)
+      {
         res.status(404);
-        res.json({ error: 'Invalid email.' });
+        res.json({ error : 'Invalid email.' });
         return;
       }
 
       const hashCompare = await compare(password, user.password);
 
-      if (hashCompare.error) {
-        res.json({ error: hashCompare.error });
-      } else if (hashCompare.match) {
+      if(hashCompare.error)
+        res.json({ error : hashCompare.error });
+      else if(hashCompare.match)
+      {
         res.status(201);
-        res.json({ token: createToken({ user: user, error: '' }) });
-      } else {
-        res.json({ error: 'Password does not match.' });
+        res.json({ token : createToken(retUserObj(user)) });
       }
+      else
+        res.json({ error : 'Password does not match.' });
     })
-    .catch(() => res.json({ error: 'Error fetching user.' }));
+    .catch(() => res.json({ error : 'Error fetching user.' }));
 };
 
 const getHouse = async (req, res) => {
   const { userId } = req.body;
 
-  await User.findOne({ _id : userId })
+  res.status(200);
+
+  await User.findById(userId)
     .then(async user => {
-      if(!user.houseID)
+      if(!user.houseId)
       {
-        res.status(404);
-        res.json({ error : 'User is not part of a house.' });
+        res.json({ token : null, error : 'User is not in a house.' });
+        return;
       }
 
-      const house = await House.findOne({ _id : user.houseID })
+      const house = await House.findById(user.houseId)
         .catch(() => null);
 
       if(!house)
-      {
-        res.status(404);
-        res.json({ error : 'Could not find house.' });
-      }
-
-      res.status(200);
-      res.json({ house : house, error : '' });
+        res.json({ token : null, error : 'House does not exist.' });
+      else
+        res.json({ token : createToken({ house : house }), error : '' });
     })
-    .catch(() => {
-      res.status(404);
-      res.json({ error : 'User not found.' })
-    })
+    .catch(() => res.json({ token : null, error : 'User does not exist.' }));
 }
 
 const updateUser = async (req, res) => {
@@ -120,7 +129,7 @@ const deleteUser = async (req, res) => {
     return;
   }
 
-  const house = await House.findOne({ _id: user.houseID }).catch((err) => null);
+  const house = await House.findOne({ _id: user.houseId }).catch((err) => null);
 
   if (house)
     await House.updateOne(
@@ -148,7 +157,7 @@ const sendVerification = async (req, res) => {
 
 const verifyUser = async (req, res) => {
   const { id, code } = req.body;
-  const user = await User.findOne({ _id: id })
+  const user = await User.findOne({ _id : id })
     .catch(() => null);
 
   res.status(200);
@@ -162,7 +171,7 @@ const verifyUser = async (req, res) => {
     else
       await deleteCode(user, code)
         .then(async (deleteRespose) =>
-          await User.updateOne({ _id : user._id }, { verified : true })
+          await User.updateOne({ _id : user._id }, { verified : true, error : '' })
             .then(() => res.json(deleteRespose))
             .catch(() => res.json({ verified : false, error : 'Could not update user status.' })))
         .catch(() => res.json({ verified : false, error : 'VerificationEntry could not be deleted.' }));
