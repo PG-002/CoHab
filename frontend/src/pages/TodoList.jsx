@@ -40,11 +40,16 @@ function TodoList({ socket }) {
         }
 
         const data = await response.json();
-        if (data.house) {
-          setTasks(data.house.tasks); // or however the tasks are stored in your "house" object
+        if (data.token) {
+          const decoded = jwtDecode(data.token);
+          if (decoded.house) {
+            setTasks(decoded.house.tasks); // or however the tasks are stored in your "house" object
+          } else {
+            console.error("House not found:", data.error);
+            // Possibly handle a redirect or error state
+          }
         } else {
-          console.error("House not found:", data.error);
-          // Possibly handle a redirect or error state
+          console.err("Invalid Response, no token", data.error);
         }
       } catch (error) {
         console.error("Error fetching tasks:", error);

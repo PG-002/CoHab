@@ -23,11 +23,16 @@ function Chat({ socket }) {
         return response.json();
       })
       .then((data) => {
-        if (data.house) {
-          setMessages(data.house.groupChat);
+        if (data.token) {
+          const decoded = jwtDecode(data.token);
+          if (decoded && decoded.house) {
+            setMessages(decoded.house.groupChat);
+          } else {
+            // Handle the case where the house is not found
+            console.error("House not found:", data.error);
+          }
         } else {
-          // Handle the case where the house is not found
-          console.error("House not found:", data.error);
+          console.error("Invalid response, no token", data.error);
         }
       })
       .catch((error) => {
