@@ -9,9 +9,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -43,11 +45,13 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
- }
- .todo-item p {
+}
+
+.todo-item p {
   color: #888;
   text-decoration: line-through;
- }
+}
+
 @media screen and (max-width: 767px) {
   .fc-toolbar.fc-header-toolbar {
     flex-direction: column;
