@@ -1,6 +1,5 @@
 import 'package:cohab_mobile/homepage.dart';
 import 'package:flutter/material.dart';
-import 'houseoptions.dart';
 import 'token.dart';
 
 // Idea to self: Add a right arrow button below the text box.

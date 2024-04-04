@@ -1,6 +1,7 @@
 import 'package:cohab_mobile/homepage.dart';
 import 'package:cohab_mobile/houseoptions.dart';
 import 'package:cohab_mobile/verification.dart';
+import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'register.dart';
@@ -35,14 +36,29 @@ class _LoginPageState extends State<LoginPage> {
       print(decodedToken);
 
       if (decodedToken['verified'] == true) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HouseOptions()),
-        );
 
+        if(decodedToken['houseId'] == null)
+          {
+            init();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HouseOptions()),
+            );
+          }
+
+        else
+          {
+            init();
+            socket.connect();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          }
 
       }
       else {
+        init();
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const VerificationPage()),
