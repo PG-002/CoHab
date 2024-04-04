@@ -112,13 +112,18 @@ const VerficationPage = ({ setUser }) => {
         className="flex flex-col items-center gap-4 w-8/12 md:w-6/12 max-w-[700px]"
       >
         <h2 className="text-xl text-center">
-          Please verify using a code sent your provided email address.
+          Please verify using a code sent to your provided email address.
         </h2>
         <input
           onChange={handleCodeChange}
-          className="w-full h-4/6 p-5 text-2xl rounded-xl border-white border-2"
+          className={`w-full h-4/6 p-5 text-2xl rounded-xl ${
+            codeResponse ? "border-red-500" : "border-white"
+          } border-2`}
           placeholder="Code"
         ></input>
+        <p className={`${codeResponse ? "block" : "hidden"} text-red-500`}>
+          Invalid Code! Try again with correct code
+        </p>
         <button type="submit" className="bg-green-900 w-6/12 h-3/5">
           Submit Code
         </button>
