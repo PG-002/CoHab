@@ -10,7 +10,7 @@ const retUserObj = user => ({
   lastName : user.lastName,
   email : user.email,
   houseId : user.houseId,
-  verified : user.verfied,
+  verified : user.verified,
   location : user.location,
   error : ''
 });
@@ -167,7 +167,7 @@ const verifyUser = async (req, res) => {
   {
     const verificationError = await verifyCode(user, code);
     if (verificationError)
-      res.json({ verfied: false, error: verificationError });
+      res.json({ verified: false, error: verificationError });
     else
       await deleteCode(user, code)
         .then(async (deleteRespose) =>
