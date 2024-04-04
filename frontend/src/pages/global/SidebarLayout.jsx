@@ -9,6 +9,7 @@ import {
   LocateFixedIcon,
   CalendarDays,
 } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
 
 function SidebarLayout({ userInfo, houseInfo, setHouseInfo }) {
   const [activePage, setActivePage] = useState("/login");
@@ -35,14 +36,19 @@ function SidebarLayout({ userInfo, houseInfo, setHouseInfo }) {
         );
         if (response.ok && response.status == 200) {
           const data = await response.json();
-          setHouseInfo(data.house);
+          if (data.token) {
+            const decoded = jwtDecode(data.token);
+            setHouseInfo(decoded.house);
+          } else {
+            console.err("Invalid Response, no token");
+          }
         } else if (response.status === 404) {
-          alert("Login failed: User not found");
+          alert("House Fetch failed: User not found");
         } else {
           throw new Error(response.status);
         }
       } catch (error) {
-        console.error("Login error", error);
+        console.error("House Fetch error", error);
       }
     };
     fetchHouseInfo();

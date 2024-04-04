@@ -87,7 +87,7 @@ const Calendar = ({ deleteEvent, updateEvent, events, addEvent }) => {
   return (
     <div
       ref={containerRef}
-      className="bg-white text-black w-full p-10 overflow-hidden"
+      className="bg-white text-black font-bold w-full p-10 overflow-hidden"
     >
       <EventModal
         cancelModal={handleCancel}
