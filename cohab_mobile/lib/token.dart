@@ -6,7 +6,6 @@ late var token;
 late String userId;
 late var decodedToken;
 
-
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
   final Uri url =
@@ -89,12 +88,10 @@ Future<void> login(String email, String password) async {
 Future<void> joinHouse(String code) async {
 
   final Uri url = Uri.parse(
-      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/joinHouse');
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/join');
   final Map<String, String> body = {
     'userId': userId,
     'houseId': code,
-    'firstName': decodedToken['firstName'],
-    'lastName': decodedToken['lastName']
   };
 
   try {
@@ -106,13 +103,8 @@ Future<void> joinHouse(String code) async {
       body: json.encode(body),
     );
 
-    print(response.body);
 
-    final jsonResponse = json.decode(response.body);
 
-     if (jsonResponse['joined'] == true) {
-      print("YUESEFES");
-     }
   }
   catch (e) {
     // Exception occurred
@@ -183,5 +175,39 @@ Future<void> verifyUser(String code) async {
   }
 }
 
+Future<void> createHouse(String houseName) async {
+  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/createHouse');
+  final Map<String, String> body = {
+    'userId': userId,
+    'houseName': houseName,
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+
+    }
+    else
+      {
+        throw 'Create House Failed';
+      }
+
+  }
+  catch (e) {
+    // Exception occurred
+    throw 'Create House Failed';
+  }
+}
 
 
