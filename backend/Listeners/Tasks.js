@@ -3,7 +3,7 @@ const House = require('../Models/House');
 module.exports = (socket, io) => {
     const taskObj = task => ({
         task : task.task,
-        createdBy : socket.user.createdBy,
+        createdBy : task.createdBy,
         assignedTo : task.assignedTo,
         completed : task.completed
     });

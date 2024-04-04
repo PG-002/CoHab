@@ -1,29 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Nav from "../components/Nav";
 import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate } from "react-router-dom";
+import '../components/TodoList.css';
+import { Dropdown } from "flowbite-react";
+
 
 function TodoList({ socket }) {
   const navigate = useNavigate();
 
-  const LogOut = () => {
-    localStorage.removeItem("sessionId");
-    navigate("/");
-  };
+  const [housemates, setHousemates] = useState([]);
+  let [assignedTo, setAssignedTo] = useState("");
+  const [todo, setTodo] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [isEditing, setIsEditing] = useState(null);
+  const [editText, setEditText] = useState("");
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
-    // Fetch tasks on mount
     const fetchTasks = async () => {
       const sessionId = localStorage.getItem("sessionId");
+  
       if (!sessionId) {
         navigate("/login"); // Redirect to login if no session
         return;
       }
-
-      const decodedToken = jwtDecode(sessionId);
-      const userId = decodedToken.userId;
-
+  
       try {
+        const decodedToken = jwtDecode(sessionId);
+        const userId = decodedToken.userId;
+  
         const response = await fetch(
           "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getHouse",
           {
@@ -34,31 +40,32 @@ function TodoList({ socket }) {
             body: JSON.stringify({ userId }),
           }
         );
-
+  
         if (!response.ok) {
           throw new Error("Failed to fetch tasks");
         }
-
+  
         const data = await response.json();
-        if (data.house) {
-          setTasks(data.house.tasks); // or however the tasks are stored in your "house" object
+        
+        if (data.token) {
+          const houseData = jwtDecode(data.token); // Decode the house data from the token
+          setTasks(houseData.house.tasks);
+          setHousemates(houseData.house.members); // Ensure you are retrieving the right property
         } else {
           console.error("House not found:", data.error);
-          // Possibly handle a redirect or error state
+          navigate("/login"); // Redirect to login or handle error state
         }
       } catch (error) {
-        console.error("Error fetching tasks:", error);
-        navigate("/login"); // Redirect or handle error
+        console.error("Error fetching tasks:", error.message);
+        navigate("/login"); // Redirect to login or handle error
       }
     };
-
+  
     fetchTasks();
   }, [navigate]);
+  
 
-  const [todo, setTodo] = useState("");
-  const [tasks, setTasks] = useState([]);
-  const [isEditing, setIsEditing] = useState(null);
-  const [editText, setEditText] = useState("");
+  
 
   useEffect(() => {
     if (socket) {
@@ -70,13 +77,15 @@ function TodoList({ socket }) {
 
   const handleAddTask = (e) => {
     e.preventDefault();
-    console.log("I am being called");
+    
     // Emit the new task to the server
     socket.emit("createTask", {
       task: todo,
       completed: false,
+      assignedTo: assignedTo
     });
     setTodo("");
+    setAssignedTo("");
   };
 
   const handleDeleteTask = (task) => {
@@ -108,8 +117,29 @@ function TodoList({ socket }) {
     setEditText("");
   };
 
+
+  const handleSelectHousemate = (housemate) => {
+    setAssignedTo(housemate);
+  };
+
+  const handleKeyPressOnDropdown = (event) => {
+    if (event.key === 'Enter' && assignedTo && todo) {
+      handleAddTask(event);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPressOnDropdown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPressOnDropdown);
+    };
+  }, [assignedTo]); 
+
+
+
   return (
-    <div>
+    <div className="todo__container">
       <Nav />
       <form className="form" onSubmit={handleAddTask}>
         <input
@@ -120,20 +150,37 @@ function TodoList({ socket }) {
           placeholder="Enter new task"
           required
         />
-        <button className="form__cta">Add Task</button>
+        <Dropdown label={assignedTo || "Assign to..."} inline={true}>
+        {housemates.map((housemate, index) => (
+          <Dropdown.Item key={index} onClick={() => handleSelectHousemate(housemate)}>
+            {housemate}
+          </Dropdown.Item>
+        ))}
+      </Dropdown>
+        <button className="form__cta input">Add Task</button>
       </form>
-      <div className="todo__container">
+      <div className="todo__container" style= {{'paddingBottom': '0px'}}>
+        <div className="todo__header todo__item">
+          <span className="">Created</span>
+          <span >Task</span>
+          <span>AssignedTo</span>
+          <span>Actions</span>
+        </div>
+      </div>
+      <div className="todo__container_tasks">
         {tasks.map((taskItem) => (
           <div key={taskItem._id} className="todo__item">
             {isEditing === taskItem._id ? (
               <form onSubmit={(e) => submitEdit(e, taskItem._id)}>
                 <input autoFocus value={editText} onChange={handleEditChange} />
                 <button type="submit">Save</button>
-                <button onClick={() => setIsEditing(null)}>Cancel</button>
+                <button type="submit" onClick={() => setIsEditing(null)}>Cancel</button>
               </form>
             ) : (
               <>
-                <p>{taskItem.task}</p>
+                <div className="todo__section">{taskItem.createdBy}</div>
+                <div className="todo__section">{taskItem.task}</div>
+                <div className="todo__section">{taskItem.assignedTo}</div>
                 <div>
                   <button
                     className="commentsBtn"
@@ -153,15 +200,6 @@ function TodoList({ socket }) {
           </div>
         ))}
       </div>
-      <button onClick={LogOut}>Log Out</button>
-      <button>
-        <Link
-          to="/dashboard"
-          className="text-white dark:text-white hover:underline"
-        >
-          Dashboard
-        </Link>
-      </button>
     </div>
   );
 }

@@ -32,7 +32,7 @@ function App() {
     : {};
 
   const localUserInfo = localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("eventsInfo"))
+    ? JSON.parse(localStorage.getItem("userInfo"))
     : null;
 
   const [houseInfo, setHouseInfo] = useState(localHouseInfo);

@@ -1,6 +1,8 @@
+import './TodoList.css';
+
 const Nav = () => {
     return (
-        <nav className='navbar'>
+        <nav className="navbar">
             <h2>Task List</h2>
         </nav>
     );
