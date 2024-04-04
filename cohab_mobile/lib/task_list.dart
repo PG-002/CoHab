@@ -1,3 +1,4 @@
+import 'package:cohab_mobile/web_socket.dart';
 import 'token.dart';
 import 'package:flutter/material.dart';
 
@@ -144,9 +145,7 @@ class _TaskListState extends State<TaskList> {
           const SizedBox(height: 5),
           Row(
             children: [
-              const SizedBox(width: 10),
-              const TaskInput(),
-              const SizedBox(width: 20),
+              const SizedBox(width: 350),
               AddTasksButton(
                 onAddTask: addTask,
               ),
@@ -184,12 +183,16 @@ class _TaskListState extends State<TaskList> {
 class Task {
   String taskDescription;
   String id;
+  //String assignedTo;
+  //String createdBy;
   bool completed;
 
   Task({
     required this.taskDescription,
     required this.id,
     required this.completed,
+    //required this.assignedTo,
+    //required this.createdBy,
   });
 }
 
@@ -238,26 +241,42 @@ class _TaskInputState extends State<TaskInput> {
 
 class AddTasksButton extends StatelessWidget {
   const AddTasksButton({super.key, required this.onAddTask});
+
   final Function(String) onAddTask;
 
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () {
-        if (task.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Please enter a task.'),
-              duration: Duration(seconds: 1), // Set duration to 2 seconds
-            ),
-          );
-        } else {
-          onAddTask(task);
-        }
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Add Task'),
+              content: const TaskInput(),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the dialog
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // Call the onAddTask function with the task entered in the dialog
+                    onAddTask(task);
+                    Navigator.pop(context); // Close the dialog
+                  },
+                  child: const Text('Add'),
+                ),
+              ],
+            );
+          },
+        );
       },
       color: const Color(0xFF14532d),
       padding: EdgeInsets.zero,
-      minWidth: 40,
+      minWidth: 45,
       height: 50,
       child: const Icon(
         Icons.add,
