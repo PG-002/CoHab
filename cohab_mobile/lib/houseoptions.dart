@@ -105,8 +105,8 @@ class HouseOptions extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const JoinAHouse()), // Redirects to joinahouse.dart
-                      );
+                        MaterialPageRoute(builder: (context) => const JoinAHouse(), // Redirects to joinahouse.dart
+                      ));
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: const Color(0xFFFFFFFF), // Text color (button)

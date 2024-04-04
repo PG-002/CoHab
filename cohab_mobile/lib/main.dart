@@ -1,5 +1,6 @@
 import 'package:cohab_mobile/homepage.dart';
 import 'package:cohab_mobile/houseoptions.dart';
+import 'package:cohab_mobile/verification.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'register.dart';
@@ -31,41 +32,32 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _handleSubmit(context) async {
     try {
       await login(_email, _password);
+      print(decodedToken);
 
-      if(check == false) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Invalid email or password'),
-            duration: Duration(seconds: 1), // Adjust the duration as needed
-          ),
-        );
-        }
-      else if (decodedToken['user']['verified'] == true) {
-        _email = '';
-        _password = '';
-
+      if (decodedToken['verified'] == true) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const HouseOptions()),
         );
 
 
       }
       else {
-        //go to email verification screen
-        _email = '';
-        _password = '';
-
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HouseOptions()),
+          MaterialPageRoute(builder: (context) => const VerificationPage()),
         );
 
       }
 
     }
      catch (e) {
-      // Handle any exceptions that may occur during login
+       ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+           content: Text('$e'), // Convert the error to a string to display
+           duration: const Duration(seconds: 1), // Adjust the duration as needed
+         ),
+       );
     }
   }
 

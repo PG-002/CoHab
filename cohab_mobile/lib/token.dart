@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-var token;
-var userId;
-var decodedToken;
+late var token;
+late String userId;
+late var decodedToken;
 
-bool check = false;
 
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
@@ -34,12 +33,14 @@ Future<void> signUp(
       decodedToken = JwtDecoder.decode(token);
 
       //userId
-      userId = decodedToken['user']['_id'];
+      userId = decodedToken['userId'];
     } else {
       // Signup failed
+      throw 'Signup failed';
     }
   } catch (e) {
     // Exception occurred
+    throw 'Signup failed';
   }
 }
 
@@ -65,20 +66,122 @@ Future<void> login(String email, String password) async {
       decodedToken = JwtDecoder.decode(token);
 
       //userId
-      userId = decodedToken['user']['_id'];
-      check = true;
-    } else {
+      userId = decodedToken['userId'];
+
+      print(userId);
+      print(decodedToken['firstName']);
+
+    } else if(response.statusCode == 404) {
       // Login failed
-      check = false;
+      throw 'Invalid Email';
     }
-  } catch (e) {
+    else
+      {
+        throw 'Invalid Password';
+      }
+  }
+
+  catch (e) {
     // Exception occurred
-    check = false;
   }
 }
 
+Future<void> joinHouse(String code) async {
 
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/joinHouse');
+  final Map<String, String> body = {
+    'userId': userId,
+    'houseId': code,
+    'firstName': decodedToken['firstName'],
+    'lastName': decodedToken['lastName']
+  };
 
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    print(response.body);
+
+    final jsonResponse = json.decode(response.body);
+
+     if (jsonResponse['joined'] == true) {
+      print("YUESEFES");
+     }
+  }
+  catch (e) {
+    // Exception occurred
+    print(e);
+  }
+}
+
+Future<void> sendCode() async {
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/sendVerification');
+  final Map<String, String> body = {
+    'id': userId,
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      var sent = jsonResponse['sent'];
+
+      if (sent == false) {
+        throw Exception('Failed to send verification code');
+      }
+    }
+  } catch (e) {
+    // Exception occurred
+    print('$e');
+    // You might want to handle this error in your UI
+  }
+}
+
+Future<void> verifyUser(String code) async {
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyUser');
+  final Map<String, String> body = {
+    'id': userId,
+    'code': code,
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      var verified = jsonResponse['verified'];
+
+      if (verified == false) {
+        throw 'Unable to Verify User';
+      }
+    }
+  }
+  catch (e) {
+    // Exception occurred
+  }
+}
 
 
 
