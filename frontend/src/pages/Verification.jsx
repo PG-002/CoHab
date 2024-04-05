@@ -127,7 +127,7 @@ const VerficationPage = ({ setUser }) => {
           className={`w-full h-4/6 p-5 text-2xl rounded-xl ${
             codeResponse ? "border-red-500" : "border-white"
           } border-2`}
-          placeholder="Code"
+          placeholder="Verification Code"
         ></input>
         <p className={`${codeResponse ? "block" : "hidden"} text-red-500`}>
           Invalid Code! Try again with correct code
