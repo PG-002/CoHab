@@ -3,6 +3,7 @@ import 'token.dart';
 import 'package:flutter/material.dart';
 
 String task = '';
+String assignedTo = '';
 
 
 class TaskListPage extends StatelessWidget {
@@ -35,9 +36,16 @@ class _TaskListState extends State<TaskList> {
   // Function to add a task to the tasks list
   void addTask(String taskDescription) {
     setState(() {
+
+      final Map<String, String> body = {
+        'task': taskDescription,
+        'assignedTo': assignedTo,
+      };
+
+      socket.emit('createTask',body);
+
       tasks.add(Task(
         taskDescription: taskDescription,
-        id: '${tasks.length + 1}',
         completed: false,
       ));
     });
@@ -182,14 +190,12 @@ class _TaskListState extends State<TaskList> {
 }
 class Task {
   String taskDescription;
-  String id;
   //String assignedTo;
   //String createdBy;
   bool completed;
 
   Task({
     required this.taskDescription,
-    required this.id,
     required this.completed,
     //required this.assignedTo,
     //required this.createdBy,

@@ -6,6 +6,7 @@ late var token;
 late String userId;
 late var decodedToken;
 
+
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
   final Uri url =
@@ -113,7 +114,7 @@ Future<void> sendCode() async {
   final Uri url = Uri.parse(
       'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/sendVerification');
   final Map<String, String> body = {
-    'id': userId,
+    'email': decodedToken['email'],
   };
 
   try {
