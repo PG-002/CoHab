@@ -161,6 +161,7 @@ Future<void> verifyUser(String code) async {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
       var verified = jsonResponse['verified'];
 
       if (verified == false) {
