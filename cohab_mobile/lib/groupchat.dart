@@ -1,21 +1,6 @@
 import 'package:flutter/material.dart';
 import 'web_socket.dart';
-
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
-  // const ChatScreen({Key? key, required this.name}) : super(key : key);
-
-  @override
-  State<ChatScreen> createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+import 'token.dart';
 
 // From web (chat.jsx):
 //  socket.emit('sendMessage', 
@@ -28,47 +13,84 @@ class _ChatScreenState extends State<ChatScreen> {
 //     setCurrentMessage(''); 
 //   };
 
-  void sendMessage (String msg) {
+class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
 
+  @override
+  createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  final TextEditingController _messageController = TextEditingController();
+
+  // Method to handle sending messages
+  void sendMessage(String msg) {
+    // Implement sending message logic here
+    // For example, you can use the web_socket.dart here
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("       Roommate Chat"),
+        title: const Text("Roommate Chat"),
       ),
       body: Column(
         children: [
           Expanded(
-            child: TextFormField(
-              decoration: const InputDecoration(
-                hintText: "Message",
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    width: 2,
-                  )
-                )
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: _messageController,
+                decoration: const InputDecoration(
+                  hintText: "Message",
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 2,
+                    ),
+                  ),
+                ),
               ),
-            )
             ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: Row(
-            children: [
-              TextFormField(),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.send,
-                  color: Colors.green,
-                )
-              )
-            ],
-            )
-          )
-        ]
-        )
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    // This text form field can be used for name or any other information you want to display
+                    decoration: const InputDecoration(
+                      hintText: "Your Name",
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    sendMessage(_messageController.text);
+                    _messageController.clear();
+                  },
+                  icon: const Icon(
+                    Icons.send,
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
   }
 }
