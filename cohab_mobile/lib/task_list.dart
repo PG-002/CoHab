@@ -304,7 +304,7 @@ class _TaskInputState extends State<TaskInput> {
           ),
           onChanged: (_) => setTaskAndAssignedTo(),
         ),
-        SizedBox(height: 10), // Add some space between the two text fields
+        const SizedBox(height: 10), // Add some space between the two text fields
         TextFormField(
           controller: _assignedToTextController,
           decoration: InputDecoration(

@@ -4,7 +4,7 @@ import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.
 import 'package:intl/intl.dart';
 
 class CalendarHomePage extends StatelessWidget {
-  const CalendarHomePage({Key? key}) : super(key: key);
+  const CalendarHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CalendarHomePage extends StatelessWidget {
 }
 
 class CalendarScreen extends StatefulWidget {
-  const CalendarScreen({Key? key}) : super(key: key);
+  const CalendarScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -52,23 +52,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       _eventList.remove(event);
     });
   }
-
-  void _modifyEvent(NeatCleanCalendarEvent event) async {
-    final modifiedEvent = await showDialog<NeatCleanCalendarEvent>(
-      context: context,
-      builder: (BuildContext context) {
-        return EditEventDialog(event: event);
-      },
-    );
-
-    if (modifiedEvent != null) {
-      setState(() {
-        _eventList.remove(event);
-        _eventList.add(modifiedEvent);
-      });
-    }
-  }
-
   void _showEventDetailsDialog(NeatCleanCalendarEvent event) {
     showDialog(
       context: context,
@@ -102,13 +85,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 Navigator.of(context).pop();
               },
               child: const Text('Delete'),
-            ),
-            TextButton(
-              onPressed: () {
-                _modifyEvent(event);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Modify'),
             ),
           ],
         );
@@ -182,7 +158,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 }
 
 class AddEventDialog extends StatefulWidget {
-  const AddEventDialog({Key? key}) : super(key: key);
+  const AddEventDialog({super.key});
 
   @override
   createState() => _AddEventDialogState();
@@ -324,165 +300,6 @@ class _AddEventDialogState extends State<AddEventDialog> {
             }
           },
           child: const Text('Add'),
-        ),
-      ],
-    );
-  }
-}
-
-class EditEventDialog extends StatefulWidget {
-  final NeatCleanCalendarEvent event;
-
-  const EditEventDialog({Key? key, required this.event}) : super(key: key);
-
-  @override
-  createState() => _EditEventDialogState();
-}
-
-class _EditEventDialogState extends State<EditEventDialog> {
-  late TextEditingController _eventNameController;
-  late DateTime _selectedDate;
-  late TimeOfDay _selectedStartTime;
-  late TimeOfDay _selectedEndTime;
-
-  @override
-  void initState() {
-    super.initState();
-    _eventNameController = TextEditingController(text: widget.event.summary);
-    _selectedDate = widget.event.startTime;
-    _selectedStartTime = TimeOfDay.fromDateTime(widget.event.startTime);
-    _selectedEndTime = TimeOfDay.fromDateTime(widget.event.endTime);
-  }
-
-  @override
-  void dispose() {
-    _eventNameController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
-  }
-
-  Future<void> _selectStartTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedStartTime,
-    );
-    if (picked != null && picked != _selectedStartTime) {
-      setState(() {
-        _selectedStartTime = picked;
-      });
-    }
-  }
-
-  Future<void> _selectEndTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedEndTime,
-    );
-    if (picked != null && picked != _selectedEndTime) {
-      setState(() {
-        _selectedEndTime = picked;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Edit Event'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _eventNameController,
-            decoration: const InputDecoration(labelText: 'Event Name'),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Text('Date: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}'),
-              IconButton(
-                icon: const Icon(Icons.calendar_today),
-                onPressed: () => _selectDate(context),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Text('Start Time: ${_selectedStartTime.format(context)}'),
-              IconButton(
-                icon: const Icon(Icons.access_time),
-                onPressed: () => _selectStartTime(context),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Text('End Time: ${_selectedEndTime.format(context)}'),
-              IconButton(
-                icon: const Icon(Icons.access_time),
-                onPressed: () => _selectEndTime(context),
-              ),
-            ],
-          ),
-        ],
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            final eventName = _eventNameController.text;
-            if (eventName.isNotEmpty) {
-              final startTime = DateTime(
-                _selectedDate.year,
-                _selectedDate.month,
-                _selectedDate.day,
-                _selectedStartTime.hour,
-                _selectedStartTime.minute,
-              );
-              final endTime = DateTime(
-                _selectedDate.year,
-                _selectedDate.month,
-                _selectedDate.day,
-                _selectedEndTime.hour,
-                _selectedEndTime.minute,
-              );
-              if (endTime.isAfter(startTime)) {
-                final modifiedEvent = NeatCleanCalendarEvent(
-                  eventName,
-                  description: '',
-                  startTime: startTime,
-                  endTime: endTime,
-                  color: Colors.blue,
-                );
-                Navigator.of(context).pop(modifiedEvent);
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('End time should be after start time'),
-                  ),
-                );
-              }
-            }
-          },
-          child: const Text('Save'),
         ),
       ],
     );
