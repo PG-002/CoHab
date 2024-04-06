@@ -1,3 +1,5 @@
+import 'package:cohab_mobile/token.dart';
+import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
@@ -288,6 +290,16 @@ class _AddEventDialogState extends State<AddEventDialog> {
                   endTime: endTime,
                   color: Colors.blue,
                 );
+
+                // final Map<String, dynamic> body = {
+                //   'events.title': eventName,
+                //   'events.start': startTime,
+                //   'events.end': endTime,
+                //   'events.description': '',
+                //   'events.allDay': false,
+                //   'events.createdBy': userId,
+                // };
+                // socket.emit('createEvent',body);
                 Navigator.of(context).pop(newEvent);
               } else {
                 // Show error message that end time should be after start time
