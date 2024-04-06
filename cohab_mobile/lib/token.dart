@@ -142,11 +142,11 @@ Future<void> sendCode() async {
   }
 }
 
-Future<void> verifyUser(String code) async {
+Future<void> verifyCode(String code) async {
   final Uri url = Uri.parse(
-      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyUser');
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyCode');
   final Map<String, String> body = {
-    'id': userId,
+    'email': decodedToken['email'],
     'code': code,
   };
 

@@ -29,7 +29,7 @@ class _VerificationPageState extends State<VerificationPage> {
     final currentContext = context;
 
     try {
-      await verifyUser(_verificationCode);
+      await verifyCode(_verificationCode);
 
       if (!currentContext.mounted) return;
 
