@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'web_socket.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String name;
-  const ChatScreen({super.key, required this.name});
+  const ChatScreen({super.key});
   // const ChatScreen({Key? key, required this.name}) : super(key : key);
 
   @override
@@ -38,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Roommate Chat"),
+        title: const Text("       Roommate Chat"),
       ),
       body: Column(
         children: [

@@ -64,14 +64,14 @@ class _TaskListState extends State<TaskList> {
   void deleteTask(int index) {
     setState(() {
 
-      // final Map<String, dynamic> body = {
-      //   'task': tasks[index].taskDescription,
-      //   'assignedTo': tasks[index].assignedTo,
-      //   'createdBy':tasks[index].createdBy,
-      //   'completed': tasks[index].completed,
-      // };
-      //
-      // socket.emit('deleteTask',body);
+       final Map<String, dynamic> body = {
+         'task': tasks[index].taskDescription,
+         'assignedTo': tasks[index].assignedTo,
+         'createdBy': tasks[index].createdBy,
+         'completed': tasks[index].completed,
+       };
+
+       socket.emit('deleteTask',body);
 
       tasks.removeAt(index);
     });
@@ -304,7 +304,7 @@ class _TaskInputState extends State<TaskInput> {
           ),
           onChanged: (_) => setTaskAndAssignedTo(),
         ),
-        SizedBox(height: 10), // Add some space between the two text fields
+        const SizedBox(height: 10), // Add some space between the two text fields
         TextFormField(
           controller: _assignedToTextController,
           decoration: InputDecoration(
