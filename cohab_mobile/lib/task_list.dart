@@ -3,6 +3,7 @@ import 'token.dart';
 import 'package:flutter/material.dart';
 
 String task = '';
+String assignedTo = '';
 
 
 class TaskListPage extends StatelessWidget {
@@ -35,9 +36,18 @@ class _TaskListState extends State<TaskList> {
   // Function to add a task to the tasks list
   void addTask(String taskDescription) {
     setState(() {
+
+      final Map<String, String> body = {
+        'task': taskDescription,
+        'assignedTo': assignedTo,
+      };
+
+      socket.emit('createTask',body);
+
       tasks.add(Task(
         taskDescription: taskDescription,
-        id: '${tasks.length + 1}',
+        assignedTo: assignedTo,
+        createdBy: decodedToken['firstName'],
         completed: false,
       ));
     });
@@ -53,8 +63,19 @@ class _TaskListState extends State<TaskList> {
   // Function to delete a task
   void deleteTask(int index) {
     setState(() {
+
+      // final Map<String, dynamic> body = {
+      //   'task': tasks[index].taskDescription,
+      //   'assignedTo': tasks[index].assignedTo,
+      //   'createdBy':tasks[index].createdBy,
+      //   'completed': tasks[index].completed,
+      // };
+      //
+      // socket.emit('deleteTask',body);
+
       tasks.removeAt(index);
     });
+
   }
 
   // Function to show dialog for modifying a task
@@ -96,7 +117,6 @@ class _TaskListState extends State<TaskList> {
     );
   }
 
-  // Function to display the options menu when "more_vert" icon is pressed
   void showOptionsMenu(BuildContext context, int index) {
     showModalBottomSheet(
       context: context,
@@ -118,11 +138,70 @@ class _TaskListState extends State<TaskList> {
                 title: const Text('Delete'),
                 onTap: () {
                   Navigator.pop(context); // Close the bottom sheet
-                  deleteTask(index); // Delete the task
+                  // Show confirmation dialog before deleting
+                  showDeleteConfirmationDialog(context, index);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text('Assigned To'),
+                onTap: () {
+                  Navigator.pop(context); // Close the bottom sheet
+                  // Show assigned to information dialog
+                  showAssignedToDialog(context, tasks[index].assignedTo);
                 },
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+// Function to show assigned to information dialog
+  void showAssignedToDialog(BuildContext context, String assignedTo) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Assigned To'),
+          content: Text('This task is assigned to: $assignedTo'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Function to show confirmation dialog before deleting a task
+  void showDeleteConfirmationDialog(BuildContext context, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Task'),
+          content: const Text('Are you sure you want to delete this task?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+                deleteTask(index); // Delete the task
+              },
+              child: const Text('Delete'),
+            ),
+          ],
         );
       },
     );
@@ -182,17 +261,15 @@ class _TaskListState extends State<TaskList> {
 }
 class Task {
   String taskDescription;
-  String id;
-  //String assignedTo;
-  //String createdBy;
+  String assignedTo;
+  String createdBy;
   bool completed;
 
   Task({
     required this.taskDescription,
-    required this.id,
     required this.completed,
-    //required this.assignedTo,
-    //required this.createdBy,
+    required this.assignedTo,
+    required this.createdBy,
   });
 }
 
@@ -200,43 +277,54 @@ class TaskInput extends StatefulWidget {
   const TaskInput({super.key});
 
   @override
-  createState() => _TaskInputState();
+   createState() => _TaskInputState();
 }
 
 class _TaskInputState extends State<TaskInput> {
-  final TextEditingController _textController = TextEditingController();
+  final TextEditingController _taskTextController = TextEditingController();
+  final TextEditingController _assignedToTextController = TextEditingController();
 
-  void setTask()
-  {
-    task = _textController.text;
+  void setTaskAndAssignedTo() {
+    task = _taskTextController.text;
+    assignedTo = _assignedToTextController.text;
   }
-
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      child: TextFormField(
-        controller: _textController,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          controller: _taskTextController,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            hintText: 'Enter task here',
           ),
-          hintText: 'Enter task here',
+          onChanged: (_) => setTaskAndAssignedTo(),
         ),
-        onChanged: (value) {
-          setTask();
-        },
-      ),
+        SizedBox(height: 10), // Add some space between the two text fields
+        TextFormField(
+          controller: _assignedToTextController,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            hintText: 'Assigned to',
+          ),
+          onChanged: (_) => setTaskAndAssignedTo(),
+        ),
+      ],
     );
   }
 
   @override
   void dispose() {
-    _textController.dispose();
+    _taskTextController.dispose();
+    _assignedToTextController.dispose();
     super.dispose();
   }
-
 }
 
 class AddTasksButton extends StatelessWidget {
