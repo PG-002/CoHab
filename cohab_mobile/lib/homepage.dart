@@ -1,5 +1,8 @@
 import 'package:cohab_mobile/calendar.dart';
 import 'package:cohab_mobile/groupchat.dart';
+import 'package:cohab_mobile/noise_level.dart';
+import 'package:cohab_mobile/recent_act.dart';
+import 'package:cohab_mobile/settings.dart';
 import 'package:cohab_mobile/task_list.dart';
 import 'package:cohab_mobile/token.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                        MaterialPageRoute(builder: (context) => const RecentActivityPage()),
                       );
                     },
                     child: Ink(
@@ -50,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                                MaterialPageRoute(builder: (context) => const RecentActivityPage()),
                               );
                             },
                             child: const Icon(
@@ -213,7 +216,10 @@ class _HomePageState extends State<HomePage> {
                   width: 120,
                   child: InkWell(
                     onTap: () {
-                      // Add your onPressed logic here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SettingsPage()),
+                      );
                     },
                     child: Ink(
                       decoration: BoxDecoration(
@@ -226,7 +232,10 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           InkWell(
                             onTap: () {
-                              // Add your onPressed logic here
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const SettingsPage()),
+                              );
                             },
                             child: const Icon(
                               LucideIcons.settings,
@@ -291,7 +300,10 @@ class _HomePageState extends State<HomePage> {
               width: 120,
               child: InkWell(
                 onTap: () {
-                  // Add your onPressed logic here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NoiseLevelPage()),
+                  );
                 },
                 child: Ink(
                   decoration: BoxDecoration(
@@ -304,7 +316,10 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       InkWell(
                         onTap: () {
-                          // Add your onPressed logic here
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const NoiseLevelPage()),
+                          );
                         },
                         child: const Icon(
                           LucideIcons.music,

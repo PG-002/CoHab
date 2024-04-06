@@ -125,7 +125,6 @@ class HouseOptions extends StatelessWidget {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
-                      debugPrint('Create a House button pressed...');
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const CreateAHouse()),
