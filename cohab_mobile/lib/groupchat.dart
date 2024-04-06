@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'web_socket.dart';
 
 class ChatScreen extends StatefulWidget {
   final String name;
-  const ChatScreen({super.key});
+  const ChatScreen({super.key, required this.name});
   // const ChatScreen({Key? key, required this.name}) : super(key : key);
 
   @override
@@ -12,39 +12,12 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  IO.socket? socket;
+
   @override
   void initState() {
     super.initState();
-    connect();
   }
 
-// ===================== Web socket =====================
-// From https://pub.dev/packages/socket_io_client:
-// import 'package:socket_io_client/socket_io_client.dart' as IO;
-
-// main() {
-//   // Dart client
-//   IO.Socket socket = IO.io('http://localhost:3000');
-//   socket.onConnect((_) {
-//     print('connect');
-//     socket.emit('msg', 'test');
-//   });
-//   socket.on('event', (data) => print(data));
-//   socket.onDisconnect((_) => print('disconnect'));
-//   socket.on('fromServer', (_) => print(_));
-// }
-
-  void connect() {
-    socket = IO.io('https://cohab-4fcf8ee594c1.herokuapp.com/api/Models/House', <String, dynamic> {
-      "transports": ["websocket"],
-      "autoConnect": false, 
-    });
-    socket!.connect();
-    socket!.onConnect((_) {
-      print('connect');
-    });
-  }
 
 // From web (chat.jsx):
 //  socket.emit('sendMessage', 
@@ -58,9 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
 //   };
 
   void sendMessage (String msg) {
-    socket!.emit('message', {
-      
-    });
+
   }
 
   @override
@@ -100,6 +71,6 @@ class _ChatScreenState extends State<ChatScreen> {
           )
         ]
         )
-    )
+    );
   }
 }
