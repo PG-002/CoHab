@@ -20,12 +20,10 @@ const generateCode = (digits = 6) => {
     return code;
 };
 
-const sendCode = async (user) => {
+const sendCode = async (user, type) => {
     let code = generateCode();
     while(await VerificationEntry.findOne({ userId : user._id, code : code }))
         code = generateCode();
-
-    const type = user.verified ? 'password change' : 'account';
 
     const mailOptions = {
         from : process.env.EMAIL_ADDRESS,
@@ -85,14 +83,44 @@ const verifyCode = async (user, code) => {
             .catch(() => null);
         return 'The code has expired.'
     }
-};  
+};
+
+const getEntry = async (userId) => 
+    await VerificationEntry.find({ userId : userId })
+        .catch(() => null);
+
+const verify = async (user, code) => {
+    const entry = await VerificationEntry.findOne({ userId : user._id, code : code })
+        .catch(() => null);
+
+    if(!entry)
+        return { entry : null, error : 'VerificationEntry could not be found.' };
+
+    if((entry.code !== code))
+        return { entry : null, error : 'The code provided does not match.' };
+
+    if(entry.expDate < Date.now())
+    {
+        await VerificationEntry.findByIdAndDelete(entry._id)
+            .catch(() => null);
+
+        return { entry : null, error : 'This code has expired.' };
+    }
+
+    return { entry : entry, error : '' };
+}
+
+const removeEntry = async (entryId) => 
+    await VerificationEntry.findByIdAndDelete(entryId)
+        .catch(() => null);
 
 const getHouse = async (userId, code) => 
     await VerificationEntry.findOne({ userId : userId, code : code })
         .then(entry => entry.houseId)
         .catch(() => null);
 
+
 const deleteCode = async (user, code) => await VerificationEntry.deleteOne({ userId : user._id, code : code })
     .then(() => ({ verified : true, error : '' }))
 
-module.exports = { sendCode, sendInvite, getHouse, verifyCode, deleteCode };
+module.exports = { sendCode, sendInvite, getHouse, getEntry, removeEntry, verify, verifyCode, deleteCode };

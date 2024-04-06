@@ -5,7 +5,7 @@ module.exports = (socket, io) => {
         task : task.task,
         createdBy : socket.user.firstName,
         assignedTo : task.assignedTo,
-        completed : task.completed
+        completed : false
     });
 
     const updateObj = task => ({

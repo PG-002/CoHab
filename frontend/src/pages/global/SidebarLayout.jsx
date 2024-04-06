@@ -40,7 +40,7 @@ function SidebarLayout({ userInfo, houseInfo, setHouseInfo }) {
             const decoded = jwtDecode(data.token);
             setHouseInfo(decoded.house);
           } else {
-            console.err("Invalid Response, no token");
+            console.error("Invalid Response, no token");
           }
         } else if (response.status === 404) {
           alert("House Fetch failed: User not found");

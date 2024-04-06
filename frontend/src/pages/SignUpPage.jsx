@@ -1,5 +1,5 @@
 import test from "../assets/test.jpg";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
@@ -8,24 +8,32 @@ const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const navigate = useNavigate();
+  const passwordInputRef = useRef(null);
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handlefirstNameChange = (e) => setFirstName(e.target.value);
   const handlelastNameChange = (e) => setLastName(e.target.value);
 
+  const hasNumber = /\d/;
+  const hasUpperCase = /[A-Z]/;
+  const hasSpecialChar = /[@$!%*?&]/;
+  const hasValidLength = /^.{8,20}$/;
+
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
+    console.log("I am clicked");
 
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 
     if (!passwordRegex.test(password)) {
-      alert(
-        "Password must be 8-20 characters long, include at least one uppercase letter, one number, and one special character."
-      );
-      return; // Stop the form submission
+      passwordInputRef.current.focus();
+      setIsFocused(true);
+      return;
     }
 
     try {
@@ -50,7 +58,6 @@ const SignUpPage = () => {
       );
 
       if (response.ok) {
-        // Registration was successful
         const data = await response.json();
         localStorage.setItem("sessionId", data.token);
         navigate("/dashboard");
@@ -64,6 +71,14 @@ const SignUpPage = () => {
 
   const togglePasswordVisibility = () => {
     setShowPass((prevState) => !prevState);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(!isFocused);
+  };
+
+  const validateRequirement = (pattern) => {
+    return pattern.test(password);
   };
 
   return (
@@ -115,12 +130,25 @@ const SignUpPage = () => {
               </label>
               <div className="relative">
                 <input
-                  required
-                  type={showPass ? "text" : "password"}
-                  value={password}
-                  onChange={handlePasswordChange}
-                  className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                required
+                type={showPass ? "text" : "password"}
+                ref={passwordInputRef}
+                value={password}
+                onChange={handlePasswordChange}
+                onFocus={handleFocus}
+                onBlur={(handleFocus)}
+                className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
+                {isFocused && (
+                <div className="text-red-600 text-sm mt-1">
+                <ul className="text-sm">
+            <li className={validateRequirement(hasNumber) ? 'text-green-600' : 'text-red-600'}>Must contain a number</li>
+            <li className={validateRequirement(hasValidLength) ? 'text-green-600' : 'text-red-600'}>Must be 8-20 characters</li>
+            <li className={validateRequirement(hasUpperCase) ? 'text-green-600' : 'text-red-600'}>Must contain an uppercase letter</li>
+            <li className={validateRequirement(hasSpecialChar) ? 'text-green-600' : 'text-red-600'}>Must contain a special character</li>
+          </ul>
+                </div>
+                )}
               </div>
 
               <button
