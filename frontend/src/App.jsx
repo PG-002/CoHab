@@ -121,7 +121,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
             <Route path="/" element={<Navigate replace to="/login" />} />
             <Route path="/login" element={<LoginPage setUser={setUser} />} />
-            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/signup" element={<SignUpPage setUser={setUser} />} />
           </Route>
           <Route element={<AuthenticatedRoute />}>
             <Route
