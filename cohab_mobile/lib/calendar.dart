@@ -292,12 +292,12 @@ class _AddEventDialogState extends State<AddEventDialog> {
                 );
 
                 // final Map<String, dynamic> body = {
-                //   'events.title': eventName,
-                //   'events.start': startTime,
-                //   'events.end': endTime,
-                //   'events.description': '',
-                //   'events.allDay': false,
-                //   'events.createdBy': userId,
+                //   'event.title' : eventName,
+                //   'event.start': startTime,
+                //   'event.end': endTime,
+                //   'event.description': '',
+                //   'event.allDay': false,
+                //   'event.createdBy': userId,
                 // };
                 // socket.emit('createEvent',body);
                 Navigator.of(context).pop(newEvent);

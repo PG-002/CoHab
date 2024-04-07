@@ -21,323 +21,323 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('       Co-Hab Home Page'),
+        title: const Text('Co-Hab Home Page'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 120,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const RecentActivityPage()),
-                      );
-                    },
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF14532d), // Fill the button with green color
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: const Color(0xFF14532d)), // Green border
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const RecentActivityPage()),
-                              );
-                            },
-                            child: const Icon(
-                              LucideIcons.layoutDashboard,
-                              color: Colors.white,
-                              size: 48,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RecentActivityPage()),
+                        );
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF14532d), // Fill the button with green color
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const RecentActivityPage()),
+                                );
+                              },
+                              child: const Icon(
+                                LucideIcons.history,
+                                color: Colors.white,
+                                size: 48,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Recent Activity',
-                            style: TextStyle(color: Colors.white, fontSize: 17),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 40),
-                SizedBox(
-                  width: 120,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const CalendarHomePage()),
-                      );
-                    },
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF14532d), // Fill the button with green color
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: const Color(0xFF14532d)), // Green border
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const CalendarHomePage()),
-                              );
-                            },
-                            child: const Icon(
-                              LucideIcons.locateFixed,
-                              color: Colors.white,
-                              size: 48,
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Recent Activity',
+                              style: TextStyle(color: Colors.white, fontSize: 17),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Locator',
-                            style: TextStyle(color: Colors.white, fontSize: 17),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 80),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // First Icon Button
-                SizedBox(
-                  width: 120,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const CalendarHomePage()),
-                      );
-                    },
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF14532d), // Fill the button with green color
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: const Color(0xFF14532d)), // Green border
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const CalendarHomePage()),
-                              );
-                            },
-                            child: const Icon(
-                              LucideIcons.calendarDays,
-                              color: Colors.white,
-                              size: 48,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Calendar',
-                            style: TextStyle(color: Colors.white, fontSize: 17),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 40), // Adjust spacing between buttons
-                // Second Icon Button
-                SizedBox(
-                  width: 120,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const TaskListPage()),
-                      );
-                    },
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF14532d), // Fill the button with green color
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: const Color(0xFF14532d)), // Green border
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const TaskListPage()),
-                              );
-                            },
-                            child: const Icon(
-                              LucideIcons.listChecks,
-                              color: Colors.white,
-                              size: 48,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Task List',
-                            style: TextStyle(color: Colors.white, fontSize: 17),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 80),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Third Icon Button
-                SizedBox(
-                  width: 120,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SettingsPage()),
-                      );
-                    },
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF14532d), // Fill the button with green color
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: const Color(0xFF14532d)), // Green border
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const SettingsPage()),
-                              );
-                            },
-                            child: const Icon(
-                              LucideIcons.settings,
-                              color: Colors.white,
-                              size: 48,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Settings',
-                            style: TextStyle(color: Colors.white, fontSize: 17),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 40), // Adjust spacing between buttons
-                // Fourth Icon Button
-                SizedBox(
-                  width: 120,
-                  child: InkWell(
-                    onTap: () {
-                      // Add your onPressed logic here
-                    },
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF14532d), // Fill the button with green color
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: const Color(0xFF14532d)), // Green border
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const ChatScreen()),
-                              );
-                            },
-                            child: const Icon(
-                              LucideIcons.messageCircle,
-                              color: Colors.white,
-                              size: 48,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Messages',
-                            style: TextStyle(color: Colors.white, fontSize: 17),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 80),
-            SizedBox(
-              width: 120,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NoiseLevelPage()),
-                  );
-                },
-                child: Ink(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF14532d), // Fill the button with green color
-                    borderRadius: BorderRadius.circular(8.0),
-                    border: Border.all(color: const Color(0xFF14532d)), // Green border
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const NoiseLevelPage()),
-                          );
-                        },
-                        child: const Icon(
-                          LucideIcons.music,
-                          color: Colors.white,
-                          size: 48,
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'Noise Level',
-                        style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                  ),
+                  const SizedBox(width: 40),
+                  SizedBox(
+                    width: 120,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                        );
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF14532d), // Fill the button with green color
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                                );
+                              },
+                              child: const Icon(
+                                LucideIcons.locateFixed,
+                                color: Colors.white,
+                                size: 48,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Locator',
+                              style: TextStyle(color: Colors.white, fontSize: 17),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 80),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                        );
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF14532d), // Fill the button with green color
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                                );
+                              },
+                              child: const Icon(
+                                LucideIcons.calendarDays,
+                                color: Colors.white,
+                                size: 48,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Calendar',
+                              style: TextStyle(color: Colors.white, fontSize: 17),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 40),
+                  SizedBox(
+                    width: 120,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const TaskListPage()),
+                        );
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF14532d), // Fill the button with green color
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const TaskListPage()),
+                                );
+                              },
+                              child: const Icon(
+                                LucideIcons.listChecks,
+                                color: Colors.white,
+                                size: 48,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Task List',
+                              style: TextStyle(color: Colors.white, fontSize: 17),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 80),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SettingsPage()),
+                        );
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF14532d), // Fill the button with green color
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                                );
+                              },
+                              child: const Icon(
+                                LucideIcons.settings,
+                                color: Colors.white,
+                                size: 48,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Settings',
+                              style: TextStyle(color: Colors.white, fontSize: 17),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 40),
+                  SizedBox(
+                    width: 120,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ChatScreen()),
+                        );
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF14532d), // Fill the button with green color
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                                );
+                              },
+                              child: const Icon(
+                                LucideIcons.messageCircle,
+                                color: Colors.white,
+                                size: 48,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Messages',
+                              style: TextStyle(color: Colors.white, fontSize: 17),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 80),
+              SizedBox(
+                width: 120,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const NoiseLevelPage()),
+                    );
+                  },
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF14532d), // Fill the button with green color
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(color: const Color(0xFF14532d)), // Green border
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const NoiseLevelPage()),
+                            );
+                          },
+                          child: const Icon(
+                            LucideIcons.music,
+                            color: Colors.white,
+                            size: 48,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Noise Level',
+                          style: TextStyle(color: Colors.white, fontSize: 17),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

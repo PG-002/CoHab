@@ -64,14 +64,7 @@ class _TaskListState extends State<TaskList> {
   void deleteTask(int index) {
     setState(() {
 
-       final Map<String, dynamic> body = {
-         'task': tasks[index].taskDescription,
-         'assignedTo': tasks[index].assignedTo,
-         'createdBy': tasks[index].createdBy,
-         'completed': tasks[index].completed,
-       };
-
-       socket.emit('deleteTask',body);
+       //socket.emit('deleteTask',tasks[index]);
 
       tasks.removeAt(index);
     });
