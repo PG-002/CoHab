@@ -29,15 +29,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* min-height: 100vh; */
-    
     min-width: 100%;
-    /* padding: 20px; */
+    /* Set a fixed max-height or height for the container */
+    max-height: 85.5vh; /* Adjust this value based on your design needs */
+    /* Enable vertical scrolling */
+    overflow-y: auto;
+    /* You can also set padding here if needed */
     background: linear-gradient(135deg, #003327 0%, #1a1a1a 100%);
     background-size: 200% 200%;
     animation: gradientAnimation 10s ease infinite;
   }
-
+  
   .form {
     height:10px;
     margin-bottom: 0px;
@@ -90,13 +92,12 @@
   }
   
   .todo__header span {
-    flex: 1; /* This will ensure that each span takes equal width */
+    flex: 1;
     text-align: center;
   }
   
-  /* This will give a bit more space for the task description */
   .todo__header span:nth-child(2) {
-    flex: 2;
+    flex: 1.5;
   }
 
   .todo__section {
@@ -105,14 +106,10 @@
     align-items: center;
     justify-content: center;
   }
-  
-  .housematesSelect {
-    /* Ensure no inherited position properties are causing issues */
-    position: relative; 
-    z-index: 2000; /* High enough to be on top of other elements */
-    font-size: 18px;
+
+  .dropdown {
+    color: white;
   }
-  
 
   .form {
     width: 100%;
@@ -166,6 +163,9 @@
     border: 1px solid #000;
 }
 
-
-  
+.todo__header, .todo__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
   

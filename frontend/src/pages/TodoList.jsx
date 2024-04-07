@@ -150,7 +150,7 @@ function TodoList({ socket }) {
           placeholder="Enter new task"
           required
         />
-        <Dropdown label={assignedTo || "Assign to..."} inline={true}>
+        <Dropdown className="dropdown" label={assignedTo || "Assign to..."} inline={true}>
         {housemates.map((housemate, index) => (
           <Dropdown.Item key={index} onClick={() => handleSelectHousemate(housemate)}>
             {housemate}

@@ -1,7 +1,7 @@
 import "./SendMessageForm.css";
 import { useState } from "react";
 
-function SendMessageForm({ sendMessage }) {
+function SendMessageForm({ sendMessage, houseName}) {
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ function SendMessageForm({ sendMessage }) {
         className="message-input text-white"
         onChange={handleChange}
         value={message}
-        placeholder="Type your message and hit ENTER"
+        placeholder={`Message ${houseName}`}
         type="text"
       />
     </form>
