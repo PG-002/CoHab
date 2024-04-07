@@ -1,6 +1,6 @@
 import 'package:cohab_mobile/verification.dart';
+import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
-import 'houseoptions.dart';
 import 'token.dart';
 import 'main.dart';
 
@@ -501,11 +501,12 @@ class RegisterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      onPressed: () {
+      onPressed: () async {
         var check = checkAgain();
         if (check == null) {
-          signUp(firstName, lastName, email, password);
+          await signUp(firstName, lastName, email, password);
           // then go to the email verification screen
+          init();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const VerificationPage()),

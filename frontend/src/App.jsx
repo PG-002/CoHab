@@ -1,6 +1,8 @@
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import JoinHome from "./pages/JoinHome";
+import CreateHome from "./pages/CreateHome";
 import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage";
 import SidebarLayout from "./pages/global/SidebarLayout";
@@ -12,6 +14,9 @@ import Settings from "./pages/Settings";
 import VerficationPage from "./pages/Verification";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
+
+import VerifiedRoute from "./components/VerifiedRoute";
+import HousedRoute from "./components/HousedRoute";
 
 import {
   BrowserRouter as Router,
@@ -123,39 +128,24 @@ function App() {
             <Route path="/signup" element={<SignUpPage />} />
           </Route>
           <Route element={<AuthenticatedRoute />}>
-            {/* <Route path="/joinhouse" element={<JoinHome />} />
-            <Route path="/createhouse" element={<CreateHome />} /> */}
             <Route
               path="/verifyUser"
               element={<VerficationPage setUser={setUser} />}
             />
+            <Route path="/joinHouse" element={<JoinHome setUser={setUser} />} />
+            <Route
+              path="/createHouse"
+              element={<CreateHome setUser={setUser} />}
+            />
             <Route element={<VerifiedRoute />}>
-              <Route
-                element={
-                  <SidebarLayout
-                    userInfo={user}
-                    houseInfo={houseInfo}
-                    setHouseInfo={handleHouseUpdate}
-                    setEvents={setEvents}
-                  />
-                }
-              >
+              <Route element={<HousedRoute />}>
                 <Route
-                  path="/dashboard"
-                  element={<DashboardPage houseInfo={houseInfo} />}
-                />
-                <Route
-                  path="/tasklist"
-                  element={<TodoList socket={socket} />}
-                />
-                <Route
-                  path="/calendar"
                   element={
-                    <Calendar
-                      events={events}
-                      addEvent={handleEventSubmit}
-                      updateEvent={handleEventUpdate}
-                      deleteEvent={handleEventDelete}
+                    <SidebarLayout
+                      userInfo={user}
+                      houseInfo={houseInfo}
+                      setHouseInfo={handleHouseUpdate}
+                      setEvents={setEvents}
                     />
                   }
                 />
@@ -167,6 +157,28 @@ function App() {
                   } />
                 <Route path="/messages" element={<Chat socket={socket} />} />
                 <Route path="/settings" element={<Settings />} />
+                  <Route
+                    path="/dashboard"
+                    element={<DashboardPage houseInfo={houseInfo} />}
+                  />
+                  <Route
+                    path="/tasklist"
+                    element={<TodoList socket={socket} />}
+                  />
+                  <Route
+                    path="/calendar"
+                    element={
+                      <Calendar
+                        events={events}
+                        addEvent={handleEventSubmit}
+                        updateEvent={handleEventUpdate}
+                        deleteEvent={handleEventDelete}
+                      />
+                    }
+                  />
+                  <Route path="/messages" element={<Chat socket={socket} />} />
+                  <Route path="/settings" element={<Settings />} />
+                </Route>
               </Route>
             </Route>
           </Route>

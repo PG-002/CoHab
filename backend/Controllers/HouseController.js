@@ -40,34 +40,32 @@ const createHouse = async (req, res) => {
 const sendJoinCode = async (req, res) => {
     const { houseId, email } =  req.body;
 
-    const user = User.findOne({ email : email })
+    res.status(200);
+
+    const user = await User.findOne({ email : email })
         .catch(() => null);
 
-    const house = House.findById(houseId)
+    const house = await House.findById(houseId)
         .catch(() => null);
 
     if(!house)
     {
-        res.status(404);
         res.json({ sent : false, error : 'House does not exist.' });
         return;
     }
 
     if(!user)
-    {   
-        res.status(404);
+    {
         res.json({ sent : false, error : 'User does not exist.' });
         return;
     }
 
     if(!user.verified)
     {
-        res.status(404);
         res.json({ sent : false, error : 'This user has not confirmed their email.' });
         return;
     }
 
-    res.status(200);
     res.json(await sendInvite(user, house));
 }
 

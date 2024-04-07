@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const VerficationPage = ({ setUser }) => {
@@ -7,19 +7,27 @@ const VerficationPage = ({ setUser }) => {
   const [codeResponse, setCodeResponse] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+
+    if (JSON.parse(userInfo).verified) {
+      navigate("/dashboard");
+    }
+  }, []);
+
   const handleClick = () => {
     const userInfo = localStorage.getItem("userInfo");
 
     if (userInfo) {
-      sendCode(JSON.parse(userInfo).userId);
+      sendCode(JSON.parse(userInfo).email);
     } else {
       console.error("user not found");
     }
   };
 
-  const sendCode = async (id) => {
+  const sendCode = async (email) => {
     try {
-      const JSONPayload = JSON.stringify({ id });
+      const JSONPayload = JSON.stringify({ email });
       console.log(JSONPayload);
 
       const response = await fetch(
@@ -46,13 +54,13 @@ const VerficationPage = ({ setUser }) => {
     }
   };
 
-  const sendVerification = async (id, code) => {
+  const sendVerification = async (email, code) => {
     try {
-      const JSONPayload = JSON.stringify({ id, code });
+      const JSONPayload = JSON.stringify({ email, code });
       console.log(JSONPayload);
 
       const response = await fetch(
-        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyUser",
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyCode",
         {
           // Adjust URL as necessary
           method: "POST",
@@ -99,7 +107,7 @@ const VerficationPage = ({ setUser }) => {
     const userInfo = localStorage.getItem("userInfo");
 
     if (userInfo) {
-      sendVerification(JSON.parse(userInfo).userId, code);
+      sendVerification(JSON.parse(userInfo).email, code);
     } else {
       console.error("user not found");
     }
@@ -112,13 +120,18 @@ const VerficationPage = ({ setUser }) => {
         className="flex flex-col items-center gap-4 w-8/12 md:w-6/12 max-w-[700px]"
       >
         <h2 className="text-xl text-center">
-          Please verify using a code sent your provided email address.
+          Please verify using a code sent to your provided email address.
         </h2>
         <input
           onChange={handleCodeChange}
-          className="w-full h-4/6 p-5 text-2xl rounded-xl border-white border-2"
-          placeholder="Code"
+          className={`w-full h-4/6 p-5 text-2xl rounded-xl ${
+            codeResponse ? "border-red-500" : "border-white"
+          } border-2`}
+          placeholder="Verification Code"
         ></input>
+        <p className={`${codeResponse ? "block" : "hidden"} text-red-500`}>
+          Invalid Code! Try again with correct code
+        </p>
         <button type="submit" className="bg-green-900 w-6/12 h-3/5">
           Submit Code
         </button>

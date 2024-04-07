@@ -26,16 +26,21 @@ class _VerificationPageState extends State<VerificationPage> {
   }
 
   void _handleEmail(BuildContext context) async {
+    final currentContext = context;
+
     try {
-      await verifyUser(_verificationCode);
+      await verifyCode(_verificationCode);
+
+      if (!currentContext.mounted) return;
 
       Navigator.pushReplacement(
-        context,
+        currentContext,
         MaterialPageRoute(builder: (context) => const HouseOptions()),
       );
     } catch (e) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      if (!currentContext.mounted) return;
+
+      ScaffoldMessenger.of(currentContext).showSnackBar(
         const SnackBar(
           content: Text('An error occurred. Please try again later.'),
         ),

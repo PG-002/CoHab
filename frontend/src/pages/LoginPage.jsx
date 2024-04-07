@@ -58,7 +58,11 @@ const LoginPage = ({ setUser }) => {
   return (
     <div className="flex flex-row w-screen">
       <div className="flex h-screen w-full">
-        <img className="hidden lg:flex w-1/2" src={test} alt="Login visual" />
+        <img
+          className="hidden lg:flex lg:w-1/2"
+          src={test}
+          alt="Login visual"
+        />
         <div className="w-full bg-gray-100 dark:bg-neutral-900 lg:w-1/2 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
             <h1 className="text-3xl font-semibold mb-6 text-black dark:text-white text-center">

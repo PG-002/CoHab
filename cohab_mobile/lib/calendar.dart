@@ -1,3 +1,5 @@
+import 'package:cohab_mobile/token.dart';
+import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
@@ -42,13 +44,54 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     if (newEvent != null) {
       setState(() {
-        _eventList.add(newEvent);
+        _eventList.add(newEvent); // New event added here
       });
     }
   }
 
-  void _deleteEvent() {
-    // Implement delete functionality
+  void _deleteEvent(NeatCleanCalendarEvent event) {
+    setState(() {
+      _eventList.remove(event);
+    });
+  }
+  void _showEventDetailsDialog(NeatCleanCalendarEvent event) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(event.summary),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Start Time: ${DateFormat.yMd().add_jm().format(event.startTime)}',
+                style: const TextStyle(fontSize: 15),
+              ),
+              Text(
+                'End Time: ${DateFormat.yMd().add_jm().format(event.endTime)}',
+                style: const TextStyle(fontSize: 15),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+            TextButton(
+              onPressed: () {
+                _deleteEvent(event);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -57,15 +100,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       body: SafeArea(
         child: Calendar(
           startOnMonday: true,
-          weekDays: const [
-            'Mo',
-            'Tu',
-            'We',
-            'Th',
-            'Fr',
-            'Sa',
-            'Su'
-          ],
+          weekDays: const ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           eventsList: _eventList,
           isExpandable: true,
           eventDoneColor: Colors.deepPurple,
@@ -83,9 +118,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             setState(() {
               _selectedEvent = value;
             });
-            if (kDebugMode) {
-              print('Event selected ${value.summary}');
-            }
+            _showEventDetailsDialog(value);
           },
           onEventLongPressed: (value) {
             if (kDebugMode) {
@@ -117,22 +150,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
           showEvents: true,
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: _addEvent,
-            backgroundColor: Colors.green,
-            child: const Icon(Icons.add),
-          ),
-          const SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: _deleteEvent,
-            backgroundColor: Colors.red,
-            child: const Icon(Icons.delete),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addEvent,
+        backgroundColor: Colors.green,
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -269,6 +290,16 @@ class _AddEventDialogState extends State<AddEventDialog> {
                   endTime: endTime,
                   color: Colors.blue,
                 );
+
+                // final Map<String, dynamic> body = {
+                //   'events.title': eventName,
+                //   'events.start': startTime,
+                //   'events.end': endTime,
+                //   'events.description': '',
+                //   'events.allDay': false,
+                //   'events.createdBy': userId,
+                // };
+                // socket.emit('createEvent',body);
                 Navigator.of(context).pop(newEvent);
               } else {
                 // Show error message that end time should be after start time
