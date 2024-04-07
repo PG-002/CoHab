@@ -140,7 +140,7 @@ function TodoList({ socket }) {
 
   return (
     <div className="todo__container">
-      <Nav />
+      {/* <Nav /> */}
       <form className="form" onSubmit={handleAddTask}>
         <input
           autoFocus
@@ -163,7 +163,7 @@ function TodoList({ socket }) {
         <div className="todo__header todo__item">
           <span className="">Created</span>
           <span >Task</span>
-          <span>AssignedTo</span>
+          <span>Assignee</span>
           <span>Actions</span>
         </div>
       </div>
@@ -172,7 +172,7 @@ function TodoList({ socket }) {
           <div key={taskItem._id} className="todo__item">
             {isEditing === taskItem._id ? (
               <form onSubmit={(e) => submitEdit(e, taskItem._id)}>
-                <input autoFocus value={editText} onChange={handleEditChange} />
+                <input style={{'background-color' : '#222222', 'width' : '200px'}} autoFocus value={editText} onChange={handleEditChange} />
                 <button type="submit">Save</button>
                 <button type="submit" onClick={() => setIsEditing(null)}>Cancel</button>
               </form>

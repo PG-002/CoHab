@@ -27,10 +27,6 @@ import {
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import VerifiedRoute from "./components/VerifiedRoute";
-import { LocationSocketProvider } from './components/LocationSocketContext';
-
-
 function App() {
   Modal.setAppElement("#root");
   const localHouseInfo = localStorage.getItem("houseInfo")
@@ -148,15 +144,7 @@ function App() {
                       setEvents={setEvents}
                     />
                   }
-                />
-                
-                  <Route path="/location" element={
-                    <LocationSocketProvider>
-                      <Location/>
-                  </LocationSocketProvider>
-                  } />
-                <Route path="/messages" element={<Chat socket={socket} />} />
-                <Route path="/settings" element={<Settings />} />
+                >
                   <Route
                     path="/dashboard"
                     element={<DashboardPage houseInfo={houseInfo} />}
@@ -176,6 +164,7 @@ function App() {
                       />
                     }
                   />
+                  <Route path="/location" element={<Location />} />
                   <Route path="/messages" element={<Chat socket={socket} />} />
                   <Route path="/settings" element={<Settings />} />
                 </Route>
