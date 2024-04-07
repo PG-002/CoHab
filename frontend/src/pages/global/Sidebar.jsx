@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 const SidebarContext = createContext();
 
 function Sidebar({ userInfo, children }) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <aside className="h-screen">
