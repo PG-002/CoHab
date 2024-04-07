@@ -27,7 +27,19 @@ import {
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
+
 function App() {
+  const [theme, setTheme] = useState(localStorage.theme);
+  const colorTheme = theme === "dark" ? "light" : "dark";
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove(colorTheme);
+    root.classList.add(theme);
+
+    localStorage.setItem("theme", theme);
+  }, [theme, colorTheme]);
+
   Modal.setAppElement("#root");
   const localHouseInfo = localStorage.getItem("houseInfo")
     ? JSON.parse(localStorage.getItem("houseInfo"))
