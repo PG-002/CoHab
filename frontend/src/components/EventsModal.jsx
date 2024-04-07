@@ -78,8 +78,11 @@ export default function EventModal({
         isOpen={showModal}
         className="z-[999] bg-black bg-opacity-55 h-screen w-full fixed left-0 top-0 flex justify-center items-center"
       >
-        <form onClick={() => {}} className="bg-white rounded-lg shadow-2xl ">
-          <header className=" bg-gray-100 px-4 py-2 flex justify-between items-center">
+        <form
+          onClick={() => {}}
+          className="bg-white dark:bg-neutral-900 rounded-lg shadow-2xl "
+        >
+          <header className=" bg-gray-100 dark:bg-neutral-800 px-4 py-2 flex justify-between items-center">
             <GripHorizontal className=" text-gray-400"></GripHorizontal>
             <div className="flex flex-row gap-4">
               <button
@@ -100,14 +103,14 @@ export default function EventModal({
                 placeholder="Add title"
                 value={title}
                 required
-                className="bg-white border-0 text-black text-xl font-semibold p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+                className="bg-white dark:bg-neutral-900 border-0 text-black dark:text-white text-xl font-semibold p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
                 onChange={(e) => setTitle(e.target.value)}
               />
               <div className="flex flex-row text-black">
                 <Clock className="mr-3 text-gray-400"></Clock>
                 <div className="flex md:flex-row flex-col items-center">
                   <DatePicker
-                    className="bg-white text-sm text-center font-bold p-1 hover:cursor-pointer hover:bg-gray-200 rounded-lg border-gray-300 border-2"
+                    className="bg-white dark:bg-neutral-800 text-sm text-center dark:text-white font-bold p-1 hover:cursor-pointer hover:bg-gray-200 rounded-lg border-gray-300 border-2"
                     showTimeSelect={!allDay}
                     selected={startDate}
                     dateFormat={!allDay ? "MM/dd/yyyy hh:mm a" : "MM/dd/yyyy"}
@@ -116,9 +119,9 @@ export default function EventModal({
                       setEndDate(date);
                     }}
                   />
-                  <Minus className="mx-2"></Minus>
+                  <Minus className="mx-2 dark:text-white"></Minus>
                   <DatePicker
-                    className="bg-white text-sm font-bold text-center p-1 hover:cursor-pointer hover:bg-gray-200 rounded-lg border-gray-300 border-2"
+                    className="bg-white dark:bg-neutral-800 text-sm font-bold dark:text-white text-center p-1 hover:cursor-pointer hover:bg-gray-200 rounded-lg border-gray-300 border-2"
                     showTimeSelect={!allDay}
                     selected={
                       endDate
@@ -135,10 +138,10 @@ export default function EventModal({
                 </div>
               </div>
 
-              <div className="flex flex-row pl-10 bg-white">
+              <div className="flex flex-row pl-10">
                 <input
                   type="checkbox"
-                  className="appearance-none peer size-6 rounded-lg bg-white border-2 border-gray-400 shrink-0 checked:bg-blue-800 checked:border-0 cursor-pointer"
+                  className="appearance-none peer size-6 rounded-lg bg-white dark:bg-neutral-900  border-2 border-gray-400 shrink-0 dark:checked:bg-blue-800 checked:bg-blue-800 checked:border-0 cursor-pointer"
                   defaultChecked={allDay}
                   onChange={() => {
                     setAllDay((prevState) => !prevState);
@@ -159,7 +162,7 @@ export default function EventModal({
                   />
                 </svg>
 
-                <p className="text-black ml-2">All Day?</p>
+                <p className="text-black dark:text-white ml-2">All Day?</p>
               </div>
 
               <div className="flex flex-row">
@@ -170,7 +173,7 @@ export default function EventModal({
                   placeholder="Add a description"
                   value={description}
                   required
-                  className="bg-white text-xs md:text-base  border-0 text-gray-600 p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+                  className="bg-white dark:bg-neutral-800 text-xs md:text-base  border-0 text-gray-600 dark:text-white p-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
