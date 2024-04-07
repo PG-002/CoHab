@@ -210,4 +210,31 @@ Future<void> createHouse(String houseName) async {
   }
 }
 
+Future<void> updatePassword(String email, String newPassword) async {
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/updatePassword');
+  final Map<String, String> body = {
+    'email': email,
+    'password': newPassword,
+  };
 
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+    } else {
+      throw 'Updating Password Failed';
+    }
+  } catch (e) {
+    // Exception occurred
+    throw 'Updating Password Failed';
+  }
+}
