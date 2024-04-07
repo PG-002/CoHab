@@ -1,6 +1,6 @@
+import 'package:cohab_mobile/verification.dart';
 import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
-import 'houseoptions.dart';
 import 'token.dart';
 import 'main.dart';
 
@@ -19,7 +19,8 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      home: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
@@ -111,7 +112,7 @@ class _RegisterState extends State<Register> {
                 const SizedBox(height: 5),
                 const Align(
                   alignment: Alignment.centerRight,
-                  child: ForgotPassword(),
+                  //child: ForgotPassword(),
                 ),
                 const SizedBox(height: 20),
                 const RegisterButton(),
@@ -148,11 +149,12 @@ class _RegisterState extends State<Register> {
             ),
           ),
         ),
+      ),
     );
   }
 }
 
-class ForgotPassword extends StatelessWidget {
+/*class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});
 
   @override
@@ -165,7 +167,7 @@ class ForgotPassword extends StatelessWidget {
           style: TextStyle(color: Colors.blue, fontSize: 17)),
     );
   }
-}
+}*/
 
 class PasswordInput extends StatefulWidget {
   const PasswordInput({super.key});
@@ -499,42 +501,21 @@ class RegisterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      onPressed: () {
-        // Get the current BuildContext before the async operation
-        final currentContext = context;
-        try {
-          var check = checkAgain();
-          if (check == null) {
-            signUp(firstName, lastName, email, password)
-                .then((_) {
-              // Go to the email verification screen after successful signup
-              initSocket();
-              Navigator.push(
-                currentContext,
-                MaterialPageRoute(builder: (context) => const HouseOptions()),
-              );
-            })
-                .catchError((e) {
-              // Catch and display signup exception
-              ScaffoldMessenger.of(currentContext).showSnackBar(
-                const SnackBar(
-                  content: Text('Signup failed'),
-                ),
-              );
-            });
-          } else {
-            // Display error message to the user
-            ScaffoldMessenger.of(currentContext).showSnackBar(
-              SnackBar(
-                content: Text(check),
-              ),
-            );
-          }
-        } catch (e) {
-          // Catch and display any synchronous errors
-          ScaffoldMessenger.of(currentContext).showSnackBar(
+      onPressed: () async {
+        var check = checkAgain();
+        if (check == null) {
+          await signUp(firstName, lastName, email, password);
+          // then go to the email verification screen
+          init();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const VerificationPage()),
+          );
+        } else {
+          // Display error message to the user
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error: $e'),
+              content: Text(check),
             ),
           );
         }
