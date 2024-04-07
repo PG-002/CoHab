@@ -20,7 +20,7 @@ function SendMessageForm({ sendMessage }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="send-message-form p-2.5 border-t-2 border-white"
+      className="send-message-form p-2.5"
     >
       <input
         className="message-input text-white"
