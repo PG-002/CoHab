@@ -5,6 +5,7 @@ import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'register.dart';
+import 'updatePassword.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _email = value;
     });
-
   }
 
   void _handlePasswordChange(String value) {
@@ -36,53 +36,43 @@ class _LoginPageState extends State<LoginPage> {
       print(decodedToken);
 
       if (decodedToken['verified'] == true) {
-
-        if(decodedToken['houseId'] == null)
-          {
-            init();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HouseOptions()),
-            );
-          }
-
-        else
-          {
-            init();
-            socket.connect();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
-          }
-
-      }
-      else {
+        if (decodedToken['houseId'] == null) {
+          init();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HouseOptions()),
+          );
+        } else {
+          init();
+          socket.connect();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        }
+      } else {
         init();
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const VerificationPage()),
         );
-
       }
-
-    }
-     catch (e) {
-       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
-           content: Text('$e'), // Convert the error to a string to display
-           duration: const Duration(seconds: 1), // Adjust the duration as needed
-         ),
-       );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('$e'), // Convert the error to a string to display
+          duration: const Duration(seconds: 1), // Adjust the duration as needed
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
+        home: Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -122,8 +112,8 @@ class _LoginPageState extends State<LoginPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          contentPadding: const EdgeInsets.fromLTRB(
-                              12.0, 8.0, 12.0, 8.0),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
                         ),
                       ),
                     ),
@@ -155,8 +145,8 @@ class _LoginPageState extends State<LoginPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          contentPadding: const EdgeInsets.fromLTRB(
-                              12.0, 8.0, 12.0, 8.0),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
                         ),
                       ),
                     ),
@@ -167,11 +157,15 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    // Implement your forgot password logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UpdatePasswordPage()),
+                    );
                   },
                   child: const Text(
                     'Forgot password?',
-                      style: TextStyle(color: Colors.blue, fontSize: 17),
+                    style: TextStyle(color: Colors.blue, fontSize: 17),
                   ),
                 ),
               ),
@@ -189,7 +183,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                          color: Colors.white, fontSize: 18, fontFamily: 'Open Sans'),
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontFamily: 'Open Sans'),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -216,8 +212,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-        )
-    );
+    ));
   }
 }
 
