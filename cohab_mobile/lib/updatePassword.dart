@@ -10,7 +10,14 @@ class UpdatePasswordPage extends StatefulWidget {
 }
 
 class _UpdatePasswordState extends State<UpdatePasswordPage> {
+  String _email = '';
   String _newPassword = '';
+
+  void _handleEmail(String value) {
+    setState(() {
+      _email = value;
+    });
+  }
 
   void _handleNewPassword(String value) {
     setState(() {
@@ -19,10 +26,20 @@ class _UpdatePasswordState extends State<UpdatePasswordPage> {
   }
 
   void _handleUpdatePassword(BuildContext context) async {
+  // Check if email or password is empty
+    if (_email.isEmpty || _newPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill in both email and new password.'),
+        ),
+      );
+      return;
+    }
+
     try {
-      await updatePassword(userIds, _newPassword);
+      await updatePassword(_email, _newPassword);
       if (!context.mounted) return;
-      
+    
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -37,6 +54,7 @@ class _UpdatePasswordState extends State<UpdatePasswordPage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,33 +67,96 @@ class _UpdatePasswordState extends State<UpdatePasswordPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              'Enter your new password',
+              'Please enter your email and new password',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18.0),
             ),
             const SizedBox(height: 20.0),
-            TextFormField(
-              onChanged: _handleNewPassword,
-              decoration: const InputDecoration(
-                labelText: 'New Password',
-                border: OutlineInputBorder(),
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Email',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 350, // Set width of the container
+                    child: Container(
+                      color: Colors.grey[200],
+                      child: TextFormField(
+                        onChanged: _handleEmail,
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          hintText: 'Example@gmail.com',
+                          hintStyle: const TextStyle(
+                              color: Colors.black54, fontFamily: 'Open Sans'),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          contentPadding: const EdgeInsets.fromLTRB(
+                              12.0, 8.0, 12.0, 8.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () => _handleUpdatePassword(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+            const SizedBox(height: 25.0),
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'New Password',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 350, // Set width of the container
+                    child: Container(
+                      color: Colors.grey[200],
+                      child: TextFormField(
+                        onChanged: _handleNewPassword,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your new password',
+                          hintStyle: const TextStyle(
+                              color: Colors.black54, fontFamily: 'Open Sans'),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          contentPadding: const EdgeInsets.fromLTRB(
+                              12.0, 8.0, 12.0, 8.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              child: const Text(
-                'Update Password',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
+            const SizedBox(height: 25.0),
+            Builder(
+                builder: (context) => MaterialButton(
+                  onPressed: () => _handleUpdatePassword(context),
+                  color: const Color(0xFF14532d),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 13.0),
+                  child: const SizedBox(
+                    width: 350,
+                    child: Text(
+                      'Update Password',
+                      style: TextStyle(
+                          color: Colors.white, fontSize: 18, fontFamily: 'Open Sans'),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
