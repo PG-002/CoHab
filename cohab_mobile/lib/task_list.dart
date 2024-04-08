@@ -44,10 +44,10 @@ class _TaskListState extends State<TaskList> {
         }).toList();
       });
     }).catchError((error) {
-      print("Error getting house information: $error");
       // Handle error if necessary
     });
   }
+
 
   // Function to add a task to the tasks list
   void addTask(String taskDescription) async {
@@ -93,7 +93,7 @@ class _TaskListState extends State<TaskList> {
         }
       }
     } catch (error) {
-      print("Error fetching house information: $error");
+
       // Handle error if necessary
     }
 
@@ -111,8 +111,6 @@ class _TaskListState extends State<TaskList> {
   void deleteTask(int index) {
     setState(() {
 
-      print(tasks[index].id);
-
       final Map<String,dynamic> body = {
         '_id': tasks[index].id,
         'task': tasks[index].taskDescription,
@@ -129,19 +127,30 @@ class _TaskListState extends State<TaskList> {
 
   }
 
-  // Function to show dialog for modifying a task
   void showModifyTaskDialog(BuildContext context, int index) {
     TextEditingController taskController =
     TextEditingController(text: tasks[index].taskDescription);
+    TextEditingController assignedToController =
+    TextEditingController(text: tasks[index].assignedTo);
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Modify Task'),
-          content: TextField(
-            controller: taskController,
-            decoration: const InputDecoration(labelText: 'Task Description'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: taskController,
+                decoration: const InputDecoration(labelText: 'Task Description'),
+              ),
+              const SizedBox(height: 10), // Add some space between the two text fields
+              TextField(
+                controller: assignedToController,
+                decoration: const InputDecoration(labelText: 'Assigned To'),
+              ),
+            ],
           ),
           actions: <Widget>[
             TextButton(
@@ -153,9 +162,23 @@ class _TaskListState extends State<TaskList> {
             TextButton(
               onPressed: () {
                 String updatedTaskDescription = taskController.text;
+                String updatedAssignedTo = assignedToController.text;
                 if (updatedTaskDescription.isNotEmpty) {
                   setState(() {
                     tasks[index].taskDescription = updatedTaskDescription;
+                    tasks[index].assignedTo = updatedAssignedTo;
+
+                    final Map<String,dynamic> body = {
+                      '_id': tasks[index].id,
+                      'task': tasks[index].taskDescription,
+                      'assignedTo': tasks[index].assignedTo,
+                      'createdBy': tasks[index].createdBy,
+                      'completed': tasks[index].completed,
+
+                    };
+
+                    socket.emit('modifyTask',body);
+
                   });
                   Navigator.pop(context); // Close the dialog
                 }
@@ -426,3 +449,4 @@ class AddTasksButton extends StatelessWidget {
     );
   }
 }
+
