@@ -11,6 +11,7 @@ function Chat({ socket }) {
   const decodedToken = jwtDecode(localStorage.getItem("sessionId"));
   const [currentMessage, setCurrentMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [houseName, setHouseName] = useState(""); 
 
 
   useEffect(() => {
@@ -46,6 +47,7 @@ function Chat({ socket }) {
         if (data.token) {
           const houseData = jwtDecode(data.token); // Decode the house data from the token
           setMessages(houseData.house.groupChat); 
+          setHouseName(houseData.house.houseName);
         } else {
           console.error("House not found:", data.error);
           navigate("/login"); // Redirect to login or handle error state
@@ -69,11 +71,7 @@ function Chat({ socket }) {
   }, [socket]);
 
   const handleSendMessage = (messageContent) => {
-    const messageDate = new Date();
-    // console.log(messageContent);
     socket.emit("sendMessage", messageContent);
-    // console.log("sentBy is " + decodedToken.firstName);
-    // console.log("email is " +  decodedToken.email);
     setCurrentMessage("");
   };
 
@@ -83,9 +81,9 @@ function Chat({ socket }) {
 
   return (
     <div className="flex flex-col w-full h-screen bg-[#ADBC9F] text-black font-bold">
-      <h2 className=" bg-white font-bold text-black border-b-2 border white text-xs sm:text-sm md:text-base lg:text-lg ">
+      {/* <h2 className=" bg-white font-bold text-black border-b-2 border white text-xs sm:text-sm md:text-base lg:text-lg ">
         Group Chat
-      </h2>
+      </h2> */}
       <div className="message-list-container pt-4 pb-1 flex flex-col justify-between w-full h-full">
         <div>
           <Messages
@@ -95,7 +93,7 @@ function Chat({ socket }) {
           />
         </div>
       </div>
-      <SendMessageForm sendMessage={handleSendMessage} />
+      <SendMessageForm sendMessage={handleSendMessage} houseName={houseName} />
     </div>
   );
 }

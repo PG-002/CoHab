@@ -1,8 +1,9 @@
+import { jwtDecode } from "jwt-decode";
 import test from "../assets/test.jpg";
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const SignUpPage = () => {
+const SignUpPage = ({ setUser }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,7 +22,6 @@ const SignUpPage = () => {
   const hasUpperCase = /[A-Z]/;
   const hasSpecialChar = /[@$!%*?&]/;
   const hasValidLength = /^.{8,20}$/;
-
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
@@ -59,7 +59,13 @@ const SignUpPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("sessionId", data.token);
+        const token = data.token;
+        localStorage.setItem("sessionId", token);
+
+        const decoded = jwtDecode(token);
+        localStorage.setItem("userInfo", JSON.stringify(decoded));
+        setUser(decoded);
+
         navigate("/dashboard");
       } else {
         throw new Error("Failed to register");
@@ -130,24 +136,56 @@ const SignUpPage = () => {
               </label>
               <div className="relative">
                 <input
-                required
-                type={showPass ? "text" : "password"}
-                ref={passwordInputRef}
-                value={password}
-                onChange={handlePasswordChange}
-                onFocus={handleFocus}
-                onBlur={(handleFocus)}
-                className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                  required
+                  type={showPass ? "text" : "password"}
+                  ref={passwordInputRef}
+                  value={password}
+                  onChange={handlePasswordChange}
+                  onFocus={handleFocus}
+                  onBlur={handleFocus}
+                  className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
                 {isFocused && (
-                <div className="text-red-600 text-sm mt-1">
-                <ul className="text-sm">
-            <li className={validateRequirement(hasNumber) ? 'text-green-600' : 'text-red-600'}>Must contain a number</li>
-            <li className={validateRequirement(hasValidLength) ? 'text-green-600' : 'text-red-600'}>Must be 8-20 characters</li>
-            <li className={validateRequirement(hasUpperCase) ? 'text-green-600' : 'text-red-600'}>Must contain an uppercase letter</li>
-            <li className={validateRequirement(hasSpecialChar) ? 'text-green-600' : 'text-red-600'}>Must contain a special character</li>
-          </ul>
-                </div>
+                  <div className="text-red-600 text-sm mt-1">
+                    <ul className="text-sm">
+                      <li
+                        className={
+                          validateRequirement(hasNumber)
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        Must contain a number
+                      </li>
+                      <li
+                        className={
+                          validateRequirement(hasValidLength)
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        Must be 8-20 characters
+                      </li>
+                      <li
+                        className={
+                          validateRequirement(hasUpperCase)
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        Must contain an uppercase letter
+                      </li>
+                      <li
+                        className={
+                          validateRequirement(hasSpecialChar)
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        Must contain a special character
+                      </li>
+                    </ul>
+                  </div>
                 )}
               </div>
 

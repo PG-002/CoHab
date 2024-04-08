@@ -61,37 +61,67 @@ function SidebarLayout({ userInfo, houseInfo, setHouseInfo }) {
     <div className="w-screen flex flex-row">
       <Sidebar userInfo={userInfo}>
         <SidebarItem
-          icon={<LayoutDashboard size={25} className="text-black" />}
+          icon={
+            <LayoutDashboard
+              size={25}
+              className="text-eucalyptus-950 dark:text-eucalyptus-400"
+            />
+          }
           text={"Dashboard"}
           link={"dashboard"}
           active={activePage == "/dashboard"}
         ></SidebarItem>
         <SidebarItem
-          icon={<ListChecks size={25} className="text-black" />}
+          icon={
+            <ListChecks
+              size={25}
+              className="text-eucalyptus-950 dark:text-eucalyptus-400"
+            />
+          }
           text={"Task List"}
           link={"tasklist"}
           active={activePage == "/tasklist"}
         ></SidebarItem>
         <SidebarItem
-          icon={<CalendarDays size={25} className="text-black" />}
+          icon={
+            <CalendarDays
+              size={25}
+              className="text-eucalyptus-950 dark:text-eucalyptus-400"
+            />
+          }
           text={"Calendar"}
           link={"calendar"}
           active={activePage == "/calendar"}
         ></SidebarItem>
         <SidebarItem
-          icon={<LocateFixedIcon size={25} className="text-black" />}
+          icon={
+            <LocateFixedIcon
+              size={25}
+              className="text-eucalyptus-950 dark:text-eucalyptus-400"
+            />
+          }
           text={"Roommate Location"}
           link={"location"}
           active={activePage == "/location"}
         ></SidebarItem>
         <SidebarItem
-          icon={<MessageCircleMore size={25} className="text-black" />}
+          icon={
+            <MessageCircleMore
+              size={25}
+              className="text-eucalyptus-950 dark:text-eucalyptus-400"
+            />
+          }
           text={"Messages"}
           link={"messages"}
           active={activePage == "/messages"}
         ></SidebarItem>
         <SidebarItem
-          icon={<Settings size={25} className="text-black" />}
+          icon={
+            <Settings
+              size={25}
+              className="text-eucalyptus-950 dark:text-eucalyptus-400"
+            />
+          }
           text={"Settings"}
           link={"settings"}
           active={activePage == "/settings"}

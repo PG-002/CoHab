@@ -15,7 +15,8 @@ function TodoList({ socket }) {
   const [tasks, setTasks] = useState([]);
   const [isEditing, setIsEditing] = useState(null);
   const [editText, setEditText] = useState("");
-  const dropdownRef = useRef(null);
+  const [showCompleted, setShowCompleted] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -63,8 +64,37 @@ function TodoList({ socket }) {
   
     fetchTasks();
   }, [navigate]);
-  
 
+
+  const checkScreenSize = () => {
+    if (window.innerWidth < 600)
+      setIsMobile(true);
+    else
+      setIsMobile(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', checkScreenSize);
+
+    checkScreenSize();
+
+    // Remove event listener on cleanup
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+    };
+  }, []);
+
+  // Function to toggle completed tasks view
+  const toggleShowCompleted = () => {
+    setShowCompleted((prev) => !prev);
+  };
+
+  const handleCompleteTask = (task) => {
+    socket.emit("modifyTask", {
+      ...task,
+      completed : true
+    });
+  };
   
 
   useEffect(() => {
@@ -77,8 +107,7 @@ function TodoList({ socket }) {
 
   const handleAddTask = (e) => {
     e.preventDefault();
-    
-    // Emit the new task to the server
+
     socket.emit("createTask", {
       task: todo,
       completed: false,
@@ -89,7 +118,6 @@ function TodoList({ socket }) {
   };
 
   const handleDeleteTask = (task) => {
-    // Emit the delete task event to the server
     socket.emit("deleteTask", { id: task._id });
     setTasks((currentTasks) =>
       currentTasks.filter((task) => task.id !== task._id)
@@ -107,11 +135,10 @@ function TodoList({ socket }) {
 
   const submitEdit = (e, taskId) => {
     e.preventDefault();
-    // Emit the updated task to the server
     socket.emit("modifyTask", {
       _id: taskId,
       task: editText,
-      completed: false, // or the current status of the task
+      completed: false,
     });
     setIsEditing(null);
     setEditText("");
@@ -140,7 +167,6 @@ function TodoList({ socket }) {
 
   return (
     <div className="todo__container">
-      <Nav />
       <form className="form" onSubmit={handleAddTask}>
         <input
           autoFocus
@@ -150,56 +176,113 @@ function TodoList({ socket }) {
           placeholder="Enter new task"
           required
         />
-        <Dropdown label={assignedTo || "Assign to..."} inline={true}>
+        <Dropdown className="dropdown" label={assignedTo || "Assign to..."} inline={true}>
         {housemates.map((housemate, index) => (
           <Dropdown.Item key={index} onClick={() => handleSelectHousemate(housemate)}>
             {housemate}
           </Dropdown.Item>
         ))}
       </Dropdown>
-        <button className="form__cta input">Add Task</button>
+        <button className="form__cta input">Add</button>
       </form>
+      {
+      isMobile ? (
+        <label className="toggle-switch">
+          <input
+            type="checkbox"
+            checked={showCompleted}
+            onChange={toggleShowCompleted}
+          />
+          <span className="switch-slider">
+            <span className="switch-label switch-label-off">Incomplete</span>
+            <span className="switch-label switch-label-on">Complete</span>
+          </span>
+        </label>
+      ) : (
+        <div className="todo__header-switch">
+          <div 
+            className={`header-tab incomplete ${!showCompleted ? 'active' : ''}`}
+            onClick={() => setShowCompleted(false)}
+          >
+            Incomplete
+          </div>
+          <div 
+            className={`header-tab complete ${showCompleted ? 'active' : ''}`}
+            onClick={() => setShowCompleted(true)}
+          >
+            Complete
+          </div>
+        </div>
+      )
+    }
+      {/* <label className="toggle-switch">
+        <input
+        type="checkbox"
+        checked={showCompleted}
+        onChange={toggleShowCompleted}
+        />
+      <span className="switch-slider">
+      <span className="switch-label switch-label-off">Incomplete</span>
+      <span className="switch-label switch-label-on">Complete</span>
+      </span>
+      </label> */}
       <div className="todo__container" style= {{'paddingBottom': '0px'}}>
         <div className="todo__header todo__item">
           <span className="">Created</span>
           <span >Task</span>
-          <span>AssignedTo</span>
+          <span>Assignee</span>
           <span>Actions</span>
         </div>
       </div>
       <div className="todo__container_tasks">
-        {tasks.map((taskItem) => (
-          <div key={taskItem._id} className="todo__item">
-            {isEditing === taskItem._id ? (
-              <form onSubmit={(e) => submitEdit(e, taskItem._id)}>
-                <input autoFocus value={editText} onChange={handleEditChange} />
-                <button type="submit">Save</button>
-                <button type="submit" onClick={() => setIsEditing(null)}>Cancel</button>
-              </form>
-            ) : (
+  {tasks.filter(task => task.completed === showCompleted).map((taskItem) => (
+    <div key={taskItem._id} className={`todo__item ${taskItem.completed ? "completed-task" : ""}`}>
+      {isEditing === taskItem._id ? (
+        <form onSubmit={(e) => submitEdit(e, taskItem._id)}>
+          <input
+            style={{'backgroundColor': '#222222', 'width': '200px'}}
+            autoFocus
+            value={editText}
+            onChange={handleEditChange}
+          />
+          <button type="submit">Save</button>
+          <button type="button" onClick={() => setIsEditing(null)}>Cancel</button>
+        </form>
+      ) : (
+        <>
+          <div className="todo__section">{taskItem.createdBy}</div>
+          <div className="todo__section">{taskItem.task}</div>
+          <div className="todo__section">{taskItem.assignedTo}</div>
+          <div className="todo__actions">
+            {!taskItem.completed && (
               <>
-                <div className="todo__section">{taskItem.createdBy}</div>
-                <div className="todo__section">{taskItem.task}</div>
-                <div className="todo__section">{taskItem.assignedTo}</div>
-                <div>
-                  <button
-                    className="commentsBtn"
-                    onClick={() => startEditing(taskItem)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="deleteBtn"
-                    onClick={() => handleDeleteTask(taskItem)}
-                  >
-                    Delete
-                  </button>
-                </div>
+                <button
+                  className="doneBtn"
+                  onClick={() => handleCompleteTask(taskItem)}
+                >
+                  Done
+                </button>
+                <button
+                  className="commentsBtn"
+                  onClick={() => startEditing(taskItem)}
+                >
+                  Edit
+                </button>
               </>
             )}
+            <button
+              className="deleteBtn"
+              onClick={() => handleDeleteTask(taskItem)}
+            >
+              Delete
+            </button>
           </div>
-        ))}
-      </div>
+        </>
+      )}
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }

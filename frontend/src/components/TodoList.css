@@ -1,10 +1,26 @@
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+
+
 .todo__container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: var(--secondary-color);
+    /* justify-content: center; */
+    /* padding: 20px; */
+    background: linear-gradient(135deg, #003327 0%, #1a1a1a 100%);
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s ease infinite;
     width: 100%;
     min-height: 0px;
   }
@@ -13,31 +29,28 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
     min-width: 100%;
-    padding: 20px;
-    background: var(--secondary-color);
+    /* Set a fixed max-height or height for the container */
+    max-height: 81vh; /* Adjust this value based on your design needs */
+    /* Enable vertical scrolling */
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* You can also set padding here if needed */
+    background: linear-gradient(135deg, #003327 0%, #1a1a1a 100%);
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s ease infinite;
   }
-
-  .navbar {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 10vh;
-    background-color: #436850;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    color: #dff6ff;
-}
-
+  
   .form {
-    margin-bottom: 20px;
+    height:10px;
+    margin-bottom: 0px;
+    border-radius: 0px;
+    background: linear-gradient(135deg, #003327 0%, #1a1a1a 100%);
   }
   
   .input {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
+    border-radius: 5px;
   }
   
   .form__cta {
@@ -45,7 +58,7 @@
   }
   
   .todo__item {
-    border-radius: 5px;
+    border-radius: 0px;
     width: 100%; /* Adjust width as needed */
     /* max-width: 500px; Maximum width of the todo items */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
@@ -53,11 +66,13 @@
     align-items: center;
     /* width: 70%; */
     padding: 20px;
-    background-color: #FBFADA;
-    margin: 10px 0;
+    background-color: rgba(51, 51, 51, 0.8);
+    border: solid #555555 0.5px;
+    /* margin: 10px 0; */
     justify-content: space-between;
-    color: #000000;
+    color: #ffffff;
     font-weight: bold;
+
   }
   
   .commentsBtn, .deleteBtn {
@@ -73,17 +88,17 @@
     justify-content: space-between;
     padding: 10px;
     font-weight: bold;
-    background-color: #f0f0f0; /* Or any other color according to your theme */
+    color: white;
+    background-color: #222222; /* Or any other color according to your theme */
   }
   
   .todo__header span {
-    flex: 1; /* This will ensure that each span takes equal width */
+    flex: 1;
     text-align: center;
   }
   
-  /* This will give a bit more space for the task description */
   .todo__header span:nth-child(2) {
-    flex: 2;
+    flex: 1.5;
   }
 
   .todo__section {
@@ -92,13 +107,184 @@
     align-items: center;
     justify-content: center;
   }
-  
-  .housematesSelect {
-    /* Ensure no inherited position properties are causing issues */
-    position: static; 
-    z-index: 1000; /* High enough to be on top of other elements */
-    font-size: 18px;
+
+  .dropdown {
+    color: white;
   }
-  
-  
-  
+
+  .form {
+    width: 100%;
+    min-height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+}
+.input {
+    padding: 10px 15px;
+    width: 80%;
+    margin-right: 15px;
+}
+.form__cta,
+.home__form > button {
+    width: 200px;
+    cursor: pointer;
+    padding: 10px;
+    height: 45px;
+    font-size: 16px;
+    background-color: #005A44;
+    color: #dff6ff;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.deleteBtn {
+    padding: 5px 10px;
+    background-color: rgb(202, 22, 22);
+    border: none;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+}
+.deleteBtn:hover {
+    color: rgb(202, 22, 22);
+    background-color: #fff;
+}
+.commentsBtn {
+    padding: 5px 10px;
+    margin-right: 10px;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    background-color: rgb(54, 29, 229);
+}
+.commentsBtn:hover {
+    background-color: #ddd;
+    border: 1px solid #000;
+}
+
+.doneBtn {
+  padding: 5px 10px;
+  margin-right: 10px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  background-color: #005A44;
+}
+.doneBtn:hover {
+  background-color: #ddd;
+  border: 1px solid #000;
+}
+
+.todo__header, .todo__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 160px; 
+  height: 34px; 
+  user-select: none; 
+}
+
+.toggle-switch input {
+  opacity: 0; 
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 34px;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+}
+
+.switch-label {
+  z-index: 2; 
+  color: #fff;
+  font-weight: bold;
+  padding: 0 60px;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px; 
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white; 
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+input:checked + .switch-slider {
+  background-color: #00d590;
+}
+
+input:checked + .switch-slider .switch-label-off {
+  display: none; 
+}
+
+input:not(:checked) + .switch-slider .switch-label-on {
+  display: none; 
+}
+
+input:checked + .switch-slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+input:focus + .switch-slider {
+  box-shadow: 0 0 1px #00d590; 
+}
+
+.todo__header-switch {
+  display: flex;
+  justify-content: space-evenly;
+  color: white;
+  font-weight: bold;
+}
+
+.header-tab {
+  padding: 10px;
+  cursor: pointer;
+  flex: 1; /* Make tabs of equal width */
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.header-tab.active {
+  background-color: #005A44; /* Active tab color */
+  border-radius: 5px;
+}
+
+.header-tab.incomplete {
+  position: relative;
+  right: 25vw; /* Position at 25% of the container */
+}
+
+.header-tab.complete {
+  position: relative;
+  left: 25vw; /* Position at 75% of the container */
+}
+
+
+
