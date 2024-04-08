@@ -183,7 +183,7 @@
   align-items: center;
 }
 
-/* .toggle-switch {
+.toggle-switch {
   position: relative;
   display: inline-block;
   width: 160px; 
@@ -254,7 +254,7 @@ input:checked + .switch-slider:before {
 
 input:focus + .switch-slider {
   box-shadow: 0 0 1px #00d590; 
-} */
+}
 
 .todo__header-switch {
   display: flex;
@@ -277,13 +277,13 @@ input:focus + .switch-slider {
 }
 
 .header-tab.incomplete {
-  left: 25%; /* Position at 25% of the container */
-  transform: translateX(-500%); /* Center it */
+  position: relative;
+  right: 25vw; /* Position at 25% of the container */
 }
 
 .header-tab.complete {
-  right: 5%; /* Position at 75% of the container */
-  transform: translateX(500%); /* Center it */
+  position: relative;
+  left: 25vw; /* Position at 75% of the container */
 }
 
 

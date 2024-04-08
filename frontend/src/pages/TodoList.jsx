@@ -16,7 +16,7 @@ function TodoList({ socket }) {
   const [isEditing, setIsEditing] = useState(null);
   const [editText, setEditText] = useState("");
   const [showCompleted, setShowCompleted] = useState(false);
-  const dropdownRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -64,6 +64,25 @@ function TodoList({ socket }) {
   
     fetchTasks();
   }, [navigate]);
+
+
+  const checkScreenSize = () => {
+    if (window.innerWidth < 600)
+      setIsMobile(true);
+    else
+      setIsMobile(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', checkScreenSize);
+
+    checkScreenSize();
+
+    // Remove event listener on cleanup
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+    };
+  }, []);
 
   // Function to toggle completed tasks view
   const toggleShowCompleted = () => {
@@ -164,22 +183,38 @@ function TodoList({ socket }) {
           </Dropdown.Item>
         ))}
       </Dropdown>
-        <button className="form__cta input">Add Task</button>
+        <button className="form__cta input">Add</button>
       </form>
-      <div className="todo__header-switch">
-  <div 
-    className={`header-tab incomplete ${!showCompleted ? 'active' : ''}`}
-    onClick={() => setShowCompleted(false)}
-  >
-    Incomplete
-  </div>
-  <div 
-    className={`header-tab complete ${showCompleted ? 'active' : ''}`}
-    onClick={() => setShowCompleted(true)}
-  >
-    Complete
-  </div>
-</div>
+      {
+      isMobile ? (
+        <label className="toggle-switch">
+          <input
+            type="checkbox"
+            checked={showCompleted}
+            onChange={toggleShowCompleted}
+          />
+          <span className="switch-slider">
+            <span className="switch-label switch-label-off">Incomplete</span>
+            <span className="switch-label switch-label-on">Complete</span>
+          </span>
+        </label>
+      ) : (
+        <div className="todo__header-switch">
+          <div 
+            className={`header-tab incomplete ${!showCompleted ? 'active' : ''}`}
+            onClick={() => setShowCompleted(false)}
+          >
+            Incomplete
+          </div>
+          <div 
+            className={`header-tab complete ${showCompleted ? 'active' : ''}`}
+            onClick={() => setShowCompleted(true)}
+          >
+            Complete
+          </div>
+        </div>
+      )
+    }
       {/* <label className="toggle-switch">
         <input
         type="checkbox"
