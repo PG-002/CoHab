@@ -5,6 +5,8 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 late var token;
 late String userId;
 late var decodedToken;
+late var house_token;
+late var house;
 
 
 
@@ -210,4 +212,39 @@ Future<void> createHouse(String houseName) async {
   }
 }
 
+Future<void> getHouse() async {
+  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getHouse');
+  final Map<String, String> body = {
+    'userId': userId,
+  };
 
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      house_token = jsonResponse['token'];
+      house = JwtDecoder.decode(house_token);
+
+      print(house);
+
+    }
+    else
+    {
+      throw 'Get House Failed';
+    }
+
+  }
+  catch (e) {
+    // Exception occurred
+    throw 'Get House Failed';
+  }
+}

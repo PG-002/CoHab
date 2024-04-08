@@ -25,32 +25,79 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-  late List<Task> tasks;
+  late List<Task> tasks = [];
 
   @override
   void initState() {
     super.initState();
-    tasks = []; // Initialize tasks here
+    getHouse().then((_) {
+      setState(() {
+        // Update tasks with tasks obtained from houseObj
+        tasks = house['house']['tasks'].map<Task>((task) {
+          return Task(
+            id: task['_id'],
+            taskDescription: task['task'],
+            assignedTo: task['assignedTo'],
+            createdBy: task['createdBy'],
+            completed: task['completed'],
+          );
+        }).toList();
+      });
+    }).catchError((error) {
+      print("Error getting house information: $error");
+      // Handle error if necessary
+    });
   }
 
   // Function to add a task to the tasks list
-  void addTask(String taskDescription) {
+  void addTask(String taskDescription) async {
+    // Store a reference to the original tasks list
+    List<Task> originalTasks = List.of(tasks);
+
+    // Add the task to the tasks list with a temporary 'null' ID
     setState(() {
-
-      final Map<String, String> body = {
-        'task': taskDescription,
-        'assignedTo': assignedTo,
-      };
-
-      socket.emit('createTask',body);
-
       tasks.add(Task(
+        id: 'null',
         taskDescription: taskDescription,
         assignedTo: assignedTo,
         createdBy: decodedToken['firstName'],
         completed: false,
       ));
     });
+
+    // Emit the task creation event
+    final Map<String, String> body = {
+      'task': taskDescription,
+      'assignedTo': assignedTo,
+    };
+    socket.emit('createTask', body);
+
+    // Fetch the house information again
+    try {
+      await getHouse();
+      // Check for tasks with 'null' id in the updated house information
+      for (Task originalTask in originalTasks) {
+        if (originalTask.id == 'null') {
+          // Find the corresponding task in the updated house information
+          var houseTasks = house['house']['tasks'];
+          var updatedTask = houseTasks.firstWhere((task) =>
+          task['task'] == taskDescription &&
+              task['assignedTo'] == assignedTo &&
+              task['createdBy'] == decodedToken['firstName'] &&
+              task['completed'] == false);
+
+          // Update the id of the task
+          setState(() {
+            originalTask.id = updatedTask['_id'];
+          });
+        }
+      }
+    } catch (error) {
+      print("Error fetching house information: $error");
+      // Handle error if necessary
+    }
+
+
   }
 
   // Function to toggle the completed status of a task
@@ -64,7 +111,18 @@ class _TaskListState extends State<TaskList> {
   void deleteTask(int index) {
     setState(() {
 
-       //socket.emit('deleteTask',tasks[index]);
+      print(tasks[index].id);
+
+      final Map<String,dynamic> body = {
+        '_id': tasks[index].id,
+        'task': tasks[index].taskDescription,
+        'assignedTo': tasks[index].assignedTo,
+        'createdBy': tasks[index].createdBy,
+        'completed': tasks[index].completed,
+
+      };
+
+      socket.emit('deleteTask',body);
 
       tasks.removeAt(index);
     });
@@ -253,12 +311,14 @@ class _TaskListState extends State<TaskList> {
   }
 }
 class Task {
+  String id;
   String taskDescription;
   String assignedTo;
   String createdBy;
   bool completed;
 
   Task({
+    required this.id,
     required this.taskDescription,
     required this.completed,
     required this.assignedTo,
