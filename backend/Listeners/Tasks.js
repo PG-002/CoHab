@@ -27,11 +27,14 @@ module.exports = (socket, io) => {
             .catch(err => console.log(err));
     });
 
-    socket.on('searchTask', async input => {
-        await House.find({ _id : socket.room, tasks : { task : input.task} } ).exec()
-            .then(house => io.to(socket.room).emit('tasksChange', { tasks : house.tasks }))
-            .catch(err => console.log(err));
-    });
+    // socket.on('searchTask', async input => {
+    //     var house = await House.find({ _id : socket.room } ).exec();
+    //     var taskList = await house.tasks.find({ house.tasks.task : 'Buy' }).exec();
+    //     console.log(house);
+    //     // output = await tasks.find({ task : input.task }).exec()
+    //         // .then(house => io.to(socket.room).emit('tasksChange', { output }))
+    //         // .catch(err => console.log(err));
+    // });
 
     socket.on('deleteTask', async task => {
         await House.findOneAndUpdate({ _id : socket.room }, { $pull : { tasks : { _id: task._id } } }, { new : true })
@@ -39,5 +42,3 @@ module.exports = (socket, io) => {
             .catch(err => console.log(err));
     });
 }
-
-await MyModel.find({ name: 'john', age: { $gte: 18 } }).exec();
