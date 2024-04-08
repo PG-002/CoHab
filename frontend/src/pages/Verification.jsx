@@ -10,8 +10,15 @@ const VerficationPage = ({ setUser }) => {
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
 
-    if (JSON.parse(userInfo).verified) {
-      navigate("/dashboard");
+    if (userInfo) {
+      if (JSON.parse(userInfo).verified) {
+        navigate("/dashboard");
+      }
+    } else {
+      localStorage.removeItem("sessionId");
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("eventInfo");
+      navigate("/login");
     }
   }, []);
 
