@@ -90,10 +90,10 @@ function TodoList({ socket }) {
   };
 
   const handleCompleteTask = (task) => {
-    socket.emit("modifyTask", {
-      ...task,
-      completed : true
-    });
+    task.completed = true;
+    console.log('in complete', task)
+    setShowCompleted(false);
+    socket.emit("modifyTask", task);
   };
   
 
@@ -107,10 +107,9 @@ function TodoList({ socket }) {
 
   const handleAddTask = (e) => {
     e.preventDefault();
-
+    
     socket.emit("createTask", {
       task: todo,
-      completed: false,
       assignedTo: assignedTo
     });
     setTodo("");
@@ -118,9 +117,9 @@ function TodoList({ socket }) {
   };
 
   const handleDeleteTask = (task) => {
-    socket.emit("deleteTask", { id: task._id });
+    socket.emit("deleteTask", { _id: task._id });
     setTasks((currentTasks) =>
-      currentTasks.filter((task) => task.id !== task._id)
+      currentTasks.filter((task) => task._id !== task._id)
     );
   };
 

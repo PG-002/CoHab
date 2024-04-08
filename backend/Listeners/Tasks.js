@@ -11,7 +11,7 @@ module.exports = (socket, io) => {
     const updateObj = task => ({
         'tasks.$.task' : task.task,
         'tasks.$.createdBy' : task.createdBy,
-        'taskes.$.assignedTo' : task.assignedTo,
+        'tasks.$.assignedTo' : task.assignedTo,
         'tasks.$.completed' : task.completed
     });
 
@@ -22,7 +22,7 @@ module.exports = (socket, io) => {
     });
 
     socket.on('modifyTask', async task => {
-        await House.find({ _id : socket.room, tasks : { $elemMatch : { _id : task._id } } }, { $set : updateObj(task) }, { new : true })
+        await House.findOneAndUpdate({ _id : socket.room, 'tasks._id' : task._id }, { $set : updateObj(task) }, { new : true })
             .then(house => io.to(socket.room).emit('tasksChange', { tasks : house.tasks }))
             .catch(err => console.log(err));
     });
