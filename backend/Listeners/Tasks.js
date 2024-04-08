@@ -28,7 +28,7 @@ module.exports = (socket, io) => {
     });
 
     socket.on('searchTask', async input => {
-        await House.find({ _id : socket.room, tasks : { task : input.task} } )
+        await House.find({ _id : socket.room, tasks : { task : input.task} } ).exec()
             .then(house => io.to(socket.room).emit('tasksChange', { tasks : house.tasks }))
             .catch(err => console.log(err));
     });
