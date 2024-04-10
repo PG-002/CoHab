@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'token.dart';
+import 'web_socket.dart';
 
 class NoiseLevelPage extends StatefulWidget {
   const NoiseLevelPage({super.key});
 
   @override
-   createState() => _NoiseLevelPageState();
+  createState() => _NoiseLevelPageState();
 }
 
 class _NoiseLevelPageState extends State<NoiseLevelPage> {
-  double _currentNoiseLevel = 5; // Initial value for noise level
+  late int _currentNoiseLevel; // Initial value for noise level
+
+  @override
+  void initState() {
+    super.initState();
+    getHouse();
+    _currentNoiseLevel = house['house']['noiseLevel'].toInt(); // Set initial noise level to 5.0
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +42,16 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
             ),
             const SizedBox(height: 30),
             Slider(
-              value: _currentNoiseLevel,
+              value: _currentNoiseLevel.toDouble(),
               min: 0,
               max: 10,
               divisions: 10,
               onChanged: (double value) {
                 setState(() {
-                  _currentNoiseLevel = value;
+                  _currentNoiseLevel = value.toInt();
                 });
               },
-              label: _currentNoiseLevel.round().toString(),
+              label: _currentNoiseLevel.toString(),
             ),
             const SizedBox(height: 20),
             const Row(
@@ -68,7 +77,7 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Current Noise Level Preference: ${_currentNoiseLevel.round()}',
+                    'Current Noise Level Preference: $_currentNoiseLevel',
                     style: const TextStyle(
                       fontSize: 18,
                     ),
@@ -78,15 +87,20 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
                     onPressed: () {
                       // Save the noise level preference
                       // For example, you can use SharedPreferences or any other storage mechanism
-                      print('Preferred noise level: ${_currentNoiseLevel.round()}');
+                      print('Preferred noise level: $_currentNoiseLevel');
+
+                      final Map<String, int> body = {
+                        'noiseLevel': _currentNoiseLevel.toInt(),
+                      };
+
+                      socket.emit('setNoiseLevel', body);
                     },
                     child: const Text('Save Preference'),
                   ),
                 ],
               ),
             ),
-    ]
-    ,
+          ],
         ),
       ),
     );

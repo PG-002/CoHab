@@ -278,3 +278,34 @@ Future<void> getHouse() async {
   }
 }
 
+Future<void> sendJoinCode(String email) async {
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/sendVerification');
+  final Map<String, String> body = {
+    'email': email,
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      var sent = jsonResponse['sent'];
+
+      if (sent == false) {
+        throw Exception('Failed to send verification code');
+      }
+    }
+  } catch (e) {
+    // Exception occurred
+    print('$e');
+    // You might want to handle this error in your UI
+  }
+}
