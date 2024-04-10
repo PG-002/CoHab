@@ -5,7 +5,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 late var token;
 late String userId;
 late var decodedToken;
-late var house_token;
+late var houseToken;
 late var house;
 
 
@@ -260,8 +260,8 @@ Future<void> getHouse() async {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-      house_token = jsonResponse['token'];
-      house = JwtDecoder.decode(house_token);
+      houseToken = jsonResponse['token'];
+      house = JwtDecoder.decode(houseToken);
 
       print(house);
 

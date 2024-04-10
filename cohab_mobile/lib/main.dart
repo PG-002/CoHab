@@ -5,7 +5,7 @@ import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 import 'register.dart';
-import 'updatePassword.dart';
+import 'update_password.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
