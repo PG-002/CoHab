@@ -1,5 +1,6 @@
 import 'package:cohab_mobile/calendar.dart';
 import 'package:cohab_mobile/groupchat.dart';
+import 'package:cohab_mobile/location.dart';
 import 'package:cohab_mobile/noise_level.dart';
 import 'package:cohab_mobile/dashboard.dart';
 import 'package:cohab_mobile/settings.dart';
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                          MaterialPageRoute(builder: (context) => const LocationTrackerPage()),
                         );
                       },
                       child: Ink(
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const CalendarHomePage()),
+                                  MaterialPageRoute(builder: (context) => const LocationTrackerPage()),
                                 );
                               },
                               child: const Icon(
