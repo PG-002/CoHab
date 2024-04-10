@@ -30,9 +30,34 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  late final List<NeatCleanCalendarEvent> _eventList = [];
+  List<NeatCleanCalendarEvent> _eventList = [];
 
   NeatCleanCalendarEvent? _selectedEvent;
+
+  @override
+  void initState() {
+    super.initState();
+    // Call a method to fetch events and populate the _eventList
+    getHouse().then((_) {
+      setState(() {
+        // Update tasks with tasks obtained from houseObj
+        _eventList = house['house']['events'].map<NeatCleanCalendarEvent>((event) {
+          DateTime startTime = DateTime.parse(event['start']);
+          DateTime endTime = DateTime.parse(event['end']);
+
+          return NeatCleanCalendarEvent(
+            event['title'],
+              metadata: {
+                '_id': event['_id'].toString(), // Here you can add any key-value pairs you want
+              },
+            startTime: startTime,
+            endTime: endTime,
+            color: Colors.blue,
+          );
+        }).toList();
+      });
+    });
+  }
 
   void _addEvent() async {
     final newEvent = await showDialog<NeatCleanCalendarEvent>(
@@ -51,6 +76,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   void _deleteEvent(NeatCleanCalendarEvent event) {
     setState(() {
+
+      final Map<String, dynamic> body = {
+        'title': event.summary,
+        'start': event.startTime.toString(),
+        'end': event.endTime.toString(),
+        'allDay': false,
+        'createdBy': userId,
+        '_id': event.metadata!['_id'], // Accessing the _id field from the metadata map
+      };
+
+      socket.emit('deleteEvent',body);
+
       _eventList.remove(event);
     });
   }
@@ -285,21 +322,24 @@ class _AddEventDialogState extends State<AddEventDialog> {
               if (endTime.isAfter(startTime)) {
                 final newEvent = NeatCleanCalendarEvent(
                   eventName,
-                  description: '',
                   startTime: startTime,
                   endTime: endTime,
                   color: Colors.blue,
+                  metadata: {
+                    '_id': 'null', // Here you can add any key-value pairs you want
+                  },
                 );
 
-                // final Map<String, dynamic> body = {
-                //   'event.title' : eventName,
-                //   'event.start': startTime,
-                //   'event.end': endTime,
-                //   'event.description': '',
-                //   'event.allDay': false,
-                //   'event.createdBy': userId,
-                // };
-                // socket.emit('createEvent',body);
+                final Map<String, dynamic> body = {
+                  'title' : eventName,
+                  'start': startTime.toString(),
+                  'end': endTime.toString(),
+                  'allDay': false,
+                  'createdBy': userId,
+                };
+
+                socket.emit('createEvent',body);
+
                 Navigator.of(context).pop(newEvent);
               } else {
                 // Show error message that end time should be after start time

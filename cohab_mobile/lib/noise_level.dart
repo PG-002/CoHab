@@ -89,11 +89,7 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
                       // For example, you can use SharedPreferences or any other storage mechanism
                       print('Preferred noise level: $_currentNoiseLevel');
 
-                      final Map<String, int> body = {
-                        'noiseLevel': _currentNoiseLevel.toInt(),
-                      };
-
-                      socket.emit('setNoiseLevel', body);
+                      socket.emit('setNoiseLevel', _currentNoiseLevel.toInt());
                     },
                     child: const Text('Save Preference'),
                   ),
