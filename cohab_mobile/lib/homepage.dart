@@ -1,10 +1,9 @@
 import 'package:cohab_mobile/calendar.dart';
 import 'package:cohab_mobile/groupchat.dart';
 import 'package:cohab_mobile/noise_level.dart';
-import 'package:cohab_mobile/recent_act.dart';
+import 'package:cohab_mobile/dashboard.dart';
 import 'package:cohab_mobile/settings.dart';
 import 'package:cohab_mobile/task_list.dart';
-import 'package:cohab_mobile/token.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -37,7 +36,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RecentActivityPage()),
+                          MaterialPageRoute(builder: (context) => const DashboardPage()),
                         );
                       },
                       child: Ink(
@@ -53,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const RecentActivityPage()),
+                                  MaterialPageRoute(builder: (context) => DashboardPage()),
                                 );
                               },
                               child: const Icon(

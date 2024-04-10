@@ -1,3 +1,4 @@
+import 'package:cohab_mobile/send_join_code.dart';
 import 'package:cohab_mobile/token.dart';
 import 'package:flutter/material.dart';
 
@@ -24,13 +25,13 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: Text('            Name: ${decodedToken['firstName']} ${decodedToken['lastName']}'),
+                title: Text('                     Name: ${decodedToken['firstName']} ${decodedToken['lastName']}'),
               ),
               ListTile(
-                title: Text('           House: ${decodedToken['houseName']}'),
+                title: Text('                   House: ${house['house']['houseName']}'),
               ),
               ListTile(
-                title: Text('         Email: ${decodedToken['email']}'),
+                title: Text('               Email: ${decodedToken['email']}'),
               ),
               const SizedBox(height: 25),
               Center(
@@ -49,6 +50,10 @@ class SettingsPage extends StatelessWidget {
                       onPressed: () {
                         // Add your functionality here
                         // You can call functions, navigate to other screens, update state, etc.
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const EmailInputPage()),
+                        );
                       },
                       child: const Icon(Icons.people_alt),
                     ),

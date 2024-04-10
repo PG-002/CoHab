@@ -104,6 +104,18 @@ class _TaskListState extends State<TaskList> {
   void toggleTaskCompletion(int index) {
     setState(() {
       tasks[index].completed = !tasks[index].completed;
+
+      final Map<String,dynamic> body = {
+        '_id': tasks[index].id,
+        'task': tasks[index].taskDescription,
+        'assignedTo': tasks[index].assignedTo,
+        'createdBy': tasks[index].createdBy,
+        'completed': tasks[index].completed,
+
+      };
+
+      socket.emit('modifyTask',body);
+
     });
   }
 
