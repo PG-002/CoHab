@@ -90,7 +90,7 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
                       print('Preferred noise level: $_currentNoiseLevel');
 
                       final Map<String, int> body = {
-                        'noiseLevel': _currentNoiseLevel,
+                        'noiseLevel': _currentNoiseLevel.toInt(),
                       };
 
                       socket.emit('setNoiseLevel', body);
