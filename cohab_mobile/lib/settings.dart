@@ -9,59 +9,103 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('             Settings'),
+        title: const Text('Settings'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                '                       User Profile',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              ListTile(
-                title: Text('                     Name: ${decodedToken['firstName']} ${decodedToken['lastName']}'),
-              ),
-              ListTile(
-                title: Text('                   House: ${house['house']['houseName']}'),
-              ),
-              ListTile(
-                title: Text('               Email: ${decodedToken['email']}'),
-              ),
-              const SizedBox(height: 25),
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Send House Invite Code',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 50),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'User Profile',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+
                     ),
-                    const SizedBox(height: 20), // Adjust the spacing between the text and the FloatingActionButton
-                    FloatingActionButton(
-                      onPressed: () {
-                        // Add your functionality here
-                        // You can call functions, navigate to other screens, update state, etc.
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const EmailInputPage()),
-                        );
-                      },
-                      child: const Icon(Icons.people_alt),
+                  ),
+                   const SizedBox(height: 15,),
+                   Text(
+                    'Name: ${decodedToken['firstName']} ${decodedToken['lastName']}',
+                    style: const TextStyle(
+                      fontSize:  18,
+                      fontWeight: FontWeight.normal,
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20,),
+                  Text(
+                    'House: ${house['house']['houseName']}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),const SizedBox(height: 20,),
+                  Text(
+                    'Email: ${decodedToken['email']}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 40),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Edit your User Profile',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  FloatingActionButton(
+                    onPressed: () {
+
+                    },
+                    backgroundColor: Colors.blue,
+                    child: const Icon(Icons.edit),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 40), // Added spacing between the two sections
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Send House Invite Code',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const EmailInputPage()),
+                      );
+                    },
+                    backgroundColor: Colors.green,
+                    child: const Icon(Icons.people_alt),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -6,6 +6,7 @@ import 'package:cohab_mobile/dashboard.dart';
 import 'package:cohab_mobile/settings.dart';
 import 'package:cohab_mobile/task_list.dart';
 import 'package:flutter/material.dart';
+import 'token.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Co-Hab Home Page'),
+        title: Text('${house['house']['houseName']} Home Page'),
       ),
       body: Center(
         child: SingleChildScrollView(
