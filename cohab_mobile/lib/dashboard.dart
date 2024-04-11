@@ -11,10 +11,30 @@ class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
+ createState() => _Dashboard();
+}
+
+class _Dashboard extends State<DashboardPage> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('         Dashboard'),
+      ),
+      //body: GoogleMap(
+      //onMapCreated: (controller) {
+      // _mapController = controller;
+      // },
+      // initialCameraPosition: const CameraPosition(
+      //  target: LatLng(0, 0), // Initial center of the map
+      // zoom: 12, // Initial zoom level
+      //),
+      // myLocationEnabled: true, // Show the user's location
+      // myLocationButtonEnabled: true, // Enable the my location button
+      //),
+    );
   }
 
 }
-

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'web_socket.dart'; 
 
 class LocationTrackerPage extends StatefulWidget {
@@ -12,7 +12,7 @@ class LocationTrackerPage extends StatefulWidget {
 
 class _LocationTrackerPageState extends State<LocationTrackerPage> {
   //late Position _currentPosition;
-  late GoogleMapController _mapController;
+  //late GoogleMapController _mapController;
 
   @override
   void initState() {
@@ -71,19 +71,19 @@ class _LocationTrackerPageState extends State<LocationTrackerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Location Tracker'),
+        title: const Text('       Location Tracker'),
       ),
-      body: GoogleMap(
-        onMapCreated: (controller) {
-          _mapController = controller;
-        },
-        initialCameraPosition: const CameraPosition(
-          target: LatLng(0, 0), // Initial center of the map
-          zoom: 12, // Initial zoom level
-        ),
-        myLocationEnabled: true, // Show the user's location
-        myLocationButtonEnabled: true, // Enable the my location button
-      ),
+      //body: GoogleMap(
+        //onMapCreated: (controller) {
+         // _mapController = controller;
+       // },
+       // initialCameraPosition: const CameraPosition(
+        //  target: LatLng(0, 0), // Initial center of the map
+         // zoom: 12, // Initial zoom level
+        //),
+       // myLocationEnabled: true, // Show the user's location
+       // myLocationButtonEnabled: true, // Enable the my location button
+      //),
     );
   }
 }
