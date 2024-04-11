@@ -45,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
         } else {
           init();
           socket.connect();
+          await getHouse();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const HomePage()),
