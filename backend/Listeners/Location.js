@@ -9,7 +9,7 @@ module.exports = (socket, io) => {
     })
 
     socket.on('updateLocation', async (lat, long) =>
-        await User.findById(socket.user._id, { $set : updateObj(lat, long) }, { new : true })
+        await User.findByIdAndUpdate(socket.user._id, { $set : updateObj(lat, long) }, { new : true })
             .then(user => io.to(socket.room).emit('locationChange', { userId : user._id, location : user.location }))
             .catch(err => console.log(err))
     );
