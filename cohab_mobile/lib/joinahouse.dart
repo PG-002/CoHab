@@ -1,4 +1,5 @@
 import 'package:cohab_mobile/homepage.dart';
+import 'package:cohab_mobile/web_socket.dart';
 import 'package:flutter/material.dart';
 import 'token.dart';
 
@@ -66,7 +67,8 @@ class JoinAHouse extends StatelessWidget {
                   onPressed: () async {
                     try{
                       joinHouse(code);
-
+                      getHouse();
+                      socket.connect();
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const HomePage()),
