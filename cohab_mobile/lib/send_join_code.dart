@@ -1,4 +1,5 @@
 import 'package:cohab_mobile/token.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EmailInputPage extends StatefulWidget {
@@ -41,7 +42,10 @@ class _EmailInputPageState extends State<EmailInputPage> {
 
       else
         {
-
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Sent()),
+          );
         }
     }
     catch(e)
@@ -69,7 +73,7 @@ class _EmailInputPageState extends State<EmailInputPage> {
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
-                labelText: '                            Email Address',
+                labelText: '                                            Email Address',
               ),
               keyboardType: TextInputType.emailAddress,
             ),
@@ -95,21 +99,97 @@ class Sent extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    // Delayed navigation function
+    void navigateBack() {
+      Navigator.pop(context); // Pop the current route off the navigation stack
+    }
+
+    // Call navigateBack after 5 seconds
+    Future.delayed(const Duration(seconds: 5), navigateBack);
+
+    return Scaffold(
+      body: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color(0xFF000000),
+              width: 2.0,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          padding: const EdgeInsets.all(20.0),
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'The code was sent!.',
+                style: TextStyle(fontSize: 22),
+              ),
+              SizedBox(height: 15),
+              Text(
+                'Tell your friend to check their email',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                'and',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                ' Input the code',
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
 }
 
-class NotSent extends StatelessWidget
-{
+class NotSent extends StatelessWidget {
   const NotSent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
+    // Delayed navigation function
+    void navigateBack() {
+      Navigator.pop(context); // Pop the current route off the navigation stack
+    }
 
+    // Call navigateBack after 5 seconds
+    Future.delayed(const Duration(seconds: 5), navigateBack);
+
+    return Scaffold(
+      body: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color(0xFF000000),
+              width: 2.0,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          padding: const EdgeInsets.all(20.0),
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'The code was not sent.',
+                style: TextStyle(fontSize: 22),
+              ),
+              SizedBox(height: 15),
+              Text(
+                'Please check the email and try again.',
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
