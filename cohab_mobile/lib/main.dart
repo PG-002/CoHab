@@ -60,9 +60,9 @@ class _LoginPageState extends State<LoginPage> {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('$e'), // Convert the error to a string to display
-          duration: const Duration(seconds: 1), // Adjust the duration as needed
+        const SnackBar(
+          content: Text('Invalid Login. Please try again'), // Convert the error to a string to display
+          duration: Duration(seconds: 1), // Adjust the duration as needed
         ),
       );
     }
