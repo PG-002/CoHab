@@ -1,5 +1,6 @@
 import "./Chat.css";
 import { useRef, useEffect } from "react";
+import { Trash } from "lucide-react";
 
 function Messages({ messages, userID, onDelete }) {
   const messagesEndRef = useRef(null);
@@ -21,24 +22,26 @@ function Messages({ messages, userID, onDelete }) {
             ? "my-message"
             : "other-message";
           return (
-            <li key={index} className={messageClass}>
+            <li key={index} className={`${messageClass} `}>
               {!ownedByCurrentUser && (
-                <div className="sender-name">{message.sentBy}</div>
+                <div className="sender-name text-blue-500 pl-2">
+                  {message.sentBy}
+                </div>
+              )}
+              {ownedByCurrentUser && (
+                <Trash
+                  onClick={() => onDelete(message)}
+                  className="delete-button text-neutral-400 size-5 mr-2 cursor-pointer hover:text-red-500"
+                >
+                  Delete
+                </Trash>
               )}
               <div
                 className={`message-bubble ${
                   ownedByCurrentUser ? "my-bubble" : "other-bubble"
-                }`}
+                } ${ownedByCurrentUser ? "bg-eucalyptus-500" : "bg-blue-500"}`}
               >
                 <p>{message.message}</p>
-                {ownedByCurrentUser && (
-                  <button
-                    onClick={() => onDelete(message)}
-                    className="delete-button"
-                  >
-                    Delete
-                  </button>
-                )}
               </div>
             </li>
           );

@@ -1,13 +1,11 @@
 .message-list-container {
   list-style: none;
   overflow-y: auto;
-  background: #222222;
 }
 
 .message-list {
   list-style: none;
   overflow-y: auto;
-  background: #222222;
   /* background-color: green; */
 }
 
@@ -53,10 +51,6 @@
   align-items: flex-end;
 }
 
-.my-message .my-message-text {
-  background: #b0c7d6; /* Lighter blue color to differentiate user's messages */
-}
-
 .other-message {
   text-align: left;
   align-self: flex-start;
@@ -72,21 +66,10 @@
   cursor: pointer;
   background: none;
   border: none;
-  color: var(--secondary-color);
   padding: 0;
 }
 
-.my-message .message-bubble {
-  background-color: #005a44; /* Dark green bubble for the current user */
-  color: white;
-}
-
-.other-message .message-bubble {
-  color: white;
-}
-
 .sender-name {
-  color: #29b6f6;
   font-size: 0.85em;
   margin-bottom: 4px;
 }

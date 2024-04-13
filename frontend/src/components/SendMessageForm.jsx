@@ -1,7 +1,7 @@
 import "./SendMessageForm.css";
 import { useState } from "react";
 
-function SendMessageForm({ sendMessage, houseName}) {
+function SendMessageForm({ sendMessage, houseName }) {
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
@@ -18,15 +18,12 @@ function SendMessageForm({ sendMessage, houseName}) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="send-message-form p-2.5"
-    >
+    <form onSubmit={handleSubmit} className="send-message-form">
       <input
-        className="message-input text-white"
+        className="message-input text-neutral-500 dark:text-white bg-white dark:bg-neutral-700 rounded shadow-md dark:shadow-gray-900 border-neutral-300 dark:border-neutral-600 border-[1px]"
         onChange={handleChange}
         value={message}
-        placeholder={`Message ${houseName}`}
+        placeholder={`Send Message`}
         type="text"
       />
     </form>
