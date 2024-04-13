@@ -1,6 +1,7 @@
 import { useContext, useState, createContext } from "react";
 import { ChevronFirst, ChevronLast, LogOut, MoreVertical } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import CohabLogo from "../../assets/CoHab.png";
 const SidebarContext = createContext();
 
 function Sidebar({ userInfo, children }) {
@@ -9,11 +10,11 @@ function Sidebar({ userInfo, children }) {
   return (
     <aside className="h-screen">
       <nav className="h-full flex flex-col bg-white dark:bg-neutral-900 border-r shadow-sm dark:border-neutral-800">
-        <div className="p-4 pb-2 flex justify-between items-center">
+        <div className="pt-4 pr-4 pb-2 flex justify-between items-center">
           <img
-            src="https://img.logoipsum.com/285.svg"
+            src={CohabLogo}
             className={`overflow-hidden transiton-all object-contain ${
-              expanded ? "w-32" : "w-0"
+              expanded ? "w-32 h-8" : "w-0"
             }`}
             alt="logo"
           ></img>
