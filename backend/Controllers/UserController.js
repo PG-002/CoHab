@@ -62,6 +62,15 @@ const login = async (req, res) => {
     .catch(() => res.json({ error : 'Error fetching user.' }));
 };
 
+const getUserInfo = async (req, res) => {
+  const { id } = req.body;
+
+  res.status(200);
+  await User.findById(id)
+    .then(user => res.json({ token : createToken(retUserObj(user)), error : '' }))
+    .catch(() => res.json({ token : null, error : 'Could not find user.' }));
+}
+
 const getHouse = async (req, res) => {
   const { userId } = req.body;
 
@@ -262,4 +271,4 @@ const decode = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, getHouse, updateUser, updatePassword, deleteUser, sendVerification, verifyCode, encode, decode };
+module.exports = { signup, login, getUserInfo, getHouse, updateUser, updatePassword, deleteUser, sendVerification, verifyCode, encode, decode };
