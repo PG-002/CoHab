@@ -33,14 +33,14 @@ function Sidebar({ userInfo, children }) {
             alt="logo"
           ></img>
           <button
-            // onClick={() => setExpanded((curr) => !curr)}
-            onClick={handleDarkMode}
+            onClick={() => setExpanded((curr) => !curr)}
+            // onClick={handleDarkMode}
             className="p-1.5 rounded-lg bg-eucalyptus-50 hover:bg-eucalyptus-100 dark:bg-eucalyptus-950 dark:hover:bg-eucalyptus-800"
           >
             {expanded ? (
-              <Sun className="text-eucalyptus-950 border-black dark:text-eucalyptus-50" />
+              <ChevronFirst className="text-eucalyptus-950 border-black dark:text-eucalyptus-50" />
             ) : (
-              <Sun className="text-eucalyptus-950 border-black dark:text-eucalyptus-50" />
+              <ChevronLast className="text-eucalyptus-950 border-black dark:text-eucalyptus-50" />
             )}
           </button>
         </div>

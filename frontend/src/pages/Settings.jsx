@@ -38,8 +38,8 @@ function Settings() {
   const sendUpdatedUserInfo = () => {};
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen bg-white dark:bg-neutral-950">
-      <div className="flex flex-col justify-start gap-10 w-[400px] sm:w-[500px] md:w-[700px] h-[700px]  p-4  rounded-lg bg-neutral-100 dark:bg-neutral-800 shadow-md dark:shadow-gray-700 border-gray-200 dark:border-neutral-700 border-2">
+    <div className="flex flex-col items-center justify-center w-full h-screen bg-white dark:bg-neutral-800">
+      <div className="flex flex-col justify-start gap-10 w-[400px] sm:w-[500px] md:w-[700px] h-[700px]  py-4 px-8  rounded-lg bg-neutral-100 dark:bg-neutral-900 shadow-md dark:shadow-gray-900 border-gray-200 dark:border-neutral-700 border-2">
         <div className="flex flex-col justify-evenly w-full">
           <h2 className="font-bold text-xl text-neutral-600 dark:text-white">
             Profile:{" "}

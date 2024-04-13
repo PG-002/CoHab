@@ -2,9 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import Nav from "../components/Nav";
 import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate } from "react-router-dom";
-import '../components/TodoList.css';
+import "../components/TodoList.css";
 import { Dropdown } from "flowbite-react";
-
 
 function TodoList({ socket }) {
   const navigate = useNavigate();
@@ -21,16 +20,16 @@ function TodoList({ socket }) {
   useEffect(() => {
     const fetchTasks = async () => {
       const sessionId = localStorage.getItem("sessionId");
-  
+
       if (!sessionId) {
         navigate("/login"); // Redirect to login if no session
         return;
       }
-  
+
       try {
         const decodedToken = jwtDecode(sessionId);
         const userId = decodedToken.userId;
-  
+
         const response = await fetch(
           "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getHouse",
           {
@@ -41,13 +40,13 @@ function TodoList({ socket }) {
             body: JSON.stringify({ userId }),
           }
         );
-  
+
         if (!response.ok) {
           throw new Error("Failed to fetch tasks");
         }
-  
+
         const data = await response.json();
-        
+
         if (data.token) {
           const houseData = jwtDecode(data.token); // Decode the house data from the token
           setTasks(houseData.house.tasks);
@@ -61,26 +60,23 @@ function TodoList({ socket }) {
         navigate("/login"); // Redirect to login or handle error
       }
     };
-  
+
     fetchTasks();
   }, [navigate]);
 
-
   const checkScreenSize = () => {
-    if (window.innerWidth < 600)
-      setIsMobile(true);
-    else
-      setIsMobile(false);
+    if (window.innerWidth < 600) setIsMobile(true);
+    else setIsMobile(false);
   };
 
   useEffect(() => {
-    window.addEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
     checkScreenSize();
 
     // Remove event listener on cleanup
     return () => {
-      window.removeEventListener('resize', checkScreenSize);
+      window.removeEventListener("resize", checkScreenSize);
     };
   }, []);
 
@@ -91,11 +87,10 @@ function TodoList({ socket }) {
 
   const handleCompleteTask = (task) => {
     task.completed = true;
-    console.log('in complete', task)
+    console.log("in complete", task);
     setShowCompleted(false);
     socket.emit("modifyTask", task);
   };
-  
 
   useEffect(() => {
     if (socket) {
@@ -107,10 +102,10 @@ function TodoList({ socket }) {
 
   const handleAddTask = (e) => {
     e.preventDefault();
-    
+
     socket.emit("createTask", {
       task: todo,
-      assignedTo: assignedTo
+      assignedTo: assignedTo,
     });
     setTodo("");
     setAssignedTo("");
@@ -143,30 +138,27 @@ function TodoList({ socket }) {
     setEditText("");
   };
 
-
   const handleSelectHousemate = (housemate) => {
     setAssignedTo(housemate);
   };
 
   const handleKeyPressOnDropdown = (event) => {
-    if (event.key === 'Enter' && assignedTo && todo) {
+    if (event.key === "Enter" && assignedTo && todo) {
       handleAddTask(event);
     }
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyPressOnDropdown);
+    window.addEventListener("keydown", handleKeyPressOnDropdown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyPressOnDropdown);
+      window.removeEventListener("keydown", handleKeyPressOnDropdown);
     };
-  }, [assignedTo]); 
-
-
+  }, [assignedTo]);
 
   return (
-    <div className="todo__container">
-      <form className="form" onSubmit={handleAddTask}>
+    <div className="todo__container p-4 overflow-auto">
+      <form className="form mt-8 mb-10" onSubmit={handleAddTask}>
         <input
           autoFocus
           value={todo}
@@ -175,17 +167,23 @@ function TodoList({ socket }) {
           placeholder="Enter new task"
           required
         />
-        <Dropdown className="dropdown" label={assignedTo || "Assign to..."} inline={true}>
-        {housemates.map((housemate, index) => (
-          <Dropdown.Item key={index} onClick={() => handleSelectHousemate(housemate)}>
-            {housemate}
-          </Dropdown.Item>
-        ))}
-      </Dropdown>
+        <Dropdown
+          className="dropdown"
+          label={assignedTo || "Assign to..."}
+          inline={true}
+        >
+          {housemates.map((housemate, index) => (
+            <Dropdown.Item
+              key={index}
+              onClick={() => handleSelectHousemate(housemate)}
+            >
+              {housemate}
+            </Dropdown.Item>
+          ))}
+        </Dropdown>
         <button className="form__cta input">Add</button>
       </form>
-      {
-      isMobile ? (
+      {isMobile ? (
         <label className="toggle-switch">
           <input
             type="checkbox"
@@ -199,21 +197,22 @@ function TodoList({ socket }) {
         </label>
       ) : (
         <div className="todo__header-switch">
-          <div 
-            className={`header-tab incomplete ${!showCompleted ? 'active' : ''}`}
+          <div
+            className={`header-tab incomplete ${
+              !showCompleted ? "active" : ""
+            }`}
             onClick={() => setShowCompleted(false)}
           >
             Incomplete
           </div>
-          <div 
-            className={`header-tab complete ${showCompleted ? 'active' : ''}`}
+          <div
+            className={`header-tab complete ${showCompleted ? "active" : ""}`}
             onClick={() => setShowCompleted(true)}
           >
             Complete
           </div>
         </div>
-      )
-    }
+      )}
       {/* <label className="toggle-switch">
         <input
         type="checkbox"
@@ -225,63 +224,72 @@ function TodoList({ socket }) {
       <span className="switch-label switch-label-on">Complete</span>
       </span>
       </label> */}
-      <div className="todo__container" style= {{'paddingBottom': '0px'}}>
+
+      <div className="todo__container" style={{ paddingBottom: "0px" }}>
         <div className="todo__header todo__item">
           <span className="">Created</span>
-          <span >Task</span>
+          <span>Task</span>
           <span>Assignee</span>
           <span>Actions</span>
         </div>
       </div>
       <div className="todo__container_tasks">
-  {tasks.filter(task => task.completed === showCompleted).map((taskItem) => (
-    <div key={taskItem._id} className={`todo__item ${taskItem.completed ? "completed-task" : ""}`}>
-      {isEditing === taskItem._id ? (
-        <form onSubmit={(e) => submitEdit(e, taskItem._id)}>
-          <input
-            style={{'backgroundColor': '#222222', 'width': '200px'}}
-            autoFocus
-            value={editText}
-            onChange={handleEditChange}
-          />
-          <button type="submit">Save</button>
-          <button type="button" onClick={() => setIsEditing(null)}>Cancel</button>
-        </form>
-      ) : (
-        <>
-          <div className="todo__section">{taskItem.createdBy}</div>
-          <div className="todo__section">{taskItem.task}</div>
-          <div className="todo__section">{taskItem.assignedTo}</div>
-          <div className="todo__actions">
-            {!taskItem.completed && (
-              <>
-                <button
-                  className="doneBtn"
-                  onClick={() => handleCompleteTask(taskItem)}
-                >
-                  Done
-                </button>
-                <button
-                  className="commentsBtn"
-                  onClick={() => startEditing(taskItem)}
-                >
-                  Edit
-                </button>
-              </>
-            )}
-            <button
-              className="deleteBtn"
-              onClick={() => handleDeleteTask(taskItem)}
+        {tasks
+          .filter((task) => task.completed === showCompleted)
+          .map((taskItem) => (
+            <div
+              key={taskItem._id}
+              className={`todo__item ${
+                taskItem.completed ? "completed-task" : ""
+              }`}
             >
-              Delete
-            </button>
-          </div>
-        </>
-      )}
-    </div>
-  ))}
-</div>
-
+              {isEditing === taskItem._id ? (
+                <form onSubmit={(e) => submitEdit(e, taskItem._id)}>
+                  <input
+                    style={{ backgroundColor: "#222222", width: "200px" }}
+                    autoFocus
+                    value={editText}
+                    onChange={handleEditChange}
+                  />
+                  <button type="submit">Save</button>
+                  <button type="button" onClick={() => setIsEditing(null)}>
+                    Cancel
+                  </button>
+                </form>
+              ) : (
+                <>
+                  <div className="todo__section">{taskItem.createdBy}</div>
+                  <div className="todo__section">{taskItem.task}</div>
+                  <div className="todo__section">{taskItem.assignedTo}</div>
+                  <div className="todo__actions">
+                    {!taskItem.completed && (
+                      <>
+                        <button
+                          className="doneBtn"
+                          onClick={() => handleCompleteTask(taskItem)}
+                        >
+                          Done
+                        </button>
+                        <button
+                          className="commentsBtn"
+                          onClick={() => startEditing(taskItem)}
+                        >
+                          Edit
+                        </button>
+                      </>
+                    )}
+                    <button
+                      className="deleteBtn"
+                      onClick={() => handleDeleteTask(taskItem)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+      </div>
     </div>
   );
 }
