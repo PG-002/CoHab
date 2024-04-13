@@ -1,11 +1,25 @@
 import { useContext, useState, createContext } from "react";
-import { ChevronFirst, ChevronLast, LogOut, MoreVertical } from "lucide-react";
+import {
+  ChevronFirst,
+  ChevronLast,
+  LogOut,
+  MoreVertical,
+  Sun,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import CohabLogo from "../../assets/CoHab.png";
 const SidebarContext = createContext();
 
 function Sidebar({ userInfo, children }) {
   const [expanded, setExpanded] = useState(false);
+
+  const handleDarkMode = () => {
+    if (localStorage.getItem("theme") == "dark") {
+      localStorage.setItem("theme", "light");
+    } else {
+      localStorage.setItem("theme", "dark");
+    }
+  };
 
   return (
     <aside className="h-screen">
@@ -19,13 +33,14 @@ function Sidebar({ userInfo, children }) {
             alt="logo"
           ></img>
           <button
-            onClick={() => setExpanded((curr) => !curr)}
+            // onClick={() => setExpanded((curr) => !curr)}
+            onClick={handleDarkMode}
             className="p-1.5 rounded-lg bg-eucalyptus-50 hover:bg-eucalyptus-100 dark:bg-eucalyptus-950 dark:hover:bg-eucalyptus-800"
           >
             {expanded ? (
-              <ChevronFirst className="text-eucalyptus-950 border-black dark:text-eucalyptus-50" />
+              <Sun className="text-eucalyptus-950 border-black dark:text-eucalyptus-50" />
             ) : (
-              <ChevronLast className="text-eucalyptus-950 border-black dark:text-eucalyptus-50" />
+              <Sun className="text-eucalyptus-950 border-black dark:text-eucalyptus-50" />
             )}
           </button>
         </div>

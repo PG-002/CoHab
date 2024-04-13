@@ -7,6 +7,7 @@ late String userId;
 late var decodedToken;
 late var houseToken;
 late var house;
+late var sent;
 
 
 
@@ -132,7 +133,7 @@ Future<void> sendCode() async {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       print(jsonResponse);
-      var sent = jsonResponse['sent'];
+      sent = jsonResponse['sent'];
 
       if (sent == false) {
         throw Exception('Failed to send verification code');
@@ -297,15 +298,11 @@ Future<void> sendJoinCode(String email) async {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       print(jsonResponse);
-      var sent = jsonResponse['sent'];
+      sent = jsonResponse['sent'];
 
-      if (sent == false) {
-        throw Exception('Failed to send verification code');
-      }
     }
   } catch (e) {
     // Exception occurred
-    print('$e');
     // You might want to handle this error in your UI
   }
 }
