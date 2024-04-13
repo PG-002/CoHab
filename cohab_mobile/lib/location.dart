@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,7 +17,7 @@ class _LocationTrackerPageState extends State<LocationTrackerPage> {
   late GoogleMapController _mapController;
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
     init();
     _requestLocationPermission();
@@ -79,7 +80,7 @@ class _LocationTrackerPageState extends State<LocationTrackerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Location Tracker'),
+        title: const Text('          Location Tracker'),
       ),
       body: GoogleMap(
         onMapCreated: _onMapCreated, // Initialize controller in onMapCreated
@@ -92,4 +93,6 @@ class _LocationTrackerPageState extends State<LocationTrackerPage> {
       ),
     );
   }
+
 }
+
