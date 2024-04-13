@@ -2,22 +2,19 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-const JoinHome = ({ setUser }) => {
+const JoinHome = ({ userInfo, setUser }) => {
   const [code, setCode] = useState(false);
   const [codeResponse, setCodeResponse] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
-
-    if (JSON.parse(userInfo).houseId) {
+    if (userInfo && userInfo.houseId) {
       navigate("/dashboard");
     }
-  }, []);
+  }, [userInfo]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const userInfo = localStorage.getItem("userInfo");
 
     if (userInfo) {
       handleJoinHouse(JSON.parse(userInfo).email, code);
@@ -49,10 +46,9 @@ const JoinHome = ({ setUser }) => {
           const decoded = jwtDecode(data.token);
 
           if (decoded && decoded.house) {
-            const user = JSON.parse(localStorage.getItem("userInfo"));
+            const user = userInfo;
             user.houseId = decoded.house._id;
             setUser(user);
-            localStorage.setItem("userInfo", JSON.stringify(user));
 
             console.log(user);
             navigate("/dashboard");

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 
-function SidebarLayout({ userInfo, houseInfo, setHouseInfo }) {
+function SidebarLayout({ userInfo, setHouseInfo }) {
   const [activePage, setActivePage] = useState("/login");
 
   let location = useLocation();
@@ -19,7 +19,7 @@ function SidebarLayout({ userInfo, houseInfo, setHouseInfo }) {
   useEffect(() => {
     const fetchHouseInfo = async () => {
       try {
-        const userId = JSON.parse(localStorage.getItem("userInfo")).userId;
+        const userId = userInfo.userId;
         const JSONPayload = JSON.stringify({
           userId: userId,
         });
@@ -52,7 +52,7 @@ function SidebarLayout({ userInfo, houseInfo, setHouseInfo }) {
       }
     };
     fetchHouseInfo();
-  }, []);
+  }, [userInfo]);
 
   useEffect(() => {
     setActivePage(location.pathname);

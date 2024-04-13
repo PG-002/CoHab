@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-const CreateHome = ({ setUser }) => {
+const CreateHome = ({ userInfo, setUser }) => {
   const [houseName, setHouseName] = useState(null);
   const [codeResponse, setCodeResponse] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
-
     if (JSON.parse(userInfo).houseId) {
       navigate("/dashboard");
     }
@@ -17,7 +15,6 @@ const CreateHome = ({ setUser }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const userInfo = localStorage.getItem("userInfo");
 
     if (userInfo) {
       handleCreateHouse(JSON.parse(userInfo).userId, houseName);
@@ -51,10 +48,9 @@ const CreateHome = ({ setUser }) => {
           console.log(decoded);
 
           if (decoded && decoded.house) {
-            const user = JSON.parse(localStorage.getItem("userInfo"));
+            const user = userInfo;
             user.houseId = decoded.house._id;
             setUser(user);
-            localStorage.setItem("userInfo", JSON.stringify(user));
 
             console.log(user);
             navigate("/dashboard");

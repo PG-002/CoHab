@@ -1,10 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-const isVerified = () => {
-  const userInfo = localStorage.getItem("userInfo");
-
+const isVerified = (userInfo) => {
   if (userInfo) {
-    return JSON.parse(userInfo).verified;
+    return userInfo.verified;
   } else {
     console.error("user not found");
   }
@@ -13,8 +11,8 @@ const isVerified = () => {
 };
 
 // This is your AuthenticatedRoute component
-const VerifiedRoute = () => {
-  if (!isVerified()) {
+const VerifiedRoute = ({ userInfo }) => {
+  if (!isVerified(userInfo)) {
     return <Navigate to="/verifyUser" />;
   }
 

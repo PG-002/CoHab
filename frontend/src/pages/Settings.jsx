@@ -39,7 +39,7 @@ function Settings() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen bg-white dark:bg-neutral-800">
-      <div className="flex flex-col justify-start gap-10 w-[400px] sm:w-[500px] md:w-[700px] h-[700px]  py-4 px-8  rounded-lg bg-neutral-100 dark:bg-neutral-900 shadow-md dark:shadow-gray-900 border-gray-200 dark:border-neutral-700 border-2">
+      <div className="flex flex-col justify-start gap-10 w-[400px] sm:w-[500px] md:w-[700px] h-[700px]  py-4 px-8  rounded-lg bg-neutral-100 dark:bg-neutral-900 shadow-md dark:shadow-gray-900 border-gray-200 dark:border-neutral-700 border-2 overflow-y-auto">
         <div className="flex flex-col justify-evenly w-full">
           <h2 className="font-bold text-xl text-neutral-600 dark:text-white">
             Profile:{" "}
@@ -205,21 +205,21 @@ function Settings() {
                 Location Tracking:
               </p>
               <div>
-                <label class="flex items-center relative w-max cursor-pointer select-none">
+                <label className="flex items-center relative w-max cursor-pointer select-none">
                   <input
                     type="checkbox"
                     defaultChecked={locationOn}
-                    class="peer appearance-none transition-colors cursor-pointer w-14 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500 checked:bg-green-500"
+                    className="peer appearance-none transition-colors cursor-pointer w-14 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500 checked:bg-green-500"
                   />
-                  <span class="absolute font-medium text-xs uppercase right-1 text-white">
+                  <span className="absolute font-medium text-xs uppercase right-1 text-white">
                     {" "}
                     OFF{" "}
                   </span>
-                  <span class="absolute font-medium text-xs uppercase right-8 text-white">
+                  <span className="absolute font-medium text-xs uppercase right-8 text-white">
                     {" "}
                     ON{" "}
                   </span>
-                  <label class="pointer-events-none w-7 h-7 right-7 absolute rounded-full transform transition-transform bg-gray-200 peer-checked:translate-x-7" />
+                  <label className="pointer-events-none w-7 h-7 right-7 absolute rounded-full transform transition-transform bg-gray-200 peer-checked:translate-x-7" />
                 </label>
               </div>
             </div>

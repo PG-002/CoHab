@@ -41,7 +41,6 @@ const LoginPage = ({ setUser }) => {
         localStorage.setItem("sessionId", token);
 
         const decoded = jwtDecode(token);
-        localStorage.setItem("userInfo", JSON.stringify(decoded));
         setUser(decoded);
 
         navigate("/dashboard");

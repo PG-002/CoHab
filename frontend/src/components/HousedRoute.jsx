@@ -1,10 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-const isHoused = () => {
-  const userInfo = localStorage.getItem("userInfo");
-
+const isHoused = (userInfo) => {
   if (userInfo) {
-    return JSON.parse(userInfo).houseId;
+    return userInfo.houseId;
   } else {
     console.error("user not found");
   }
@@ -13,8 +11,8 @@ const isHoused = () => {
 };
 
 // This is your AuthenticatedRoute component
-const HousedRoute = () => {
-  if (!isHoused()) {
+const HousedRoute = ({ userInfo }) => {
+  if (!isHoused(userInfo)) {
     return <Navigate to="/joinHouse" />;
   }
 

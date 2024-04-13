@@ -1,32 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const VerficationPage = ({ setUser }) => {
+const VerficationPage = ({ userInfo, setUser }) => {
   const [code, setCode] = useState(null);
   const [codeSent, setCodeSent] = useState(false);
   const [codeResponse, setCodeResponse] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
-
     if (userInfo) {
-      if (JSON.parse(userInfo).verified) {
+      if (userInfo.verified) {
         navigate("/dashboard");
       }
     } else {
-      localStorage.removeItem("sessionId");
-      localStorage.removeItem("userInfo");
-      localStorage.removeItem("eventInfo");
+      localStorage.clear();
       navigate("/login");
     }
-  }, []);
+  }, [userInfo]);
 
   const handleClick = () => {
-    const userInfo = localStorage.getItem("userInfo");
-
     if (userInfo) {
-      sendCode(JSON.parse(userInfo).email);
+      sendCode(userInfo.email);
     } else {
       console.error("user not found");
     }
@@ -84,10 +78,9 @@ const VerficationPage = ({ setUser }) => {
         console.log(data);
 
         if (data.verified) {
-          const user = JSON.parse(localStorage.getItem("userInfo"));
+          const user = userInfo;
           user.verified = true;
           setUser(user);
-          localStorage.setItem("userInfo", JSON.stringify(user));
           console.log(user);
           navigate("/dashboard");
         } else {
@@ -111,10 +104,8 @@ const VerficationPage = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userInfo = localStorage.getItem("userInfo");
-
     if (userInfo) {
-      sendVerification(JSON.parse(userInfo).email, code);
+      sendVerification(userInfo.email, code);
     } else {
       console.error("user not found");
     }
