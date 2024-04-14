@@ -73,7 +73,7 @@ class _EmailInputPageState extends State<EmailInputPage> {
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
-                labelText: '                                            Email Address',
+                labelText: '                                 Email Address',
               ),
               keyboardType: TextInputType.emailAddress,
             ),

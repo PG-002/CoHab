@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${house['house']['houseName']} Home Page'),
+        title: Text('   ${house['house']['houseName']} Home Page'),
       ),
       body: Center(
         child: SingleChildScrollView(
