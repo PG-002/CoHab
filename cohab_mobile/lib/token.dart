@@ -281,8 +281,9 @@ Future<void> getHouse() async {
 
 Future<void> sendJoinCode(String email) async {
   final Uri url = Uri.parse(
-      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/sendVerification');
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/sendJoinCode');
   final Map<String, String> body = {
+    'houseId': house['house']['_id'],
     'email': email,
   };
 
@@ -299,6 +300,34 @@ Future<void> sendJoinCode(String email) async {
       final jsonResponse = json.decode(response.body);
       print(jsonResponse);
       sent = jsonResponse['sent'];
+
+    }
+  } catch (e) {
+    // Exception occurred
+    // You might want to handle this error in your UI
+  }
+}
+
+Future<void> join(String code) async {
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/join');
+  final Map<String, String> body = {
+    'userId': userId,
+    'code': code,
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
 
     }
   } catch (e) {
