@@ -64,6 +64,7 @@ Future<void> login(String email, String password) async {
       body: json.encode(body),
     );
 
+
     if (response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
       token = jsonResponse['token']; // Extracting the token string
