@@ -1,17 +1,8 @@
+import 'package:cohab_mobile/msg_bubble.dart';
 import 'package:flutter/material.dart';
 import 'web_socket.dart';
 import 'token.dart';
-
-// From web (chat.jsx):
-//  socket.emit('sendMessage', 
-//     {   date: messageDate, 
-//         message: messageContent, 
-//         sentBy: decodedToken.user._id,
-//         firstName : decodedToken.user.firstName });
-//         console.log("sentBy is " + decodedToken.user._id);
-//         console.log("ID is " +  decodedToken.user._id);
-//     setCurrentMessage(''); 
-//   };
+import 'dart:convert';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -22,35 +13,48 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
+  List<MsgBubble> messages = []; // List to store chat messages
 
   // Method to handle sending messages
   void sendMessage(String msg) {
-    // Implement sending message logic here
-    // For example, you can use the web_socket.dart here
+    if (msg.isNotEmpty && token != null) {
+      int time = DateTime.now().microsecondsSinceEpoch;
+      socket.emit('sendMessage', {
+        'message': msg,
+        'sentBy': decodedToken['firstName'],
+        'email': decodedToken['email'],
+        'date': time,
+      });
+      // Add the sent message to the list of messages
+      setState(() {
+        messages.add(
+          MsgBubble(msg: msg, firstName: decodedToken['firstName']),
+        );
+      });
+      _messageController.clear();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Invalid Message'),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Roommate Chat"),
+        title: const Text("Chat Room"),
       ),
       body: Column(
         children: [
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _messageController,
-                decoration: const InputDecoration(
-                  hintText: "Message",
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 2,
-                    ),
-                  ),
-                ),
-              ),
+            child: ListView.builder(
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                return messages[index];
+              },
             ),
           ),
           Padding(
@@ -59,9 +63,9 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Expanded(
                   child: TextFormField(
-                    // This text form field can be used for name or any other information you want to display
+                    controller: _messageController,
                     decoration: const InputDecoration(
-                      hintText: "Your Name",
+                      hintText: "Message",
                       border: OutlineInputBorder(
                         borderSide: BorderSide(
                           width: 2,
@@ -73,7 +77,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 IconButton(
                   onPressed: () {
                     sendMessage(_messageController.text);
-                    _messageController.clear();
                   },
                   icon: const Icon(
                     Icons.send,
