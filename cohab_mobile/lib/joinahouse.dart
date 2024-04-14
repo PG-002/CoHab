@@ -66,9 +66,9 @@ class JoinAHouse extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     try{
-                      joinHouse(code);
-                      getHouse();
-                      socket.connect();
+                      await join(code);
+                      await getHouse();
+                      init();
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const HomePage()),
