@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Edit } from "lucide-react";
 
-function Settings() {
+function Settings({ userInfo }) {
   // Page state variables
   const [editProfile, setEditProfile] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
@@ -16,6 +16,12 @@ function Settings() {
   const [emailAddress, setEmailAddress] = useState("test@mail.com");
   const [houseName, setHouseName] = useState("Ryan's House");
   const [locationOn, setLocationOn] = useState(false);
+
+  useEffect(() => {
+    if (userInfo) {
+      console.log(userInfo);
+    }
+  }, [userInfo]);
 
   const handleEditProfile = () => {
     setEditProfile(true);
