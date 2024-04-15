@@ -311,9 +311,9 @@ Future<void> sendJoinCode(String email) async {
 
 Future<void> join(String code) async {
   final Uri url = Uri.parse(
-      'https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/join');
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyCode');
   final Map<String, String> body = {
-    'userId': userId,
+    'email':decodedToken['email'],
     'code': code,
   };
 
