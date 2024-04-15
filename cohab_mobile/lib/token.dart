@@ -8,6 +8,7 @@ late var decodedToken;
 late var houseToken;
 late var house;
 late var sent;
+late int noise_level;
 
 
 
@@ -265,6 +266,8 @@ Future<void> getHouse() async {
       houseToken = jsonResponse['token'];
       house = JwtDecoder.decode(houseToken);
 
+      noise_level = house['house']['noiseLevel'];
+      print(noise_level);
       print(house);
 
     }
