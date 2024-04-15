@@ -48,6 +48,10 @@ function App() {
     });
 
     setSocket(connectSocket);
+
+    connectSocket.on("connect_error", (err) => {
+      console.log(`connect_error due to ${err.message}`);
+    });
     setSocketError(null);
   };
 
@@ -148,7 +152,9 @@ function App() {
     if (user && !socket) {
       handleLogin();
     }
+  }, [user]);
 
+  useEffect(() => {
     if (socket) {
       socket.once("connect", () => {
         console.log("Socket Connected");
@@ -177,7 +183,7 @@ function App() {
       socket?.off();
       socket?.disconnect();
     };
-  }, [socket, user]);
+  }, [socket]);
 
   return (
     <div className="flex flex-row w-screen">
@@ -235,7 +241,10 @@ function App() {
                 />
                 <Route path="/location" element={<Location />} />
                 <Route path="/messages" element={<Chat socket={socket} />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route
+                  path="/settings"
+                  element={<Settings userInfo={user} />}
+                />
               </Route>
             </Route>
           </Route>
