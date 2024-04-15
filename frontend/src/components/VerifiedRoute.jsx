@@ -24,7 +24,13 @@ const VerifiedRoute = ({ userInfo }) => {
     }
   }, [userInfo]);
 
-  return loader ? <HashLoader color="#36d7b7" /> : <Outlet />; // If authenticated, render the children components
+  return loader ? (
+    <div className="flex flex-col w-full h-screen items-center justify-center">
+      <HashLoader color="#36d7b7" />{" "}
+    </div>
+  ) : (
+    <Outlet />
+  ); // If authenticated, render the children components
 };
 
 export default VerifiedRoute;
