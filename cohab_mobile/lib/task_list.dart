@@ -298,7 +298,7 @@ class _TaskListState extends State<TaskList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Task List',
+          '                       Task List',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF14532d),

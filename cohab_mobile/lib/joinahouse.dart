@@ -66,9 +66,8 @@ class JoinAHouse extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     try{
-                      joinHouse(code);
-                      getHouse();
-                      socket.connect();
+                      await join(code);
+                      await getHouse();
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const HomePage()),
@@ -78,7 +77,7 @@ class JoinAHouse extends StatelessWidget {
                     {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('$e'), // Convert the error to a string to display
+                          content: Text('Invalid Join Code'), // Convert the error to a string to display
                           duration: const Duration(seconds: 1), // Adjust the duration as needed
                         ),
                       );
