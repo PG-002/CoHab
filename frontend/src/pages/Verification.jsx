@@ -8,13 +8,14 @@ const VerficationPage = ({ userInfo, setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userInfo) {
-      if (userInfo.verified) {
-        navigate("/dashboard");
+    const session = localStorage.getItem("sessionId");
+
+    if (session) {
+      if (userInfo) {
+        if (userInfo.verified) {
+          navigate("/dashboard");
+        }
       }
-    } else {
-      localStorage.clear();
-      navigate("/login");
     }
   }, [userInfo]);
 

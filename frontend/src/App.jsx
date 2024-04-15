@@ -105,9 +105,7 @@ function App() {
           localStorage.setItem("sessionId", data.token);
           const decoded = jwtDecode(data.token);
           const user = decoded;
-          console.log("user");
           setUser(user);
-          console.log("User Info Fetched");
           navigate("/dashboard");
         } else {
           console.error("User not found:", data.error);
