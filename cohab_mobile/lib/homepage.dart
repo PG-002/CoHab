@@ -34,11 +34,13 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 120,
                     child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const NoiseLevelPage()),
-                        );
+                      onTap: () async {
+                        getHouse().then((_) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NoiseLevelPage()),
+                          );
+                        });
                       },
                       child: Ink(
                         decoration: BoxDecoration(
@@ -50,11 +52,13 @@ class _HomePageState extends State<HomePage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const NoiseLevelPage()),
-                                );
+                              onTap: () async {
+                                getHouse().then((_) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => NoiseLevelPage()),
+                                  );
+                                });
                               },
                               child: const Icon(
                                 LucideIcons.music,

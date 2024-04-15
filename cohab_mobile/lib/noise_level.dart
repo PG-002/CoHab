@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'token.dart';
 import 'web_socket.dart';
 
+
 class NoiseLevelPage extends StatefulWidget {
   const NoiseLevelPage({super.key});
 
@@ -14,9 +15,9 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
 
   @override
   void initState() {
+     _currentNoiseLevel = noise_level;
     super.initState();
-    getHouse();
-    _currentNoiseLevel = house['house']['noiseLevel'].toInt(); // Set initial noise level to 5.0
+
   }
 
   @override
@@ -90,6 +91,7 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
                       print('Preferred noise level: $_currentNoiseLevel');
 
                       socket.emit('setNoiseLevel', _currentNoiseLevel.toInt());
+                      noise_level = _currentNoiseLevel;
                     },
                     child: const Text('Save Preference'),
                   ),
