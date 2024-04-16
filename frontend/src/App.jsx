@@ -34,6 +34,7 @@ function App() {
   const [events, setEvents] = useState(null);
   const [socket, setSocket] = useState(null);
   const [socketError, setSocketError] = useState(null);
+  const [userUpdate, setUserUpdate] = useState(false);
 
   const colorTheme = theme === "dark" ? "light" : "dark";
   const navigate = useNavigate();
@@ -48,12 +49,18 @@ function App() {
     });
 
     setSocket(connectSocket);
+
+    connectSocket.on("connect_error", (err) => {
+      console.log(`connect_error due to ${err.message}`);
+    });
     setSocketError(null);
   };
 
   const handleLogOut = () => {
     socket.disconnect();
     localStorage.clear();
+
+    console.log("Logout in APP JSX");
 
     navigate("/login");
   };
@@ -78,6 +85,7 @@ function App() {
   useEffect(() => {
     const fetchUserInfo = async (userId) => {
       if (!userId) {
+        console.log("Log out in fetch due to userID not exist");
         handleLogOut();
         navigate("/login"); // Redirect to login if no session
         return;
@@ -105,10 +113,8 @@ function App() {
           localStorage.setItem("sessionId", data.token);
           const decoded = jwtDecode(data.token);
           const user = decoded;
-          console.log("user");
           setUser(user);
-          console.log("User Info Fetched");
-          navigate("/dashboard");
+          setUserUpdate(false);
         } else {
           console.error("User not found:", data.error);
           navigate("/login"); // Redirect to login or handle error state
@@ -127,10 +133,11 @@ function App() {
       if (userId) {
         fetchUserInfo(userId);
       } else {
+        console.log("Log out due to userId null");
         handleLogOut();
       }
     }
-  }, []);
+  }, [userUpdate]);
 
   useEffect(() => {
     if (houseInfo) {
@@ -150,7 +157,9 @@ function App() {
     if (user && !socket) {
       handleLogin();
     }
+  }, [user]);
 
+  useEffect(() => {
     if (socket) {
       socket.once("connect", () => {
         console.log("Socket Connected");
@@ -179,7 +188,7 @@ function App() {
       socket?.off();
       socket?.disconnect();
     };
-  }, [socket, user]);
+  }, [socket]);
 
   return (
     <div className="flex flex-row w-screen">
@@ -237,7 +246,16 @@ function App() {
                 />
                 <Route path="/location" element={<Location socket={socket}/>} />
                 <Route path="/messages" element={<Chat socket={socket} />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route
+                  path="/settings"
+                  element={
+                    <Settings
+                      userInfo={user}
+                      houseInfo={houseInfo}
+                      setUpdate={setUserUpdate}
+                    />
+                  }
+                />
               </Route>
             </Route>
           </Route>
