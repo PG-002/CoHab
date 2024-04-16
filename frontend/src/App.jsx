@@ -34,6 +34,7 @@ function App() {
   const [events, setEvents] = useState(null);
   const [socket, setSocket] = useState(null);
   const [socketError, setSocketError] = useState(null);
+  const [userUpdate, setUserUpdate] = useState(false);
 
   const colorTheme = theme === "dark" ? "light" : "dark";
   const navigate = useNavigate();
@@ -110,7 +111,7 @@ function App() {
           const decoded = jwtDecode(data.token);
           const user = decoded;
           setUser(user);
-          navigate("/dashboard");
+          setUserUpdate(false);
         } else {
           console.error("User not found:", data.error);
           navigate("/login"); // Redirect to login or handle error state
@@ -132,7 +133,7 @@ function App() {
         handleLogOut();
       }
     }
-  }, []);
+  }, [userUpdate]);
 
   useEffect(() => {
     if (houseInfo) {
@@ -243,7 +244,13 @@ function App() {
                 <Route path="/messages" element={<Chat socket={socket} />} />
                 <Route
                   path="/settings"
-                  element={<Settings userInfo={user} />}
+                  element={
+                    <Settings
+                      userInfo={user}
+                      houseInfo={houseInfo}
+                      setUpdate={setUserUpdate}
+                    />
+                  }
                 />
               </Route>
             </Route>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Edit } from "lucide-react";
 
-function Settings({ userInfo }) {
+function Settings({ userInfo, houseInfo, setUpdate }) {
   // Page state variables
   const [editProfile, setEditProfile] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
@@ -10,38 +10,83 @@ function Settings({ userInfo }) {
   const [verifiedEmail, setVerifiedEmail] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
 
-  // User Information state
-  const [firstName, setFirstName] = useState("John");
-  const [lastName, setLastName] = useState("Doe");
-  const [emailAddress, setEmailAddress] = useState("test@mail.com");
-  const [houseName, setHouseName] = useState("Ryan's House");
+  // User Information State
+  const [id, setId] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmailAddress] = useState("");
+  const [houseName, setHouseName] = useState("");
   const [locationOn, setLocationOn] = useState(false);
 
   useEffect(() => {
-    if (userInfo) {
-      console.log(userInfo);
+    if (userInfo && houseInfo) {
+      setFirstName(userInfo.firstName);
+      setLastName(userInfo.lastName);
+      setEmailAddress(userInfo.email);
+      setLocationOn(userInfo.location.isTracking);
+      setHouseName(houseInfo.houseName);
+      setId(userInfo.userId);
     }
-  }, [userInfo]);
+  }, [userInfo, houseInfo]);
 
   const handleEditProfile = () => {
     setEditProfile(true);
-  };
-
-  const handleEditEmail = () => {
-    setEditEmail(true);
   };
 
   const handleEditPassword = () => {
     setEditPassword(true);
   };
 
+  const handleLocationChange = () => {
+    setLocationOn((prev) => !prev);
+    const location = userInfo.location;
+    location.isTracking = !locationOn;
+
+    submitUserChanges(id, "location", location);
+  };
+
   const handlePasswordUpdate = () => {};
 
-  const handleEmailUpdate = () => {};
+  const handleNameUpdate = (e) => {
+    e.preventDefault();
 
-  const handleNameUpdate = () => {};
+    setFirstName(e.target.firstName.value);
+    setLastName(e.target.lastName.value);
 
-  const sendUpdatedUserInfo = () => {};
+    submitUserChanges(id, "firstName", e.target.firstName.value);
+    submitUserChanges(id, "lastName", e.target.lastName.value);
+    setEditProfile(false);
+  };
+
+  const submitUserChanges = async (userId, fieldName, fieldValue) => {
+    try {
+      const response = await fetch(
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/updateUser",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: userId, fieldName, fieldValue }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update user info");
+      }
+
+      const data = await response.json();
+
+      if (data.updated) {
+        setUpdate(true);
+      } else {
+        console.error("Update failed!".data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error.message);
+      navigate("/login"); // Redirect to login or handle error
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen bg-white dark:bg-neutral-800">
@@ -53,7 +98,7 @@ function Settings({ userInfo }) {
           <hr className="mt-2 border-neutral-400 dark:border-white "></hr>
         </div>
         {editProfile ? (
-          <form>
+          <form onSubmit={handleNameUpdate}>
             <div className="flex flex-row justify-evenly">
               <div className="flex flex-col">
                 <p className="font-bold text-left pl-1 text-neutral-600 dark:text-white">
@@ -61,6 +106,7 @@ function Settings({ userInfo }) {
                 </p>
                 <input
                   defaultValue={firstName}
+                  name="firstName"
                   className="pl-2 rounded border-[1px] h-10 bg-neutral-200 border-gray-300 dark:border-none shadow-sm dark:bg-neutral-700 text-neutral-600 dark:text-white "
                 ></input>
               </div>
@@ -70,6 +116,7 @@ function Settings({ userInfo }) {
                 </p>
                 <input
                   defaultValue={lastName}
+                  name="lastName"
                   className="pl-2 rounded border-[1px] h-10 bg-neutral-200 border-gray-300 dark:border-none shadow-sm dark:bg-neutral-700 text-neutral-600 dark:text-white "
                 ></input>
               </div>
@@ -116,7 +163,7 @@ function Settings({ userInfo }) {
             {codeSent ? (
               <p className="text-left text-eucalyptus-700">Code Sent!</p>
             ) : null}
-            <div className="flex flex-row justify-between md:justify-between items-center">
+            <div className="flex flex-row justify-evenly md:justify-evenly items-center">
               <p className="font-bold text-neutral-600 dark:text-white">
                 Email
               </p>
@@ -126,7 +173,7 @@ function Settings({ userInfo }) {
                     <>
                       {" "}
                       <input
-                        defaultValue={emailAddress}
+                        defaultValue={email}
                         className="rounded border-[1px] pl-2 w-4/6 bg-neutral-200 border-gray-300 dark:border-none shadow-sm dark:bg-neutral-700 text-neutral-600 dark:text-white"
                       ></input>
                       <button
@@ -155,16 +202,16 @@ function Settings({ userInfo }) {
               ) : (
                 <>
                   <p className="text-left pl-1 rounded text-neutral-600 dark:text-white ">
-                    {emailAddress}
+                    {email}
                   </p>
-                  <Edit
+                  {/* <Edit
                     className="cursor-pointer"
                     onClick={handleEditEmail}
-                  ></Edit>
+                  ></Edit> */}
                 </>
               )}
             </div>
-            <div className="flex flex-row justify-between md:justify-between items-center">
+            <div className="flex flex-row py-2 justify-evenly md:justify-evenly items-center">
               <p className="font-bold text-neutral-600 dark:text-white">
                 Change Password
               </p>
@@ -214,7 +261,8 @@ function Settings({ userInfo }) {
                 <label className="flex items-center relative w-max cursor-pointer select-none">
                   <input
                     type="checkbox"
-                    defaultChecked={locationOn}
+                    checked={locationOn}
+                    onChange={handleLocationChange}
                     className="peer appearance-none transition-colors cursor-pointer w-14 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500 checked:bg-green-500"
                   />
                   <span className="absolute font-medium text-xs uppercase right-1 text-white">
@@ -253,7 +301,7 @@ function Settings({ userInfo }) {
           </div>
         </div>
 
-        <div className="pt-4 flex flex-row items-center justify-evenly">
+        {/* <div className="pt-4 flex flex-row items-center justify-evenly">
           <p className="font-bold text-neutral-600 dark:text-white">
             Close Account:
           </p>
@@ -263,7 +311,7 @@ function Settings({ userInfo }) {
           >
             DELETE ACCOUNT
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
