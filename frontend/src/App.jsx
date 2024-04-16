@@ -235,7 +235,7 @@ function App() {
                     />
                   }
                 />
-                <Route path="/location" element={<Location />} />
+                <Route path="/location" element={<Location socket={socket}/>} />
                 <Route path="/messages" element={<Chat socket={socket} />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>

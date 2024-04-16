@@ -1,77 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { useLocationSocket } from '../components/LocationSocketContext'; 
-import Map from '../components/Map'
-function Location() {
-  const socket = useLocationSocket();
-  const [position, setPosition] = useState({ latitude: null, longitude: null });
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { jwtDecode } from "jwt-decode";
+import 'leaflet/dist/leaflet.css';
+import '../components/Map.css';
 
-  // This effect handles the geolocation and emits the location to the server
+function Location({socket}) {
+  const [currentPosition, setCurrentPosition] = useState(null);
+  const [otherUserLocations, setOtherUserLocations] = useState([]);
+
   useEffect(() => {
-    let watcher = null;
+    // Trigger 'updateLocation' event with the user's current position
+    const updateMyLocation = (position) => {
+      setCurrentPosition({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      });
 
-    const handleSuccess = (position) => {
-      const { latitude, longitude } = position.coords;
-      setPosition({ latitude, longitude });
-      socket.emit('updateLocation', { longitude, latitude });
+      // Emit the location update to the server via socket
+      socket.emit('updateLocation', position.coords.latitude, position.coords.longitude);
+      console.log("It was indeed emitted");
     };
 
-    const handleError = (error) => {
-      console.error('Geolocation error:', error);
+    // Fetch and watch the user's current position
+    navigator.geolocation.getCurrentPosition(updateMyLocation, (error) => {
+      console.error('Error getting current position:', error);
+    });
+
+    // Handle 'locationChange' event from the server
+    const handleLocationChange = (locationData) => {
+      console.log("Being called");
+      setOtherUserLocations((prevLocations) => {
+        // This assumes locationData has a unique identifier, such as userId
+        return prevLocations.filter(loc => loc.userId !== locationData.userId)
+          .concat(locationData);
+      });
+      console.log("It was indeed received");
     };
 
-    if (socket && userInfo?.location?.isTracking) { // Ensure optional chaining is used for isTracking
-      if ("geolocation" in navigator) {
-        watcher = navigator.geolocation.watchPosition(handleSuccess, handleError, {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0,
-        });
-      } else {
-        console.error("Geolocation is not available in your browser.");
-      }
-    }
+    socket.on('locationChange', handleLocationChange);
 
-    // Clear the watcher when the component unmounts
+    // Clean up on unmount
     return () => {
-      if (watcher) {
-        navigator.geolocation.clearWatch(watcher);
-      }
+      socket.off('locationChange', handleLocationChange);
     };
-  }, [socket, userInfo]); // Add userInfo to the dependency array
-
-  // This effect handles listening for location changes from the server
-  useEffect(() => {
-    if (socket) {
-      const handleLocationChange = (locationData) => {
-        console.log("Location change event received:", locationData);
-        setPosition({
-          latitude: locationData.latitude,
-          longitude: locationData.longitude,
-        });
-      };
-
-      socket.on('locationChange', handleLocationChange);
-
-      // Return a cleanup function to remove the event listener
-      return () => {
-        socket.off('locationChange', handleLocationChange);
-      };
-    }
   }, [socket]);
 
-  // JSX for rendering the location
   return (
-    <div>
-      <h2>My Current Location</h2>
-      {position.latitude !== null && position.longitude !== null ? (
-        <p>
-          Latitude: {position.latitude}, Longitude: {position.longitude}
-        </p>
-      ) : (
-        <p>Loading...</p>
+    <MapContainer center={currentPosition || [28.6024, -81.2001]} zoom={13} style={{ height: '100vh', width: '100%' }}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {currentPosition && (
+        <Marker position={currentPosition}>
+          <Popup>Me</Popup>
+        </Marker>
       )}
-    </div>
+    </MapContainer>
   );
 }
 

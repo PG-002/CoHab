@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import Nav from "../components/Nav";
 import { jwtDecode } from "jwt-decode";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../components/TodoList.css";
 import { Dropdown } from "flowbite-react";
 
