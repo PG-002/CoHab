@@ -7,40 +7,49 @@ import '../components/Map.css';
 function Location({socket}) {
   const [currentPosition, setCurrentPosition] = useState(null);
   const [otherUserLocations, setOtherUserLocations] = useState([]);
+  const locationUpdateInterval = 60000; // Update every 60 seconds
 
   useEffect(() => {
-    // Trigger 'updateLocation' event with the user's current position
-    const updateMyLocation = (position) => {
-      setCurrentPosition({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      });
-
-      // Emit the location update to the server via socket
+    // Emit the location update to the server via socket
+    const emitLocation = (position) => {
       socket.emit('updateLocation', position.coords.latitude, position.coords.longitude);
-      console.log("It was indeed emitted");
     };
 
     // Fetch and watch the user's current position
-    navigator.geolocation.getCurrentPosition(updateMyLocation, (error) => {
-      console.error('Error getting current position:', error);
-    });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCurrentPosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+        emitLocation(position);
+      }, 
+      (error) => {
+        console.error('Error getting current position:', error);
+      }
+    );
+
+    // Set up the interval to update location
+    const intervalId = setInterval(() => {
+      navigator.geolocation.getCurrentPosition(emitLocation);
+    }, locationUpdateInterval);
 
     // Handle 'locationChange' event from the server
     const handleLocationChange = (locationData) => {
-      console.log("Being called");
-      setOtherUserLocations((prevLocations) => {
-        // This assumes locationData has a unique identifier, such as userId
-        return prevLocations.filter(loc => loc.userId !== locationData.userId)
-          .concat(locationData);
+      setOtherUserLocations(prevLocations => {
+        const updatedLocations = prevLocations.filter(loc => loc.userId !== locationData.userId);
+        if (locationData.location.isTracking) {
+          updatedLocations.push(locationData);
+        }
+        return updatedLocations;
       });
-      console.log("It was indeed received");
     };
 
     socket.on('locationChange', handleLocationChange);
 
-    // Clean up on unmount
+    // Clear the interval and the listener when the component unmounts
     return () => {
+      clearInterval(intervalId);
       socket.off('locationChange', handleLocationChange);
     };
   }, [socket]);
