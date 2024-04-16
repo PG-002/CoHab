@@ -3,6 +3,9 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import "../components/TodoList.css";
 import { Dropdown } from "flowbite-react";
+import TodoListModal from '../components/TodoListModal';
+import { LuListPlus } from "react-icons/lu";
+
 
 function TodoList({ socket }) {
   const navigate = useNavigate();
@@ -15,6 +18,7 @@ function TodoList({ socket }) {
   const [editText, setEditText] = useState("");
   const [showCompleted, setShowCompleted] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -79,6 +83,40 @@ function TodoList({ socket }) {
     };
   }, []);
 
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const startEditing = (task) => {
+    setIsEditing(task); // Set the current task to the one being edited
+    openModal();
+  };
+
+  const handleAddTask = (newTask, newAssignedTo) => {
+    if (isEditing) {
+      // Edit existing task
+      socket.emit("modifyTask", {
+        ...isEditing,
+        task: newTask,
+        assignedTo: newAssignedTo,
+      });
+      setIsEditing(null); // Reset editing task
+    } else {
+      // Add new task
+      socket.emit("createTask", {
+        task: newTask,
+        assignedTo: newAssignedTo,
+      });
+    }
+    setTodo("");
+    setAssignedTo("");
+    closeModal();
+  };
+
   // Function to toggle completed tasks view
   const toggleShowCompleted = () => {
     setShowCompleted((prev) => !prev);
@@ -86,7 +124,6 @@ function TodoList({ socket }) {
 
   const handleCompleteTask = (task) => {
     task.completed = true;
-    console.log("in complete", task);
     setShowCompleted(false);
     socket.emit("modifyTask", task);
   };
@@ -99,27 +136,11 @@ function TodoList({ socket }) {
     }
   }, [socket]);
 
-  const handleAddTask = (e) => {
-    e.preventDefault();
-
-    socket.emit("createTask", {
-      task: todo,
-      assignedTo: assignedTo,
-    });
-    setTodo("");
-    setAssignedTo("");
-  };
-
   const handleDeleteTask = (task) => {
     socket.emit("deleteTask", { _id: task._id });
     setTasks((currentTasks) =>
       currentTasks.filter((task) => task._id !== task._id)
     );
-  };
-
-  const startEditing = (task) => {
-    setIsEditing(task._id);
-    setEditText(task.task);
   };
 
   const handleEditChange = (e) => {
@@ -157,31 +178,33 @@ function TodoList({ socket }) {
 
   return (
     <div className="todo__container p-4 overflow-auto">
+      <div className="flex items-center justify-start">
+      <button className="task-add-button" onClick={openModal}>
+            <LuListPlus />
+          </button>
+          <TodoListModal
+          showModal={showModal}
+          handleCloseModal={() => {
+            setIsEditing(null);
+            closeModal();
+          }}
+          addTask={handleAddTask}
+          housemates={housemates}
+          isEdit={!!isEditing}
+          editTask={isEditing ? isEditing.task : ''}
+          editAssignedTo={isEditing ? isEditing.assignedTo : ''}
+        />
       <form className="form mt-8 mb-10" onSubmit={handleAddTask}>
         <input
           autoFocus
           value={todo}
           onChange={(e) => setTodo(e.target.value)}
           className="input"
-          placeholder="Enter new task"
-          required
+          placeholder="Search Task"
         />
-        <Dropdown
-          className="dropdown"
-          label={assignedTo || "Assign to..."}
-          inline={true}
-        >
-          {housemates.map((housemate, index) => (
-            <Dropdown.Item
-              key={index}
-              onClick={() => handleSelectHousemate(housemate)}
-            >
-              {housemate}
-            </Dropdown.Item>
-          ))}
-        </Dropdown>
-        <button className="form__cta input">Add</button>
+        <button className="form__cta input">Search</button>
       </form>
+      </div>
       {isMobile ? (
         <label className="toggle-switch">
           <input
@@ -212,17 +235,6 @@ function TodoList({ socket }) {
           </div>
         </div>
       )}
-      {/* <label className="toggle-switch">
-        <input
-        type="checkbox"
-        checked={showCompleted}
-        onChange={toggleShowCompleted}
-        />
-      <span className="switch-slider">
-      <span className="switch-label switch-label-off">Incomplete</span>
-      <span className="switch-label switch-label-on">Complete</span>
-      </span>
-      </label> */}
 
       <div className="todo__container" style={{ paddingBottom: "0px" }}>
         <div className="todo__header todo__item">
