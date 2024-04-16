@@ -60,6 +60,8 @@ function App() {
     socket.disconnect();
     localStorage.clear();
 
+    console.log("Logout in APP JSX");
+
     navigate("/login");
   };
 
@@ -83,6 +85,7 @@ function App() {
   useEffect(() => {
     const fetchUserInfo = async (userId) => {
       if (!userId) {
+        console.log("Log out in fetch due to userID not exist");
         handleLogOut();
         navigate("/login"); // Redirect to login if no session
         return;
@@ -130,6 +133,7 @@ function App() {
       if (userId) {
         fetchUserInfo(userId);
       } else {
+        console.log("Log out due to userId null");
         handleLogOut();
       }
     }

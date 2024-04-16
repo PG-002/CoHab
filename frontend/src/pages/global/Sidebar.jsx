@@ -86,6 +86,7 @@ export function SidebarItem({ icon, text, active, alert, link }) {
 
   const handleLogOut = () => {
     localStorage.clear();
+    console.log("LOG OUT IN SIDEBAR");
     navigate("/login");
   };
 
