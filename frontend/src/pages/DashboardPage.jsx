@@ -245,10 +245,10 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
           </div>
         </div>
         <SmallCalendar events={events} />
-        {/* <div className="flex flex-col w-[40rem] rounded-xl h-[22rem] bg-neutral-800 p-8 justify-between items-start">
+        <div className="flex flex-col w-[40rem] rounded-xl h-[22rem] bg-neutral-800 p-8 justify-between items-start">
           <div className="font-bold text-2xl mb-3">Roommates:</div>
-          <EmblaCarousel slides={SLIDES} options={OPTIONS} />
-        </div> */}
+          {/* <EmblaCarousel slides={SLIDES} options={OPTIONS} /> */}
+        </div>
         <div className="flex flex-col w-[20rem] rounded-xl h-[22rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
           <div className="font-bold text-2xl pb-4">Recent Messages:</div>
           <div className="flex flex-col flex-wrap w-full h-full gap-y-2 justify-start overflow-y-auto">
