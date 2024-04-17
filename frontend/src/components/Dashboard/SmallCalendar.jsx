@@ -103,7 +103,7 @@ const SmallCalendar = ({ events }) => {
 
   return (
     <div className="flex flex-row gap-12 text-left overflow-hidden text-white">
-      <div className="px-3 pb-2 pt-1 w-80 h-[21rem]  bg-neutral-800 rounded-xl">
+      <div className="px-3 pb-2 pt-1 w-80 h-[21rem] bg-neutral-800 rounded-xl">
         <header className="flex justify-between items-center pl-3">
           <Link to="/calendar">
             <p className="text-white font-bold">
@@ -159,13 +159,9 @@ const SmallCalendar = ({ events }) => {
           ))}
         </div>
       </div>
-      <div className="flex flex-col items-center h-[21rem] w-64 p-1 bg-neutral-800 rounded-xl">
+      <div className="flex flex-col items-center h-[21rem] w-[17rem] p-1 bg-neutral-800 rounded-xl">
         <p className="p-1 font-bold">
-          {daySelected &&
-            (daySelected.format("MM/DD/YY") != dayjs().format("MM/DD/YY")
-              ? daySelected.format("MM/DD/YY") + " Events"
-              : "Events Today")}
-          :
+          {daySelected ? daySelected.format("MM/DD/YY") + " Events" : null}:
         </p>
         <div className="flex flex-col items-center overflow-y-scroll w-full m-2 px-2 gap-2 rounded-xl">
           {eventsList

@@ -231,6 +231,7 @@ function App() {
                     <DashboardPage
                       houseInfo={houseInfo}
                       socket={socket}
+                      userInfo={user}
                       setHouseInfo={handleHouseUpdate}
                     />
                   }
