@@ -16,4 +16,26 @@
     font-size: 1.2rem;
     box-shadow: 0 0 0px 5px #fff;
   }
+
+  .map_modal_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full viewport height */
+    width: 100vw;
+    padding: 1em; /* Adds some space around the content to prevent touching the edges */
+  }
+  
+  .map_modal {
+    max-width: 300px; /* Maximum width of the card */
+    width: 100%; /* Make it responsive */
+    padding: 20px;
+    margin: auto; /* This will take precedence over justify-content on smaller screens */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgb(0, 80, 61);
+    text-align: center;
+    border-radius: 8px;
+    box-sizing: border-box; /* Includes padding in the width calculation */
+  }
+  
   
