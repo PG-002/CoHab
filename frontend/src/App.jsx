@@ -252,7 +252,7 @@ function App() {
                 />
                 <Route
                   path="/location"
-                  element={<Location socket={socket} />}
+                  element={<Location socket={socket} userInfo={user} />}
                 />
                 <Route path="/messages" element={<Chat socket={socket} />} />
                 <Route
