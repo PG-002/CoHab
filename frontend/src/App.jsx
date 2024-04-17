@@ -227,7 +227,13 @@ function App() {
               >
                 <Route
                   path="/dashboard"
-                  element={<DashboardPage houseInfo={houseInfo} />}
+                  element={
+                    <DashboardPage
+                      houseInfo={houseInfo}
+                      socket={socket}
+                      setHouseInfo={handleHouseUpdate}
+                    />
+                  }
                 />
                 <Route
                   path="/tasklist"
@@ -244,7 +250,10 @@ function App() {
                     />
                   }
                 />
-                <Route path="/location" element={<Location socket={socket}/>} />
+                <Route
+                  path="/location"
+                  element={<Location socket={socket} />}
+                />
                 <Route path="/messages" element={<Chat socket={socket} />} />
                 <Route
                   path="/settings"

@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/styled": "^11.11.5",
     "@fullcalendar/react": "^6.1.11",
-    "@mui/material": "^5.15.14",
+    "@mui/material": "^5.15.15",
     "dayjs": "^1.11.10",
     "flowbite-react": "^0.7.8",
     "formik": "^2.4.5",
