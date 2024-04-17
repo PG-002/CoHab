@@ -4,8 +4,8 @@ const { use } = require('../Routes/UserRoutes');
 module.exports = (socket, io) => {
 
     const updateObj = (lat, long) => ({
-        'location.latitude' : parseInt(lat + ''), 
-        'location.longitude' : parseInt(long + ''), 
+        'location.latitude' : parseFloat(lat + ''), 
+        'location.longitude' : parseFloat(long + ''), 
         'location.lastUpdated' : Date.now()
     })
 
