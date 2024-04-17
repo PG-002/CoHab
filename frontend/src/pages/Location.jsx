@@ -50,8 +50,6 @@ function Location({socket, userInfo}) {
       
         // Handle 'locationChange' event from the server
         const handleLocationChange = (locationData) => {
-          console.log(locationData);
-          console.log("Hello I sent the locationData");
           setOtherUserLocations(locationData);
         };
       
@@ -80,7 +78,7 @@ function Location({socket, userInfo}) {
             "></div>`,
       className: '', // This is important to remove default Leaflet icon styles
       iconUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=bbf7d0&color=052e16&bold=true`,
-      iconSize: [35, 35], // Size of the icon
+      iconSize: [35, 35],
       iconAnchor: [25, 50], // Point of the icon which will correspond to marker's location
       popupAnchor: [0, -50] // Point from which the popup should open relative to the iconAnchor
     });
