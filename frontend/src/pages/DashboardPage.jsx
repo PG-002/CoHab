@@ -141,6 +141,7 @@ const DashboardPage = ({ houseInfo, socket, setHouseInfo }) => {
               min={0}
               max={10}
               onChange={handleSliderChange}
+              color=""
               valueLabelDisplay="auto"
             />
             <Ear />

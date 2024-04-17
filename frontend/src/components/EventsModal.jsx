@@ -125,7 +125,9 @@ export default function EventModal({
                     showTimeSelect={!allDay}
                     selected={
                       endDate
-                        ? dayjs(endDate).subtract(1, "day").toDate()
+                        ? allDay
+                          ? dayjs(endDate).subtract(1, "day").toDate()
+                          : endDate
                         : startDate
                     }
                     dateFormat={!allDay ? "MM/dd/yyyy hh:mm a" : "MM/dd/yyyy"}
