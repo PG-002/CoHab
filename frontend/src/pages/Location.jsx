@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { HashLoader } from "react-spinners";
 import 'leaflet/dist/leaflet.css';
 import '../components/Map.css';
 
 function Location({socket, userInfo}) {
   const [currentPosition, setCurrentPosition] = useState(null);
   const [otherUserLocations, setOtherUserLocations] = useState([]);
+  const [mapReady, setMapReady] = useState(false);
   const locationUpdateInterval = 60000;
 
   useEffect(() => {
@@ -21,6 +23,7 @@ function Location({socket, userInfo}) {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             });
+            setMapReady(true);
             emitLocation(position);
           }, 
           (error) => {
@@ -87,8 +90,8 @@ function Location({socket, userInfo}) {
   const currentUserName = `${userInfo.firstName} ${userInfo.lastName}`;
 
   if (userInfo.location.isTracking) {
-    return (
-      <MapContainer center={currentPosition || [28.6024, -81.2001]} zoom={13} style={{ height: '100vh', width: '100%' }}>
+    return mapReady ? (
+      <MapContainer center={currentPosition} zoom={13} style={{ height: '100vh', width: '100%' }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
@@ -110,7 +113,7 @@ function Location({socket, userInfo}) {
           </Marker>
         ))}
       </MapContainer>
-    );
+    ) : (<div className="flex flex-col items-center justify-center w-full h-screen"><HashLoader color="#36d7b7" /></div>);
   } else {
     return (
       <div className="map_modal_container">
