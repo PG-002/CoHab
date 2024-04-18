@@ -27,6 +27,13 @@ const TodoListModal = ({ showModal, handleCloseModal, addTask, housemates, isEdi
     handleCloseModal();
   };
 
+  const handleCancel = () =>
+  {
+    setTask('');
+    setAssignedTo('');
+    handleCloseModal();
+  }
+
   return (
     <Modal
       isOpen={showModal}
@@ -44,7 +51,7 @@ const TodoListModal = ({ showModal, handleCloseModal, addTask, housemates, isEdi
                 className="bg-transparent border-none hover:border-none "
                 onClick={handleCloseModal}
               >
-                <X className="text-gray-400 cursor-pointer hover:text-red-600"></X>
+                <X className="text-gray-400 cursor-pointer hover:text-red-600" onClick={handleCancel}></X>
               </button>
             </div>
           </header>

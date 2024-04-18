@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../components/TodoList.css";
 import { Dropdown } from "flowbite-react";
 import TodoListModal from '../components/TodoListModal';
-import { LuListPlus } from "react-icons/lu";
+import { LuListPlus, LuTrash, LuCheckCheck, LuPenSquare } from "react-icons/lu";
 
 
 function TodoList({ socket }) {
@@ -19,6 +19,7 @@ function TodoList({ socket }) {
   const [showCompleted, setShowCompleted] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
   const [showModal, setShowModal] = useState(false);
+  const [filteredTasks, setFilteredTasks] = useState([]);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -176,6 +177,24 @@ function TodoList({ socket }) {
     };
   }, [assignedTo]);
 
+
+  useEffect(() => {
+    handleSearchTask({ target: { value: todo } });
+  }, [tasks, todo]);
+
+  const handleSearchTask = (e) => {
+    const query = e.target.value.toLowerCase();
+    setTodo(e.target.value); // Updates the input field with the current value
+    
+    // Filter tasks based on the query in task, createdBy, and assignedTo fields
+    const filtered = tasks.filter((task) =>
+      task.task.toLowerCase().includes(query) ||
+      task.createdBy.toLowerCase().includes(query) ||
+      task.assignedTo.toLowerCase().includes(query)
+    );
+    setFilteredTasks(filtered);
+  };
+
   return (
     <div className="todo__container p-4 overflow-auto">
       <div className="flex items-center justify-start">
@@ -194,7 +213,7 @@ function TodoList({ socket }) {
           editTask={isEditing ? isEditing.task : ''}
           editAssignedTo={isEditing ? isEditing.assignedTo : ''}
         />
-      <form className="form mt-8 mb-10" onSubmit={handleAddTask}>
+      <form className="form mt-8 mb-10">
         <input
           autoFocus
           value={todo}
@@ -202,7 +221,6 @@ function TodoList({ socket }) {
           className="input"
           placeholder="Search Task"
         />
-        <button className="form__cta input">Search</button>
       </form>
       </div>
       {isMobile ? (
@@ -245,7 +263,7 @@ function TodoList({ socket }) {
         </div>
       </div>
       <div className="todo__container_tasks">
-        {tasks
+        {(todo ? filteredTasks : tasks)
           .filter((task) => task.completed === showCompleted)
           .map((taskItem) => (
             <div
@@ -279,13 +297,13 @@ function TodoList({ socket }) {
                           className="doneBtn"
                           onClick={() => handleCompleteTask(taskItem)}
                         >
-                          Done
+                          <LuCheckCheck />
                         </button>
                         <button
                           className="commentsBtn"
                           onClick={() => startEditing(taskItem)}
                         >
-                          Edit
+                          <LuPenSquare />
                         </button>
                       </>
                     )}
@@ -293,7 +311,7 @@ function TodoList({ socket }) {
                       className="deleteBtn"
                       onClick={() => handleDeleteTask(taskItem)}
                     >
-                      Delete
+                      <LuTrash />
                     </button>
                   </div>
                 </>

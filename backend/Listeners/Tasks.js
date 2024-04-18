@@ -27,16 +27,6 @@ module.exports = (socket, io) => {
             .catch(err => console.log(err));
     });
 
-    socket.on('searchTasks', async input => { 
-        const tasks = await House.findById( socket.room )
-            .then(house => house.tasks)
-            .catch(() => null)
-
-            if (!tasks) {return}
-
-            io.to(socket.id).emit('searchTasks', {tasks : tasks.filter(t => t.task.toLowerCase().includes(input.task.toLowerCase()))});
-    });
-
     socket.on('deleteTask', async task => {
         await House.findOneAndUpdate({ _id : socket.room }, { $pull : { tasks : { _id: task._id } } }, { new : true })
             .then(house => io.to(socket.room).emit('tasksChange', { tasks : house.tasks }))
