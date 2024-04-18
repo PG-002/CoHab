@@ -31,7 +31,7 @@ dayjs.extend(localizedFormat);
 function App() {
   Modal.setAppElement("#root");
 
-  const [theme, setTheme] = useState(localStorage.theme ?? "dark");
+  const [theme, setTheme] = useState("dark");
   const [session, setSession] = useState(localStorage.sessionId);
   const [houseInfo, setHouseInfo] = useState(null);
   const [user, setUser] = useState(null);
@@ -40,7 +40,7 @@ function App() {
   const [socketError, setSocketError] = useState(null);
   const [userUpdate, setUserUpdate] = useState(false);
 
-  const colorTheme = theme === "dark" ? "dark" : "dark";
+  const colorTheme = theme === "dark" ? "light" : "light";
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -155,7 +155,7 @@ function App() {
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove(colorTheme);
-    root.classList.add(theme ?? "dark");
+    root.classList.add("dark");
 
     localStorage.setItem("theme", theme);
   }, [theme, colorTheme]);
