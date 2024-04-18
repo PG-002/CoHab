@@ -40,7 +40,7 @@ function App() {
   const [socketError, setSocketError] = useState(null);
   const [userUpdate, setUserUpdate] = useState(false);
 
-  const colorTheme = theme === "dark" ? "light" : "dark";
+  const colorTheme = theme === "dark" ? "dark" : "dark";
   const navigate = useNavigate();
 
   const handleLogin = () => {
