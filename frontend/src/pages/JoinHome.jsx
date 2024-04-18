@@ -8,6 +8,7 @@ const JoinHome = ({ userInfo, setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(userInfo);
     if (userInfo && userInfo.houseId) {
       navigate("/dashboard");
     }
@@ -15,9 +16,8 @@ const JoinHome = ({ userInfo, setUser }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
     if (userInfo) {
-      handleJoinHouse(JSON.parse(userInfo).email, code);
+      handleJoinHouse(userInfo.email, code);
     } else {
       console.error("user not found");
     }
