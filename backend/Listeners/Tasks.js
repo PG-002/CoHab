@@ -34,7 +34,7 @@ module.exports = (socket, io) => {
 
             if (!tasks) {return}
 
-            io.to(socket.id).emit('searchTasks', {tasks : tasks.filter(t => t.task.toLowerCase().includes(input.task.toLowerCase()))});
+            io.to(socket.id).emit('tasksChange', {tasks : tasks.filter(t => t.task.toLowerCase().includes(input.task.toLowerCase()))});
     });
 
     socket.on('deleteTask', async task => {

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../components/TodoList.css";
 import { Dropdown } from "flowbite-react";
 import TodoListModal from '../components/TodoListModal';
-import { LuListPlus } from "react-icons/lu";
+import { LuListPlus, LuTrash, LuCheckCheck, LuPenSquare } from "react-icons/lu";
 
 
 function TodoList({ socket }) {
@@ -279,13 +279,13 @@ function TodoList({ socket }) {
                           className="doneBtn"
                           onClick={() => handleCompleteTask(taskItem)}
                         >
-                          Done
+                          <LuCheckCheck />
                         </button>
                         <button
                           className="commentsBtn"
                           onClick={() => startEditing(taskItem)}
                         >
-                          Edit
+                          <LuPenSquare />
                         </button>
                       </>
                     )}
@@ -293,7 +293,7 @@ function TodoList({ socket }) {
                       className="deleteBtn"
                       onClick={() => handleDeleteTask(taskItem)}
                     >
-                      Delete
+                      <LuTrash />
                     </button>
                   </div>
                 </>

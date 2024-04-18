@@ -138,7 +138,7 @@ button {
 
 .deleteBtn {
   padding: 5px 10px;
-  background-color: rgb(202, 22, 22);
+  background-color: transparent;
   border: none;
   outline: none;
   color: #fff;
@@ -154,11 +154,12 @@ button {
   outline: none;
   cursor: pointer;
   border: none;
-  background-color: rgb(54, 29, 229);
+  background-color: transparent;
 }
 .commentsBtn:hover {
-  background-color: #ddd;
+  color: rgb(54, 29, 229);
   border: 1px solid #000;
+  background-color: #fff;
 }
 
 .doneBtn {
@@ -167,9 +168,10 @@ button {
   outline: none;
   cursor: pointer;
   border: none;
-  background-color: #005a44;
+  background-color: transparent;
 }
 .doneBtn:hover {
+  color: #005a44;
   background-color: #ddd;
   border: 1px solid #000;
 }
