@@ -2,6 +2,9 @@ import "./Chat.css";
 import 'react';
 import { useRef, useEffect, Fragment } from "react";
 import { Trash } from "lucide-react";
+import moment from 'moment';
+import 'moment-timezone';
+
 
 function Messages({ messages, userID, onDelete }) {
   const messagesEndRef = useRef(null);
@@ -15,26 +18,18 @@ function Messages({ messages, userID, onDelete }) {
   }, [messages]);
 
   function formatDateForSeparator(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      month: 'long', 
-      day: 'numeric', 
-      year: 'numeric' 
-    });
+    const date = moment(dateString).tz(moment.tz.guess());
+    return date.format('dddd, MMMM D, YYYY');
   }
 
   function formatTime(isoString) {
-    const date = new Date(isoString);
-    return date.toLocaleString('en-US', { 
-      hour: 'numeric', 
-      minute: 'numeric', 
-      hour12: true 
-    });
+    const time = moment(isoString).tz(moment.tz.guess());
+    return time.format('h:mm A');
   }
 
+
   const groupedMessages = messages.reduce((groups, message) => {
-    const date = message.date.split('T')[0]; // Get only the date part
+    const date = moment(message.date).tz(moment.tz.guess()).format('YYYY-MM-DD'); // Get only the date part in local timezone
     if (!groups[date]) {
       groups[date] = [];
     }
