@@ -15,7 +15,7 @@ const isHoused = (userInfo) => {
 // This is your AuthenticatedRoute component
 const HousedRoute = ({ userInfo }) => {
   const [loader, setLoader] = useState(true);
-  const [housed, setHoused] = useState(true);
+  const [housed, setHoused] = useState(false);
 
   useEffect(() => {
     if (userInfo) {
