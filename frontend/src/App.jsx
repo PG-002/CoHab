@@ -207,7 +207,7 @@ function App() {
           <Route
             path="/joinHouse"
             userInfo={user}
-            element={<JoinHome setUser={setUser} />}
+            element={<JoinHome userInfo={user} setUser={setUser} />}
           />
           <Route
             path="/createHouse"

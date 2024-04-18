@@ -282,7 +282,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
         </div>
         <div className="flex flex-col w-[17.5rem] rounded-xl h-[22rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
           <div className="font-bold text-2xl mb-4">Recent Tasks:</div>
-          <div className="flex flex-col flex-wrap w-full h-full gap-y-0 justify-between overflow-y-auto">
+          <div className="flex flex-col flex-wrap w-full h-full gap-y-2 justify-start overflow-y-auto">
             {tasks
               ? tasks
                   .toReversed()

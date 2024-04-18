@@ -15,11 +15,12 @@ const isHoused = (userInfo) => {
 // This is your AuthenticatedRoute component
 const HousedRoute = ({ userInfo }) => {
   const [loader, setLoader] = useState(true);
+  const [housed, setHoused] = useState(true);
 
   useEffect(() => {
     if (userInfo) {
-      if (!isHoused(userInfo)) {
-        return <Navigate to="/joinHouse" />;
+      if (isHoused(userInfo)) {
+        setHoused(true);
       }
       setLoader(null);
     }
@@ -29,8 +30,10 @@ const HousedRoute = ({ userInfo }) => {
     <div className="flex flex-col w-full h-screen items-center justify-center">
       <HashLoader color="#36d7b7" />{" "}
     </div>
-  ) : (
+  ) : housed ? (
     <Outlet />
+  ) : (
+    <Navigate to="/joinHouse" />
   ); // If authenticated, render the children components
 };
 

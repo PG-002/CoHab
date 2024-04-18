@@ -15,10 +15,12 @@ const isVerified = (userInfo) => {
 // This is your AuthenticatedRoute component
 const VerifiedRoute = ({ userInfo }) => {
   const [loader, setLoader] = useState(true);
+  const [verified, setVerified] = useState(false);
+  console.log("verifyRoute");
   useEffect(() => {
     if (userInfo) {
-      if (!isVerified(userInfo)) {
-        return <Navigate to="/verifyUser" />;
+      if (isVerified(userInfo)) {
+        setVerified(true);
       }
       setLoader(false);
     }
@@ -28,8 +30,10 @@ const VerifiedRoute = ({ userInfo }) => {
     <div className="flex flex-col w-full h-screen items-center justify-center">
       <HashLoader color="#36d7b7" />{" "}
     </div>
-  ) : (
+  ) : verified ? (
     <Outlet />
+  ) : (
+    <Navigate to="/verifyUser" />
   ); // If authenticated, render the children components
 };
 
