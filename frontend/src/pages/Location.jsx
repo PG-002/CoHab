@@ -114,7 +114,7 @@ function Location({socket, userInfo}) {
     ) : (<div className="flex flex-col items-center justify-center w-full h-screen"><HashLoader color="#36d7b7" /></div>);
   } else {
     return (
-      <div className="map_modal_container">
+      <div className="map_modal_container bg-white dark:bg-neutral-800">
     <div className="map_modal">
       Map is not available. Make sure tracking is enabled in settings.
     </div>
