@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Edit } from "lucide-react";
+import { toast } from "sonner";
 
 function Settings({ userInfo, houseInfo, setUpdate }) {
   // Page state variables
@@ -79,7 +80,9 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
 
       if (data.updated) {
         setUpdate(true);
+        toast.success("Updated user data");
       } else {
+        toast.error("Update failed!");
         console.error("Update failed!".data.error);
       }
     } catch (error) {

@@ -23,6 +23,10 @@ import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { jwtDecode } from "jwt-decode";
+import { Toaster, toast } from "sonner";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(localizedFormat);
 
 function App() {
   Modal.setAppElement("#root");
@@ -67,14 +71,17 @@ function App() {
 
   const handleEventSubmit = (event) => {
     socket.emit("createEvent", event);
+    toast.success("Event has been created");
   };
 
   const handleEventUpdate = (event) => {
     socket.emit("modifyEvent", event);
+    toast.success("Event has been updated");
   };
 
   const handleEventDelete = (event) => {
     socket.emit("deleteEvent", event);
+    toast.success("Event has been deleted");
   };
 
   const handleHouseUpdate = (house) => {
@@ -192,6 +199,7 @@ function App() {
 
   return (
     <div className="flex flex-row w-screen">
+      <Toaster richColors />
       <Routes>
         <Route element={<UnauthenticatedRoute />}>
           <Route path="*" element={<ErrorPage />} />

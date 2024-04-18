@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import CohabLogo from "../../assets/CoHab.png";
+import { toast } from "sonner";
+
 const SidebarContext = createContext();
 
 function Sidebar({ userInfo, children }) {
@@ -86,7 +88,7 @@ export function SidebarItem({ icon, text, active, alert, link }) {
 
   const handleLogOut = () => {
     localStorage.clear();
-    console.log("LOG OUT IN SIDEBAR");
+    toast("Logged out");
     navigate("/login");
   };
 

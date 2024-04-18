@@ -16,6 +16,7 @@
     "@fullcalendar/react": "^6.1.11",
     "@mui/material": "^5.15.15",
     "dayjs": "^1.11.10",
+    "embla-carousel-react": "^8.0.2",
     "flowbite-react": "^0.7.8",
     "formik": "^2.4.5",
     "fullcalendar": "^6.1.11",
@@ -32,6 +33,7 @@
     "react-spinners": "^0.13.8",
     "serve": "^14.2.1",
     "socket.io-client": "^4.7.5",
+    "sonner": "^1.4.41",
     "yup": "^1.4.0"
   },
   "devDependencies": {
