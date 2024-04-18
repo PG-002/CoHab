@@ -1,5 +1,6 @@
 import "./Chat.css";
-import { useRef, useEffect } from "react";
+import 'react';
+import { useRef, useEffect, Fragment } from "react";
 import { Trash } from "lucide-react";
 
 function Messages({ messages, userID, onDelete }) {
@@ -13,16 +14,52 @@ function Messages({ messages, userID, onDelete }) {
     scrollToBottom();
   }, [messages]);
 
+  function formatDateForSeparator(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      month: 'long', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
+  }
+
+  function formatTime(isoString) {
+    const date = new Date(isoString);
+    return date.toLocaleString('en-US', { 
+      hour: 'numeric', 
+      minute: 'numeric', 
+      hour12: true 
+    });
+  }
+
+  const groupedMessages = messages.reduce((groups, message) => {
+    const date = message.date.split('T')[0]; // Get only the date part
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(message);
+    return groups;
+  }, {});
+
+  // Sort the groups by date
+  const sortedDates = Object.keys(groupedMessages).sort();
+
   return (
     <>
       <ul className="message-list px-4">
-        {messages.map((message, index) => {
-          const ownedByCurrentUser = message.email === userID;
-          const messageClass = ownedByCurrentUser
-            ? "my-message"
-            : "other-message";
-          return (
-            <li key={index} className={`${messageClass} `}>
+        {sortedDates.map((date, dateIndex) => (
+          <Fragment key={date}>
+            {/* Render the date separator */}
+            {dateIndex > 0 && <div className="date-separator">{formatDateForSeparator(date)}</div>}
+            {/* Render the messages for this date */}
+            {groupedMessages[date].map((message, messageIndex) => {
+              const ownedByCurrentUser = message.email === userID;
+              const messageClass = ownedByCurrentUser ? "my-message" : "other-message";
+              const messageTime = formatTime(message.date);
+
+              return (
+                <li key={messageIndex} className={`${messageClass} `}>
               {!ownedByCurrentUser && (
                 <div className="sender-name text-blue-500 pl-2">
                   {message.sentBy}
@@ -39,14 +76,16 @@ function Messages({ messages, userID, onDelete }) {
               <div
                 className={`message-bubble ${
                   ownedByCurrentUser ? "my-bubble" : "other-bubble"
-                } ${ownedByCurrentUser ? "bg-eucalyptus-500" : "bg-blue-500"}`}
+                }`}
               >
-                <p>{message.message}</p>
+                <p className="message">{message.message}</p>
+                <p className="messageTime">{messageTime}</p>
               </div>
             </li>
-          );
-        })}
-        {/* This div is used as a marker to scroll to */}
+              );
+            })}
+          </Fragment>
+        ))}
         <div ref={messagesEndRef} />
       </ul>
     </>
