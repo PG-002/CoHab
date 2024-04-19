@@ -287,7 +287,7 @@ input:focus + .switch-slider {
 }
 
 .task-add-button {
-  background-color: white;
+  background-color: rgb(106, 200, 158);
   border: none;
   cursor: pointer;
   margin-right: 5vw;
