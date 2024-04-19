@@ -7,13 +7,18 @@ import { jwtDecode } from "jwt-decode";
 
 const LoginPage = ({ setUser }) => {
   const [email, setEmail] = useState("");
-  // const [email, setEmail] = useState('');
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(false);
   const navigate = useNavigate();
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  // const handleEmailChange = (e) => setEmail(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleEmailChange = (e) => {
+    setLoginError(false);
+    setEmail(e.target.value);
+  }
+  const handlePasswordChange = (e) => {
+    setLoginError(false);
+    setPassword(e.target.value);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,8 +50,10 @@ const LoginPage = ({ setUser }) => {
 
         navigate("/dashboard");
       } else if (response.status === 404) {
-        alert("Login failed: User not found");
+        setLoginError(true);
+        // alert("Login failed: User not found");
       } else {
+        setLoginError(true);
         throw new Error("Failed to log in");
       }
     } catch (error) {
@@ -82,6 +89,7 @@ const LoginPage = ({ setUser }) => {
                   onChange={handleEmailChange}
                   className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
+                {loginError && <p className="text-red-500 text-sm mt-1">Your email or password is incorrect.</p>}
               </div>
               <div>
                 <label
@@ -98,6 +106,7 @@ const LoginPage = ({ setUser }) => {
                   onChange={handlePasswordChange}
                   className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
+                {loginError && <p className="text-red-500 text-sm mt-1">Your email or password is incorrect.</p>}
               </div>
               <button
                 type="submit"

@@ -10,10 +10,14 @@ const SignUpPage = ({ setUser }) => {
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [TakenEmail, setTakenEmail] = useState(false);
   const navigate = useNavigate();
   const passwordInputRef = useRef(null);
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handleEmailChange = (e) => {
+    setTakenEmail(false);
+    setEmail(e.target.value);
+  }
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handlefirstNameChange = (e) => setFirstName(e.target.value);
   const handlelastNameChange = (e) => setLastName(e.target.value);
@@ -25,7 +29,6 @@ const SignUpPage = ({ setUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
-    console.log("I am clicked");
 
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
@@ -70,6 +73,7 @@ const SignUpPage = ({ setUser }) => {
         throw new Error("Failed to register");
       }
     } catch (error) {
+      setTakenEmail(true);
       console.error("Registration error", error);
     }
   };
@@ -130,6 +134,7 @@ const SignUpPage = ({ setUser }) => {
                 onChange={handleEmailChange}
                 className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
               />
+              {TakenEmail && <p className="text-red-500 text-sm mt-1">There is already an account with this email.</p>}
               <label className="block text-sm font-medium text-gray-700 dark:text-white">
                 Password
               </label>
