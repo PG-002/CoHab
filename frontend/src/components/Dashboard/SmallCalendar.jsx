@@ -103,7 +103,7 @@ const SmallCalendar = ({ events }) => {
 
   return (
     <div className="flex flex-row gap-12 text-left overflow-hidden text-white">
-      <div className="px-3 pb-2 pt-1 w-80 h-[21rem] bg-neutral-800 rounded-xl">
+      <div className="px-3 pb-2 pt-1 w-[20rem] lg:w-[25rem] rounded-xl h-[21rem] lg:h-[26.25rem] bg-neutral-800">
         <header className="flex justify-between items-center pl-3">
           <Link to="/calendar">
             <p className="text-white font-bold">
@@ -127,11 +127,11 @@ const SmallCalendar = ({ events }) => {
             </button>
           </div>
         </header>
-        <div className="h-[18rem] grid grid-cols-7 grid-rows-6 gap-1">
+        <div className="h-[18rem] lg:h-[22.5rem] grid grid-cols-7 grid-rows-6 gap-1">
           {currentMonth[0].map((day, i) => (
             <span
               key={i}
-              className="text-sm pt-2 text-center text-neutral-300 font-bold"
+              className="text-sm lg:text-lg pt-2 text-center text-neutral-300 font-bold"
             >
               {day.format("dd").charAt(0)}
             </span>
@@ -149,9 +149,9 @@ const SmallCalendar = ({ events }) => {
                     day
                   )} `}
                 >
-                  <span className="text-sm">{day.format("D")}</span>
+                  <span className="text-sm lg:text-lg">{day.format("D")}</span>
                   {checkEventOnDay(day) ? (
-                    <div className="bg-eucalyptus-300 size-1 rounded-full m-0 p-0"></div>
+                    <div className="bg-eucalyptus-300 size-1 lg:size-[.375rem] rounded-full m-0 p-0"></div>
                   ) : null}
                 </button>
               ))}
@@ -159,23 +159,23 @@ const SmallCalendar = ({ events }) => {
           ))}
         </div>
       </div>
-      <div className="flex flex-col items-center h-[21rem] w-[17rem] p-1 bg-neutral-800 rounded-xl">
+      <div className="flex flex-col items-center w-[20rem] lg:w-[25rem] h-[21rem] lg:h-[26.25rem] p-1 bg-neutral-800 rounded-xl">
         <p className="p-1 font-bold">
           {daySelected ? daySelected.format("MM/DD/YY") + " Events" : null}:
         </p>
-        <div className="flex flex-col items-center overflow-y-scroll w-full m-2 px-2 gap-2 rounded-xl">
+        <div className="flex flex-col items-center overflow-y-auto w-full m-2 px-2 gap-2 rounded-xl">
           {eventsList
             ? eventsList.map((event, i) => {
                 if (event) {
                   return checkEventOnDay(daySelected ?? dayjs(), event) ? (
                     <div
                       key={i}
-                      className="flex flex-col w-full h-12 rounded shadow-lg bg-eucalyptus-700 p-1 pl-2"
+                      className="flex flex-col w-full h-12 lg:h-16 rounded shadow-lg bg-eucalyptus-700 p-1 pl-2"
                     >
-                      <p className="text-sm font-bold text-ellipsis text-nowrap overflow-hidden">
+                      <p className="text-sm lg:text-lg font-bold text-ellipsis text-nowrap overflow-hidden">
                         {event.title}
                       </p>
-                      <p className="text-xs">
+                      <p className="text-xs lg:text-sm">
                         {event.allDay
                           ? "All-Day"
                           : `${dayjs(event.start).format("LT")} -

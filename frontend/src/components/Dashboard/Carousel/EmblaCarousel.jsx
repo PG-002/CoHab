@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronFirst, ChevronLast } from "lucide-react";
+import { ChevronFirst, ChevronLast, ChevronDownSquare } from "lucide-react";
 
-const EmblaCarousel = () => {
+const EmblaCarousel = ({ userInfo, houseInfo }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel();
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
@@ -58,34 +58,75 @@ const EmblaCarousel = () => {
     emblaApi.on("select", onSelectDot);
   }, [emblaApi, onInit, onSelectDot]);
 
-  const Array = [1, 2, 3, 4, 5];
+  const houseMates = [
+    { firstName: "John", lastName: "Doe", status: "In Room" },
+    { firstName: "John", lastName: "Doe", status: "In Room" },
+    { firstName: "John", lastName: "Doe", status: "In Room" },
+    { firstName: "John", lastName: "Doe", status: "In Room" },
+    { firstName: "John", lastName: "Doe", status: "In Room" },
+    { firstName: "John", lastName: "Doe", status: "In Room" },
+    { firstName: "John", lastName: "Doe", status: "In Room" },
+    { firstName: "John", lastName: "Doe", status: "In Room" },
+  ];
+
+  const [statusIn, setStatusIn] = useState(true);
+
+  const handleStatusChange = () => {
+    setStatusIn((prev) => !prev);
+  };
 
   return (
     <div className="w-full h-full overflow-hidden" ref={emblaRef}>
-      <div className="flex gap-x-2">
-        {Array.map((index, i) => {
+      <div className="flex gap-2 lg:gap-3  h-4/5 ">
+        <div className="flex flex-col items-center justify-evenly flex-grow-0 flex-shrink-0 w-[32.25%] h-full rounded-lg bg-eucalyptus-800 shadow-lg p-4">
+          <img
+            className="size-14 lg:size-16 rounded-lg"
+            src={`https://ui-avatars.com/api/?name=${userInfo.firstName} ${userInfo.lastName}&background=bbf7d0&color=052e16&bold=true`}
+          />
+          <p className="font-bold text-lg lg:text-xl">You</p>
+          <div className="flex flex-row items-center">
+            <p className="mr-2 font-bold text-xl">Status: </p>
+            <button
+              onClick={handleStatusChange}
+              className="p-1 w-20 bg-eucalyptus-950 hover:bg-eucalyptus-900 border border-eucalyptus-600"
+            >
+              {statusIn ? "In Room" : "Out"}
+            </button>
+          </div>
+        </div>
+        {houseMates.map((houseMate, i) => {
           return (
             <div
               key={i}
-              className="flex flex-col flex-grow-0 flex-shrink-0 w-[32.25%] h-[12.9rem]  rounded-lg bg-eucalyptus-900 shaodw-lg"
+              className="flex flex-col items-center justify-evenly flex-grow-0 flex-shrink-0 w-[32.25%] h-full rounded-lg bg-eucalyptus-800 shadow-lg p-4"
             >
-              Slide {index}
+              <img
+                className="size-14 lg:size-16 rounded-lg"
+                src={`https://ui-avatars.com/api/?name=${`${houseMate.firstName} + ${houseMate.lastName}`}&background=bbf7d0&color=052e16&bold=true`}
+              />
+              <p className="font-bold text-lg lg:text-xl">
+                {houseMate.firstName} {houseMate.lastName}
+              </p>
+              <div className="flex flex-row items-center">
+                <p className="mr-2 font-bold text-xl">Status: </p>
+                <p className=" text-xl">{houseMate.status}</p>
+              </div>
             </div>
           );
         })}
       </div>
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row justify-between items-center h-1/5 ">
         <div className="flex flex-row items-center gap-x-1 pt-2">
           {!prevBtnDisabled ? (
             <button
               className="p-1 rounded-full bg-transparent  hover:outline-none"
               onClick={scrollPrev}
             >
-              <ChevronFirst className="size-7" />
+              <ChevronFirst className="size-7 lg:size-9" />
             </button>
           ) : (
             <div className="p-1 mr-[.125rem] rounded-full">
-              <div className="size-7" />
+              <div className="size-9" />
             </div>
           )}
           {!nextBtnDisabled ? (
@@ -93,7 +134,7 @@ const EmblaCarousel = () => {
               className="p-1 rounded-full bg-transparent  hover:outline-none"
               onClick={scrollNext}
             >
-              <ChevronLast className="size-7" />
+              <ChevronLast className="size-7 lg:size-9" />
             </button>
           ) : null}
         </div>
@@ -101,7 +142,7 @@ const EmblaCarousel = () => {
           {scrollSnaps.map((_, index) => (
             <button
               key={index}
-              className={`border border-neutral-700 bg-black size-3 p-0 hover:bg-eucalyptus-700 ${
+              className={`border border-neutral-700 bg-black size-3 lg:size-4 p-0 hover:bg-eucalyptus-700 ${
                 index === selectedIndex ? "bg-eucalyptus-900" : null
               }`}
               onClick={() => onDotButtonClick(index)}
