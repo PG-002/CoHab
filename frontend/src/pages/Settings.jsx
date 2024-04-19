@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Edit } from "lucide-react";
 import { toast } from "sonner";
+import { BarLoader } from "react-spinners";
 
 function Settings({ userInfo, houseInfo, setUpdate }) {
   // Page state variables
@@ -10,6 +11,7 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
   const [verifiedPass, setVerifiedPass] = useState(false);
   const [verifiedEmail, setVerifiedEmail] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   // User Information State
   const [id, setId] = useState(null);
@@ -18,6 +20,8 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
   const [email, setEmailAddress] = useState("");
   const [houseName, setHouseName] = useState("");
   const [locationOn, setLocationOn] = useState(false);
+  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
 
   useEffect(() => {
     if (userInfo && houseInfo) {
@@ -35,7 +39,11 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
   };
 
   const handleEditPassword = () => {
-    setEditPassword(true);
+    if (userInfo) {
+      setLoader(true);
+      sendCode(userInfo.email);
+      setEditPassword(true);
+    }
   };
 
   const handleLocationChange = () => {
@@ -46,7 +54,157 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
     submitUserChanges(id, "location", location);
   };
 
-  const handlePasswordUpdate = () => {};
+  const handlePasswordUpdateClick = () => {
+    if (verifiedPass) {
+      updatePass(userInfo.email, password);
+    }
+  };
+
+  const handlePassVerifyClick = () => {
+    if (userInfo) {
+      sendVerification(userInfo.email, code);
+      setCode("");
+    }
+  };
+
+  const handleVerifyCodeChange = (e) => {
+    setCode(e.target.value);
+  };
+
+  const handlePassChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const sendCode = async (email) => {
+    try {
+      const JSONPayload = JSON.stringify({ email });
+
+      const response = await fetch(
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/sendVerification",
+        {
+          // Adjust URL as necessary
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSONPayload,
+        }
+      );
+
+      if (response.ok && response.status == 200) {
+        setCodeSent((prevState) => !prevState);
+        toast.success("Verification Code Sent!");
+      } else if (response.status === 404) {
+        alert("Send code error: User not found");
+      } else {
+        throw new Error("Failed to send code");
+      }
+    } catch (error) {
+      console.error("Send Code error", error);
+    }
+    setLoader(false);
+  };
+
+  const sendVerification = async (email, code) => {
+    try {
+      const JSONPayload = JSON.stringify({ email, code });
+      console.log(JSONPayload);
+
+      const response = await fetch(
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyCode",
+        {
+          // Adjust URL as necessary
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSONPayload,
+        }
+      );
+
+      if (response.ok && response.status == 200) {
+        const data = await response.json();
+
+        console.log(data);
+
+        if (data.verified) {
+          setVerifiedPass(true);
+
+          toast.success("Verification code valid.");
+        } else {
+          toast.error(data.error);
+        }
+      } else if (response.status === 404) {
+        alert("Send code error: Code not found");
+      } else {
+        throw new Error("Failed to verify code");
+      }
+    } catch (error) {
+      console.error("Code error", error);
+    }
+  };
+
+  const updatePass = async (email, password) => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+
+    const hasNumber = /\d/;
+    const hasUpperCase = /[A-Z]/;
+    const hasSpecialChar = /[@$!%*?&]/;
+    const hasValidLength = /^.{8,20}$/;
+
+    if (!passwordRegex.test(password)) {
+      toast.error(`Invalid password parameters`, {
+        description: `${
+          !hasNumber.test(password) ? "Need at least 1 number</br>" : ""
+        }${
+          !hasUpperCase.test(password) ? "Need at least 1 Uppercase</br>" : ""
+        }${
+          !hasSpecialChar.test(password)
+            ? "Need at least 1 special character</br>"
+            : ""
+        }${!hasValidLength.test(password) ? "Need at least 8 characters" : ""}`,
+      });
+      return;
+    }
+
+    try {
+      const JSONPayload = JSON.stringify({ email, password });
+      console.log(JSONPayload);
+
+      const response = await fetch(
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/updatePassword",
+        {
+          // Adjust URL as necessary
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSONPayload,
+        }
+      );
+
+      if (response.ok && response.status == 200) {
+        const data = await response.json();
+
+        if (data.changed) {
+          setUpdate(true);
+          setPassword("");
+          setEditPassword(false);
+          setVerifiedPass(false);
+          toast.success("Password changed successfully");
+        } else {
+          toast.error(data.error);
+        }
+      } else if (response.status === 404) {
+        alert("Send code error: User not found");
+      } else {
+        throw new Error("Failed to send code");
+      }
+    } catch (error) {
+      console.error("Send Code error", error);
+    }
+  };
 
   const handleNameUpdate = (e) => {
     e.preventDefault();
@@ -163,9 +321,6 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
               Security:{" "}
             </h2>
             <hr className="mb-4 border-neutral-400 dark:border-white"></hr>
-            {codeSent ? (
-              <p className="text-left text-eucalyptus-700">Code Sent!</p>
-            ) : null}
             <div className="flex flex-row justify-evenly md:justify-evenly items-center">
               <p className="font-bold text-neutral-600 dark:text-white">
                 Email
@@ -177,6 +332,7 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
                       {" "}
                       <input
                         defaultValue={email}
+                        placeholder="Enter new password"
                         className="rounded border-[1px] pl-2 w-4/6 bg-neutral-200 border-gray-300 dark:border-none shadow-sm dark:bg-neutral-700 text-neutral-600 dark:text-white"
                       ></input>
                       <button
@@ -218,14 +374,23 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
               <p className="font-bold text-neutral-600 dark:text-white">
                 Change Password
               </p>
-              {editPassword ? (
+              {loader ? (
+                <BarLoader color="#36d7b7" />
+              ) : editPassword ? (
                 <div className="flex flex-row w-[300px]  md:w-[500px] h-10 justify-end gap-2">
                   {verifiedPass ? (
                     <>
                       {" "}
-                      <input className="rounded border-[1px] pl-2 w-4/6 bg-neutral-200 border-gray-300 dark:border-none shadow-sm dark:bg-neutral-700 text-neutral-600 dark:text-white"></input>
+                      <input
+                        name="password"
+                        value={password}
+                        onChange={handlePassChange}
+                        placeholder="Enter new password"
+                        className="rounded border-[1px] pl-2 w-4/6 bg-neutral-200 border-gray-300 dark:border-none shadow-sm dark:bg-neutral-700 text-neutral-600 dark:text-white"
+                      ></input>
                       <button
                         type="button"
+                        onClick={handlePasswordUpdateClick}
                         className="text-xs sm:text-xs bg-eucalyptus-600 dark:bg-eucalyptus-950"
                       >
                         Update
@@ -235,11 +400,15 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
                     <>
                       {" "}
                       <input
+                        name="verifyPass"
+                        value={code}
+                        onChange={handleVerifyCodeChange}
                         className="rounded border-[1px] pl-2 w-4/6 bg-neutral-200 border-gray-300 dark:border-none shadow-sm dark:bg-neutral-700 text-neutral-600 dark:text-white"
                         placeholder="Enter Verification Code"
                       ></input>
                       <button
                         type="button"
+                        onClick={handlePassVerifyClick}
                         className="text-xs sm:text-xs bg-eucalyptus-600 dark:bg-eucalyptus-950"
                       >
                         Send Code

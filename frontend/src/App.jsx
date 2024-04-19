@@ -14,6 +14,7 @@ import Settings from "./pages/Settings";
 import VerficationPage from "./pages/Verification";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
+import ForgotPassPage from "./pages/ForgotPassPage";
 
 import VerifiedRoute from "./components/VerifiedRoute";
 import HousedRoute from "./components/HousedRoute";
@@ -199,12 +200,17 @@ function App() {
 
   return (
     <div className="flex flex-row w-screen">
-      <Toaster richColors />
+      <Toaster richColors style={{ textAlign: "left" }} />
       <Routes>
         <Route element={<UnauthenticatedRoute />}>
           <Route path="*" element={<ErrorPage />} />
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="/login" element={<LoginPage setUser={setUser} />} />
+          <Route
+            path="/forgotPassword"
+            element={<ForgotPassPage setUser={setUser} />}
+          />
+
           <Route path="/signup" element={<SignUpPage setUser={setUser} />} />
         </Route>
         <Route element={<AuthenticatedRoute />}>
