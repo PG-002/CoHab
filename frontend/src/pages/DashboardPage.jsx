@@ -186,18 +186,20 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
     <div className="flex flex-col h-screen w-full overflow-y-auto p-5">
       <div className="w-full flex flex-row flex-wrap justify-center gap-x-10 gap-y-4 items-center h-full">
         <div
-          className="w-[40rem] lg:w-[50rem] rounded-xl h-[21rem] lg:h-[26.25rem] bg-no-repeat bg-cover bg-neutral-800"
+          className="w-[40rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-no-repeat bg-cover bg-neutral-800"
           style={{
             backgroundImage: `url(${background ?? null})`,
           }}
         >
-          <div className="flex flex-col w-[40rem] lg:w-[50rem] rounded-xl h-[21rem] lg:h-[26.25rem] p-8 justify-between items-start bg-neutral-800 bg-opacity-60">
+          <div className="flex flex-col w-[40rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] p-8 justify-between items-start bg-neutral-800 bg-opacity-60">
             <div className=" flex flex-col items-start ">
-              <p className="font-bold text-3xl ">{dayjs().format("dddd")},</p>
-              <p className="text-6xl">{dayjs().format("LL")}</p>
+              <p className="font-bold text-3xl 2xl:text-4xl">
+                {dayjs().format("dddd")},
+              </p>
+              <p className="text-6xl 2xl:text-7xl">{dayjs().format("LL")}</p>
             </div>
             {weather ? (
-              <div className="flex flex-row w-full justify-between font-bold text-3xl ">
+              <div className="flex flex-row w-full justify-between font-bold text-3xl 2xl:text-4xl ">
                 <div className="flex flex-row items-center gap-x-1">
                   <Thermometer />
                   <p>
@@ -241,13 +243,13 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
           </div>
         </div>
         <SmallCalendar events={events} />
-        <div className="flex flex-col w-[40rem] lg:w-[50rem] rounded-xl h-[21rem] lg:h-[26.25rem] bg-neutral-800 p-8 pb-6 justify-between items-start">
+        <div className="flex flex-col w-[40rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-6 justify-between items-start">
           <div className="font-bold text-2xl mb-3">Roommates:</div>
           <EmblaCarousel userInfo={userInfo} houseInfo={houseInfo} />
         </div>
-        <div className="flex flex-col w-[20rem] lg:w-[25rem] rounded-xl h-[21rem] lg:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
+        <div className="flex flex-col w-[20rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
           <div className="font-bold text-2xl pb-4">Recent Messages:</div>
-          <div className="flex flex-col flex-wrap w-full h-full gap-y-2 justify-start overflow-y-auto">
+          <div className="flex flex-col  w-full h-full gap-y-2 justify-start overflow-y-auto">
             {messages
               ? messages
                   .toReversed()
@@ -258,7 +260,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
                         key={i}
                         className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start px-3 py-1 justify-evenly"
                       >
-                        <p className="w-full text-left font-bold text-sm text-ellipsis text-nowrap overflow-hidden">
+                        <p className="w-full text-left font-bold text-sm 2xl:text-base text-ellipsis text-nowrap overflow-hidden">
                           {message}
                         </p>
                         <p className="w-full text-left text-xs text-ellipsis text-nowrap overflow-hidden">
@@ -276,9 +278,9 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
               : null}
           </div>
         </div>
-        <div className="flex flex-col w-[20rem] lg:w-[25rem] rounded-xl h-[21rem] lg:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
+        <div className="flex flex-col w-[20rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
           <div className="font-bold text-2xl mb-4">Recent Tasks:</div>
-          <div className="flex flex-col flex-wrap w-full h-full gap-y-2 justify-start overflow-y-auto">
+          <div className="flex flex-col w-full h-full gap-y-2 justify-start overflow-y-auto">
             {tasks
               ? tasks
                   .toReversed()
