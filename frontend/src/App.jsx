@@ -65,8 +65,6 @@ function App() {
     socket.disconnect();
     localStorage.clear();
 
-    console.log("Logout in APP JSX");
-
     navigate("/login");
   };
 
@@ -274,6 +272,7 @@ function App() {
                   path="/settings"
                   element={
                     <Settings
+                      handleLogout={handleLogOut}
                       userInfo={user}
                       houseInfo={houseInfo}
                       setUpdate={setUserUpdate}

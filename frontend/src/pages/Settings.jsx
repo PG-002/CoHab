@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Edit } from "lucide-react";
 import { toast } from "sonner";
 import { BarLoader } from "react-spinners";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import { useNavigate } from "react-router-dom";
 
-function Settings({ userInfo, houseInfo, setUpdate }) {
+function Settings({ userInfo, houseInfo, setUpdate, handleLogout }) {
   // Page state variables
   const [editProfile, setEditProfile] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
@@ -22,6 +25,8 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
   const [locationOn, setLocationOn] = useState(false);
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userInfo && houseInfo) {
@@ -249,6 +254,32 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
     }
   };
 
+  const handleClickDelete = () => {
+    console.log("house left");
+    if (userInfo) {
+      submitUserChanges(userInfo.userId, "houseId", null);
+      toast.error("House left");
+      handleLogout();
+    }
+  };
+
+  const handleLeaveHouse = () => {
+    confirmAlert({
+      title: "Confirm leave house",
+      message: "Are you sure you want to do this",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: handleClickDelete,
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen bg-white dark:bg-neutral-800">
       <div className="flex flex-col justify-start gap-10 w-[400px] sm:w-[500px] md:w-[700px] h-[700px]  py-4 px-8  rounded-lg bg-neutral-100 dark:bg-neutral-900 shadow-md dark:shadow-gray-900 border-gray-200 dark:border-neutral-700 border-2 overflow-y-auto">
@@ -466,6 +497,7 @@ function Settings({ userInfo, houseInfo, setUpdate }) {
             </div>
             <button
               type="button"
+              onClick={handleLeaveHouse}
               className="text-xs sm:text-sm bg-red-500 dark:bg-red-900"
             >
               Leave House
