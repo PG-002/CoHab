@@ -22,9 +22,9 @@ class DashboardPage extends StatefulWidget {
 class _Dashboard extends State<DashboardPage> {
 
   @override
-  Future<void> initState() async {
+  void initState(){
     super.initState();
-    await getHouse();
+    getHouse();
     // Add any initialization tasks here
   }
 
