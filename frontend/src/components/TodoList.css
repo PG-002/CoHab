@@ -45,12 +45,6 @@
   border-radius: 0px;
   /* background: linear-gradient(135deg, #003327 0%, #1a1a1a 100%); */
 }
-
-.input {
-  margin-bottom: 0px;
-  border-radius: 5px;
-}
-
 .form__cta {
   cursor: pointer;
 }
@@ -119,8 +113,11 @@ button {
 }
 .input {
   padding: 10px 15px;
-  width: 80%;
+  width: 50vw;
   margin-right: 15px;
+  margin-bottom: 0px;
+  border-radius: 5px;
+  padding: 12px;
 }
 .form__cta,
 .home__form > button {
@@ -138,7 +135,7 @@ button {
 
 .deleteBtn {
   padding: 5px 10px;
-  background-color: rgb(202, 22, 22);
+  background-color: transparent;
   border: none;
   outline: none;
   color: #fff;
@@ -154,11 +151,12 @@ button {
   outline: none;
   cursor: pointer;
   border: none;
-  background-color: rgb(54, 29, 229);
+  background-color: transparent;
 }
 .commentsBtn:hover {
-  background-color: #ddd;
+  color: rgb(54, 29, 229);
   border: 1px solid #000;
+  background-color: #fff;
 }
 
 .doneBtn {
@@ -167,10 +165,11 @@ button {
   outline: none;
   cursor: pointer;
   border: none;
-  background-color: #005a44;
+  background-color: transparent;
 }
 .doneBtn:hover {
-  background-color: #ddd;
+  color: #005a44;
+  background-color: #fff;
   border: 1px solid #000;
 }
 
@@ -283,3 +282,95 @@ input:focus + .switch-slider {
   position: relative;
   left: 25vw; /* Position at 75% of the container */
 }
+
+.task-add-button {
+  background-color: rgb(106, 200, 158);
+  border: none;
+  cursor: pointer;
+  width: 200px;
+}
+
+svg {
+      font-size: 20px;
+}
+
+.addIcon {
+  /* padding: 0px; */
+  display: inline-flex;
+}
+
+.assignee-dropdown {
+  display: block;
+  width: 100%;
+  padding: 0.5em 1em;
+  margin: 0.5em 0;
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 1.25;
+  color: #444;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #aaa;
+  border-radius: 0.5em;
+  box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: .65em auto, 100%;
+}
+
+.assignee-dropdown::-ms-expand {
+  display: none;
+}
+
+.assignee-dropdown:hover {
+  border-color: #888;
+}
+
+.assignee-dropdown:focus {
+  border-color: #aaa;
+  box-shadow: 0 0 5px rgba(0,105,217,.5);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222;
+  outline: none;
+}
+
+.assignee-dropdown option {
+  font-weight: normal;
+}
+
+.assignee-dropdown:disabled {
+  color: graytext;
+  background-color: #eee;
+}
+
+.modal-form {
+  margin: 2rem;
+  /* padding: 2rem; */
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-form header {
+  margin-bottom: 2rem; /* Add space below the header */
+}
+
+.task-input {
+  margin-bottom: 1.5rem; /* Add space below the input */
+  padding: 1.25rem;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+
+

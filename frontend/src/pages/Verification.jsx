@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const VerficationPage = ({ userInfo, setUser }) => {
   const [code, setCode] = useState(null);
@@ -8,13 +9,16 @@ const VerficationPage = ({ userInfo, setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userInfo) {
-      if (userInfo.verified) {
-        navigate("/dashboard");
+    const session = localStorage.getItem("sessionId");
+
+    if (session) {
+      if (userInfo) {
+        if (userInfo.verified) {
+          navigate("/dashboard");
+        } else {
+          sendCode(userInfo.email);
+        }
       }
-    } else {
-      localStorage.clear();
-      navigate("/login");
     }
   }, [userInfo]);
 
@@ -45,6 +49,7 @@ const VerficationPage = ({ userInfo, setUser }) => {
 
       if (response.ok && response.status == 200) {
         setCodeSent((prevState) => !prevState);
+        toast.success("Verification Code Sent!");
       } else if (response.status === 404) {
         alert("Send code error: User not found");
       } else {
@@ -133,7 +138,7 @@ const VerficationPage = ({ userInfo, setUser }) => {
         <button type="submit" className="bg-green-900 w-6/12 h-3/5">
           Submit Code
         </button>
-        {!codeSent ? (
+        {codeSent ? (
           <p>
             Need a new code?{" "}
             <button

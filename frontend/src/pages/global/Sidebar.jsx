@@ -8,18 +8,12 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import CohabLogo from "../../assets/CoHab.png";
+import { toast } from "sonner";
+
 const SidebarContext = createContext();
 
 function Sidebar({ userInfo, children }) {
   const [expanded, setExpanded] = useState(false);
-
-  const handleDarkMode = () => {
-    if (localStorage.getItem("theme") == "dark") {
-      localStorage.setItem("theme", "light");
-    } else {
-      localStorage.setItem("theme", "dark");
-    }
-  };
 
   return (
     <aside className="h-screen">
@@ -94,6 +88,7 @@ export function SidebarItem({ icon, text, active, alert, link }) {
 
   const handleLogOut = () => {
     localStorage.clear();
+    toast("Logged out");
     navigate("/login");
   };
 
@@ -127,7 +122,7 @@ export function SidebarItem({ icon, text, active, alert, link }) {
             <div
               className={`whitespace-nowrap absolute left-full rounded-md px-2 py-1 ml-6 
         bg-eucalyptus-100 dark:bg-eucalyptus-950 text-eucalyptus-950 dark:text-eucalyptus-50 invisible opactiy-2 -translate-x-3 transition-all 
-        group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+        group-hover:visible group-hover:opacity-100 group-hover:translate-x-0 group-hover:shadow-lg`}
             >
               {text}
             </div>

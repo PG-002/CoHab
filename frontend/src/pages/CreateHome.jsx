@@ -8,7 +8,7 @@ const CreateHome = ({ userInfo, setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (JSON.parse(userInfo).houseId) {
+    if (userInfo && userInfo.houseId) {
       navigate("/dashboard");
     }
   }, []);
@@ -17,7 +17,7 @@ const CreateHome = ({ userInfo, setUser }) => {
     e.preventDefault();
 
     if (userInfo) {
-      handleCreateHouse(JSON.parse(userInfo).userId, houseName);
+      handleCreateHouse(userInfo.userId, houseName);
     } else {
       console.error("user not found");
     }

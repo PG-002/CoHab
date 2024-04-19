@@ -6,8 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import EventModal from "../components/EventsModal";
-// import Header from "../../components/Header";
-// import { tokens } from "../../theme";
+import { toast } from "sonner";
 
 const Calendar = ({ deleteEvent, updateEvent, events, addEvent }) => {
   const calendarRef = useRef();

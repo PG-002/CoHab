@@ -10,13 +10,7 @@
 }
 
 .message {
-  padding: 0.5em;
-  margin-bottom: 10px;
-  clear: both;
-  display: flex;
-  flex-direction: column; /* Stack sender name and message bubble */
-  align-items: flex-start; /* Align items to the left by default */
-  margin-bottom: 10px;
+  color: white;
 }
 
 .sender-id {
@@ -46,11 +40,18 @@
   max-width: 80%; /* Adjust based on your preference */
 }
 
+.my-bubble {
+  background-color: #005A44;
+}
+
 .my-message {
   text-align: right;
   align-items: flex-end;
 }
 
+.other-bubble {
+  background-color: #00435A;
+}
 .other-message {
   text-align: left;
   align-self: flex-start;
@@ -77,4 +78,13 @@
 .chat-container {
   display: flex;
   flex-direction: column;
+}
+
+.messageTime {
+  font-size: 12px; /* This sets the font size to be smaller */
+  color: lightgray; /* This sets the text color to light gray */
+}
+
+.date-separator {
+  color: white;
 }

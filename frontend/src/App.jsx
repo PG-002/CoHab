@@ -14,6 +14,7 @@ import Settings from "./pages/Settings";
 import VerficationPage from "./pages/Verification";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
+import ForgotPassPage from "./pages/ForgotPassPage";
 
 import VerifiedRoute from "./components/VerifiedRoute";
 import HousedRoute from "./components/HousedRoute";
@@ -23,19 +24,24 @@ import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { jwtDecode } from "jwt-decode";
+import { Toaster, toast } from "sonner";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(localizedFormat);
 
 function App() {
   Modal.setAppElement("#root");
 
-  const [theme, setTheme] = useState(localStorage.theme ?? "dark");
+  const [theme, setTheme] = useState("dark");
   const [session, setSession] = useState(localStorage.sessionId);
   const [houseInfo, setHouseInfo] = useState(null);
   const [user, setUser] = useState(null);
   const [events, setEvents] = useState(null);
   const [socket, setSocket] = useState(null);
   const [socketError, setSocketError] = useState(null);
+  const [userUpdate, setUserUpdate] = useState(false);
 
-  const colorTheme = theme === "dark" ? "light" : "dark";
+  const colorTheme = theme === "dark" ? "light" : "light";
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -48,6 +54,10 @@ function App() {
     });
 
     setSocket(connectSocket);
+
+    connectSocket.on("connect_error", (err) => {
+      console.log(`connect_error due to ${err.message}`);
+    });
     setSocketError(null);
   };
 
@@ -60,14 +70,17 @@ function App() {
 
   const handleEventSubmit = (event) => {
     socket.emit("createEvent", event);
+    toast.success("Event has been created");
   };
 
   const handleEventUpdate = (event) => {
     socket.emit("modifyEvent", event);
+    toast.success("Event has been updated");
   };
 
   const handleEventDelete = (event) => {
     socket.emit("deleteEvent", event);
+    toast.success("Event has been deleted");
   };
 
   const handleHouseUpdate = (house) => {
@@ -78,6 +91,7 @@ function App() {
   useEffect(() => {
     const fetchUserInfo = async (userId) => {
       if (!userId) {
+        console.log("Log out in fetch due to userID not exist");
         handleLogOut();
         navigate("/login"); // Redirect to login if no session
         return;
@@ -105,10 +119,8 @@ function App() {
           localStorage.setItem("sessionId", data.token);
           const decoded = jwtDecode(data.token);
           const user = decoded;
-          console.log("user");
           setUser(user);
-          console.log("User Info Fetched");
-          navigate("/dashboard");
+          setUserUpdate(false);
         } else {
           console.error("User not found:", data.error);
           navigate("/login"); // Redirect to login or handle error state
@@ -127,10 +139,11 @@ function App() {
       if (userId) {
         fetchUserInfo(userId);
       } else {
+        console.log("Log out due to userId null");
         handleLogOut();
       }
     }
-  }, []);
+  }, [userUpdate]);
 
   useEffect(() => {
     if (houseInfo) {
@@ -141,7 +154,7 @@ function App() {
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove(colorTheme);
-    root.classList.add(theme ?? "dark");
+    root.classList.add("dark");
 
     localStorage.setItem("theme", theme);
   }, [theme, colorTheme]);
@@ -150,7 +163,9 @@ function App() {
     if (user && !socket) {
       handleLogin();
     }
+  }, [user]);
 
+  useEffect(() => {
     if (socket) {
       socket.once("connect", () => {
         console.log("Socket Connected");
@@ -179,15 +194,21 @@ function App() {
       socket?.off();
       socket?.disconnect();
     };
-  }, [socket, user]);
+  }, [socket]);
 
   return (
     <div className="flex flex-row w-screen">
+      <Toaster richColors style={{ textAlign: "left" }} />
       <Routes>
         <Route element={<UnauthenticatedRoute />}>
           <Route path="*" element={<ErrorPage />} />
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="/login" element={<LoginPage setUser={setUser} />} />
+          <Route
+            path="/forgotPassword"
+            element={<ForgotPassPage setUser={setUser} />}
+          />
+
           <Route path="/signup" element={<SignUpPage setUser={setUser} />} />
         </Route>
         <Route element={<AuthenticatedRoute />}>
@@ -198,7 +219,7 @@ function App() {
           <Route
             path="/joinHouse"
             userInfo={user}
-            element={<JoinHome setUser={setUser} />}
+            element={<JoinHome userInfo={user} setUser={setUser} />}
           />
           <Route
             path="/createHouse"
@@ -218,7 +239,14 @@ function App() {
               >
                 <Route
                   path="/dashboard"
-                  element={<DashboardPage houseInfo={houseInfo} />}
+                  element={
+                    <DashboardPage
+                      houseInfo={houseInfo}
+                      socket={socket}
+                      userInfo={user}
+                      setHouseInfo={handleHouseUpdate}
+                    />
+                  }
                 />
                 <Route
                   path="/tasklist"
@@ -235,9 +263,22 @@ function App() {
                     />
                   }
                 />
-                <Route path="/location" element={<Location />} />
+                <Route
+                  path="/location"
+                  element={<Location socket={socket} userInfo={user} />}
+                />
                 <Route path="/messages" element={<Chat socket={socket} />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route
+                  path="/settings"
+                  element={
+                    <Settings
+                      handleLogout={handleLogOut}
+                      userInfo={user}
+                      houseInfo={houseInfo}
+                      setUpdate={setUserUpdate}
+                    />
+                  }
+                />
               </Route>
             </Route>
           </Route>

@@ -51,6 +51,7 @@ function SidebarLayout({ userInfo, setHouseInfo }) {
         console.error("House Fetch error", error);
       }
     };
+
     fetchHouseInfo();
   }, [userInfo]);
 
