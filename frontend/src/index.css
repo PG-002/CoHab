@@ -3,77 +3,76 @@
 @tailwind components;
 @tailwind utilities;
 
-
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Space Grotesk", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 .modal {
-    min-height: 100vh;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .modal__container {
-    width: 70%;
-    background-color: #fff;
-    min-height: 80vh;
-    padding: 30px;
-    border-radius: 3px;
-    border: 1px solid #333;
+  width: 70%;
+  background-color: #fff;
+  min-height: 80vh;
+  padding: 30px;
+  border-radius: 3px;
+  border: 1px solid #333;
 }
 .modal__container > h3 {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 .comment__form {
-    display: flex;
-    margin-bottom: 30px;
-    align-items: center;
+  display: flex;
+  margin-bottom: 30px;
+  align-items: center;
 }
 .comment__form > input {
-    padding: 10px;
-    border: 1px solid #256d85;
-    width: 70%;
-    margin-right: 20px;
+  padding: 10px;
+  border: 1px solid #256d85;
+  width: 70%;
+  margin-right: 20px;
 }
 .comment {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 .comment__form > button {
-    padding: 15px 20px;
-    cursor: pointer;
-    background-color: #256d85;
-    color: #fff;
-    outline: none;
-    border: none;
-    height: 45px;
+  padding: 15px 20px;
+  cursor: pointer;
+  background-color: #256d85;
+  color: #fff;
+  outline: none;
+  border: none;
+  height: 45px;
 }
 .home {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .home__form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .home__form > * {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .home > h2 {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 :root {
@@ -81,7 +80,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: dark;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -131,9 +130,9 @@ button:focus-visible {
 }
 
 :root {
-    --main-color: #5ea3d0;
-    --secondary-color: #ADBC9F;
-    --main-text-color: #3e5869;
-    --secondary-text-color: #b0c7d6;
-    --send-message-form: #F5F5F5;
+  --main-color: #5ea3d0;
+  --secondary-color: #adbc9f;
+  --main-text-color: #3e5869;
+  --secondary-text-color: #b0c7d6;
+  --send-message-form: #f5f5f5;
 }
