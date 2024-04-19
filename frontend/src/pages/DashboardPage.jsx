@@ -5,18 +5,14 @@ import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import Slider from "@mui/material/Slider";
 import { Thermometer, CloudRainWind, Wind, EarOff, Ear } from "lucide-react";
-// import EmblaCarousel from "../components/Dashboard/EmblaCarousel";
 import { jwtDecode } from "jwt-decode";
 import sunny from "../assets/sunny.jpg";
 import day from "../assets/day.jpg";
 import rain from "../assets/rain.jpg";
 import night from "../assets/night.jpg";
+import EmblaCarousel from "../components/Dashboard/Carousel/EmblaCarousel";
 
 dayjs.extend(localizedFormat);
-
-// const OPTIONS = { slidesToScroll: "auto" };
-// const SLIDE_COUNT = 5;
-// const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
 const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
   const [date, setDate] = useState(dayjs());
@@ -245,9 +241,9 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
           </div>
         </div>
         <SmallCalendar events={events} />
-        <div className="flex flex-col w-[40rem] rounded-xl h-[22rem] bg-neutral-800 p-8 justify-between items-start">
+        <div className="flex flex-col w-[40rem] rounded-xl h-[22rem] bg-neutral-800 p-8 pb-6 justify-between items-start">
           <div className="font-bold text-2xl mb-3">Roommates:</div>
-          {/* <EmblaCarousel slides={SLIDES} options={OPTIONS} /> */}
+          <EmblaCarousel />
         </div>
         <div className="flex flex-col w-[20rem] rounded-xl h-[22rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
           <div className="font-bold text-2xl pb-4">Recent Messages:</div>
