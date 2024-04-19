@@ -45,12 +45,6 @@
   border-radius: 0px;
   /* background: linear-gradient(135deg, #003327 0%, #1a1a1a 100%); */
 }
-
-.input {
-  margin-bottom: 0px;
-  border-radius: 5px;
-}
-
 .form__cta {
   cursor: pointer;
 }
@@ -121,6 +115,9 @@ button {
   padding: 10px 15px;
   width: 50vw;
   margin-right: 15px;
+  margin-bottom: 0px;
+  border-radius: 5px;
+  padding: 12px;
 }
 .form__cta,
 .home__form > button {
@@ -290,7 +287,16 @@ input:focus + .switch-slider {
   background-color: rgb(106, 200, 158);
   border: none;
   cursor: pointer;
-  margin-right: 5vw;
+  width: 200px;
+}
+
+svg {
+      font-size: 20px;
+}
+
+.addIcon {
+  /* padding: 0px; */
+  display: inline-flex;
 }
 
 .assignee-dropdown {
@@ -357,6 +363,12 @@ input:focus + .switch-slider {
 .task-input {
   margin-bottom: 1.5rem; /* Add space below the input */
   padding: 1.25rem;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 

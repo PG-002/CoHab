@@ -197,9 +197,11 @@ function TodoList({ socket }) {
 
   return (
     <div className="todo__container p-4 overflow-auto">
-      <div className="flex items-center justify-start">
+      <div className="header-container flex items-center justify-start">
       <button className="task-add-button" onClick={openModal}>
-            <LuListPlus />
+        <div className="addIcon">
+          <LuListPlus/>
+        </div>
           </button>
           <TodoListModal
           showModal={showModal}
