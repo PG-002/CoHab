@@ -20,7 +20,8 @@ const HouseSchema = new Schema({
                 type : String,
                 required : [true, 'Must have status.']
             }
-        }]
+        }],
+        default : []
     },
     reminders : {
         type : [{
