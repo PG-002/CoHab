@@ -23,7 +23,7 @@ const createHouse = async (req, res) => {
         return;
     }
 
-    const house = await House.create({ houseName : houseName, members : [user.firstName + ' ' + user.lastName] })
+    const house = await House.create({ houseName : houseName, members : [user.userId] })
         .catch(() => null);
 
     if(!house)
