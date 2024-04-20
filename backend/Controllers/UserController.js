@@ -36,13 +36,10 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  console.log("Entered login function");
   const { email, password } = req.body;
 
-  console.log("Before FindOne");
   await User.findOne({ email : email })
     .then(async (user) => {
-      console.log("immediately afer findOne");
       if(!user)
       {
         res.status(404);
@@ -50,18 +47,15 @@ const login = async (req, res) => {
         return;
       }
 
-      console.log("Before hash compare");
       const hashCompare = await compare(password, user.password);
-      console.log("After hash compare");
       console.log(hashCompare.match);
 
       if(hashCompare.error)
         res.json({ error : hashCompare.error });
       else if(hashCompare.match)
       {
-        console.log("password matched!")
         res.status(201);
-        // res.json({ token : createToken(retUserObj(user)) });
+        res.json({ token : createToken(retUserObj(user)) });
       }
       else
         res.json({ error : 'Password does not match.' });
