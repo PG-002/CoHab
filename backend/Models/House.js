@@ -7,7 +7,20 @@ const HouseSchema = new Schema({
         required : [true, 'House requires a name.']
     },
     members : {
-        type : [{ type : String }],
+        type : [{ type : Schema.Types.ObjectId }],
+        default : []
+    },
+    statuses : {
+        type : [{
+            userId : {
+                type : Schema.Types.ObjectId,
+                required : [true, 'Must have userId.']
+            },
+            status : {
+                type : String,
+                required : [true, 'Must have status.']
+            }
+        }],
         default : []
     },
     reminders : {
