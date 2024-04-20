@@ -115,10 +115,29 @@ class _Dashboard extends State<DashboardPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _changeStatus,
-        tooltip: 'Change Status',
-        child: Icon(Icons.edit),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            'Status',
+            style: TextStyle(
+              color: Colors.black, // Change the color of the title if needed
+              fontSize: 20, // Adjust font size as needed
+              fontWeight: FontWeight.bold, // Adjust font weight as needed
+            ),
+          ),
+          SizedBox(height: 10), // Add some space between the title and the button
+          SizedBox(
+            width: 65.0, // Adjust width as needed
+            height: 65.0, // Adjust height as needed
+            child: FloatingActionButton(
+              onPressed: _changeStatus,
+              tooltip: 'Change Status',
+              child: Icon(Icons.emoji_emotions, color: Colors.white),
+              backgroundColor: const Color(0xFF14532d),
+            ),
+          ),
+        ],
       ),
     );
   }

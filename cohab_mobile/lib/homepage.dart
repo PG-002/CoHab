@@ -22,7 +22,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('   ${house['house']['houseName']} Home Page'),
+        title: Text('${house['house']['houseName']} Home Page',style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF14532d),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: SingleChildScrollView(
