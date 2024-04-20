@@ -63,7 +63,10 @@ const login = async (req, res) => {
       else
         res.json({ error : 'Password does not match.' });
     })
-    .catch(() => res.json({ error : 'Error fetching user.' }));
+    .catch(() => {
+      res.status(404);
+      res.json({ error : 'Error fetching user.' })
+    });
 };
 
 const getUserInfo = async (req, res) => {
