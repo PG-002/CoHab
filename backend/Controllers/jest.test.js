@@ -11,7 +11,7 @@ test('tests login function', async () => {
 };
 
   await login(req, res);
-  expect(res.status).toEqual(201);
+  expect(status).toEqual(201);
 
 }, 90000);
 
