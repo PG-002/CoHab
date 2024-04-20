@@ -45,7 +45,14 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("                   Chat Room"),
+        title: const Text(
+          'Chat Room',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF14532d),
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleSpacing: 0,
+        centerTitle: true,
       ),
       body: Column(
         children: [

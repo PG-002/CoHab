@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 String task = '';
 String assignedTo = '';
-
+late List<Task> tasks = [];
 
 class TaskListPage extends StatelessWidget {
   const TaskListPage({super.key});
@@ -25,7 +25,7 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-  late List<Task> tasks = [];
+
 
   @override
   void initState() {
@@ -308,14 +308,6 @@ class _TaskListState extends State<TaskList> {
       body: Column(
         children: [
           const SizedBox(height: 5),
-          Row(
-            children: [
-              const SizedBox(width: 350),
-              AddTasksButton(
-                onAddTask: addTask,
-              ),
-            ],
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: tasks.length,
@@ -340,6 +332,15 @@ class _TaskListState extends State<TaskList> {
               },
             ),
           ),
+          Row(
+            children: [
+              const SizedBox(width: 365),
+              AddTasksButton(
+                onAddTask: addTask,
+              ),
+            ],
+          ),
+          const SizedBox(height: 20,),
         ],
       ),
     );
@@ -416,47 +417,48 @@ class _TaskInputState extends State<TaskInput> {
 }
 
 class AddTasksButton extends StatelessWidget {
-  const AddTasksButton({super.key, required this.onAddTask});
+  const AddTasksButton({Key? key, required this.onAddTask}) : super(key: key);
 
   final Function(String) onAddTask;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Add Task'),
-              content: const TaskInput(),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close the dialog
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    // Call the onAddTask function with the task entered in the dialog
-                    onAddTask(task);
-                    Navigator.pop(context); // Close the dialog
-                  },
-                  child: const Text('Add'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-      color: const Color(0xFF14532d),
-      padding: EdgeInsets.zero,
-      minWidth: 45,
-      height: 50,
-      child: const Icon(
-        Icons.add,
-        color: Colors.white,
+    return SizedBox(
+      width: 65.0, // Adjust width as needed
+      height: 65.0, // Adjust height as needed
+      child: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Add Task'),
+                content: const TaskInput(),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close the dialog
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Call the onAddTask function with the task entered in the dialog
+                      onAddTask(task);
+                      Navigator.pop(context); // Close the dialog
+                    },
+                    child: const Text('Add'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        backgroundColor: const Color(0xFF14532d),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

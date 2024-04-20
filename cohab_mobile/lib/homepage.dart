@@ -1,4 +1,5 @@
 import 'package:cohab_mobile/calendar.dart';
+import 'package:cohab_mobile/dashboard.dart';
 import 'package:cohab_mobile/groupchat.dart';
 import 'package:cohab_mobile/location.dart';
 import 'package:cohab_mobile/noise_level.dart';
@@ -21,13 +22,62 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('   ${house['house']['houseName']} Home Page'),
+        title: Text('${house['house']['houseName']} Home Page',style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF14532d),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                width: 120,
+                child: InkWell(
+                  onTap: () async {
+                    getHouse().then((_) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DashboardPage()),
+                      );
+                    });
+                  },
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF14532d), // Fill the button with green color
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(color: const Color(0xFF14532d)), // Green border
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            getHouse().then((_) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => DashboardPage()),
+                              );
+                            });
+                          },
+                          child: const Icon(
+                            LucideIcons.layoutDashboard,
+                            color: Colors.white,
+                            size: 48,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Dashboard',
+                          style: TextStyle(color: Colors.white, fontSize: 17),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 80),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

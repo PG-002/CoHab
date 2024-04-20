@@ -198,7 +198,14 @@ class _LocationTrackerPageState extends State<LocationTrackerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Location Tracker'),
+        title: const Text(
+          'Location Tracker',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF14532d),
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleSpacing: 0,
+        centerTitle: true,
       ),
       body: Stack(
         children: [
@@ -217,23 +224,23 @@ class _LocationTrackerPageState extends State<LocationTrackerPage> {
             bottom: 20,
             right: 20,
             child: Column(
-              children: [
-                // Zoom In button
-                FloatingActionButton(
-                  heroTag: 'zoom_in_fab',
-                  onPressed: zoomIn,
-                  tooltip: 'Zoom In',
-                  child: const Icon(Icons.add),
-                ),
-                const SizedBox(height: 10),
-                // Zoom Out button
-                FloatingActionButton(
-                  heroTag: 'zoom_out_fab',
-                  onPressed: zoomOut,
-                  tooltip: 'Zoom Out',
-                  child: const Icon(Icons.remove),
-                ),
-              ],
+              // children: [
+              //   // Zoom In button
+              //   FloatingActionButton(
+              //     heroTag: 'zoom_in_fab',
+              //     onPressed: zoomIn,
+              //     tooltip: 'Zoom In',
+              //     child: const Icon(Icons.add),
+              //   ),
+              //   const SizedBox(height: 10),
+              //   // Zoom Out button
+              //   FloatingActionButton(
+              //     heroTag: 'zoom_out_fab',
+              //     onPressed: zoomOut,
+              //     tooltip: 'Zoom Out',
+              //     child: const Icon(Icons.remove),
+              //   ),
+              // ],
             ),
           ),
         ],

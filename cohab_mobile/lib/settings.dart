@@ -10,7 +10,13 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text(
+          'Settings',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF14532d),
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleSpacing: 0,
         centerTitle: true,
       ),
       body: Padding(
@@ -25,6 +31,7 @@ class SettingsPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const SizedBox(height: 40,),
                     const Text(
                       'User Profile',
                       style: TextStyle(
@@ -32,11 +39,11 @@ class SettingsPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 20),
                     Text(
                       'Name: ${decodedToken['firstName']} ${decodedToken['lastName']}',
                       style: const TextStyle(
-                        fontSize:  18,
+                        fontSize:  19,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -44,7 +51,7 @@ class SettingsPage extends StatelessWidget {
                     Text(
                       'House: ${house['house']['houseName']}',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 19,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -52,14 +59,14 @@ class SettingsPage extends StatelessWidget {
                     Text(
                       'Email: ${decodedToken['email']}',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 19,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 50),
               // Edit Profile Button
               Center(
                 child: Column(

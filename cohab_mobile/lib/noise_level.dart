@@ -24,7 +24,14 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('           Noise Level Preference'),
+        title: const Text(
+          'Noise Level',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF14532d),
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleSpacing: 0,
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -43,6 +50,7 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
             ),
             const SizedBox(height: 30),
             Slider(
+              activeColor: Color(0xFF14532d),
               value: _currentNoiseLevel.toDouble(),
               min: 0,
               max: 10,
@@ -84,17 +92,27 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Save the noise level preference
-                      // For example, you can use SharedPreferences or any other storage mechanism
-                      print('Preferred noise level: $_currentNoiseLevel');
+              SizedBox(
+                width: 300,
+                height: 50.0,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Save the noise level preference
+                    // For example, you can use SharedPreferences or any other storage mechanism
+                    print('Preferred noise level: $_currentNoiseLevel');
 
-                      socket.emit('setNoiseLevel', _currentNoiseLevel.toInt());
-                      noise_level = _currentNoiseLevel;
-                    },
-                    child: const Text('Save Preference'),
+                    socket.emit('setNoiseLevel', _currentNoiseLevel.toInt());
+                    noise_level = _currentNoiseLevel;
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF14532d), // Change the background color here
                   ),
+                  child: Text(
+                    'Save Preference',
+                    style: TextStyle(color: Colors.white, fontSize: 18), // Set the text color to white
+                  ),
+                ),
+              ),
                 ],
               ),
             ),
