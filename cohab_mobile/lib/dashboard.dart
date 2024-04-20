@@ -9,6 +9,7 @@ import 'noise_level.dart';
 import 'settings.dart';
 
 late int noiseLevel;
+late List<Roommate> statuses = [];
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key});
@@ -51,6 +52,14 @@ class _Dashboard extends State<DashboardPage> {
         }).toList();
 
         noiseLevel = noise_level;
+
+        statuses = house['house']['statuses'].map<Roommate>((roommate){
+
+          return Roommate(
+            roommate['']
+
+          );
+        }).toList();
       });
     }).catchError((error) {
       // Handle error if necessary
@@ -141,4 +150,12 @@ class _Dashboard extends State<DashboardPage> {
       ),
     );
   }
+}
+class Roommate{
+  String id;
+  String status;
+Roommate({
+    required this.id,
+    required this.status,
+  });
 }
