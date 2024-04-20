@@ -25,6 +25,7 @@ class SettingsPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const SizedBox(height: 40,),
                     const Text(
                       'User Profile',
                       style: TextStyle(
@@ -32,11 +33,11 @@ class SettingsPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 20),
                     Text(
                       'Name: ${decodedToken['firstName']} ${decodedToken['lastName']}',
                       style: const TextStyle(
-                        fontSize:  18,
+                        fontSize:  19,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -44,7 +45,7 @@ class SettingsPage extends StatelessWidget {
                     Text(
                       'House: ${house['house']['houseName']}',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 19,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -52,14 +53,14 @@ class SettingsPage extends StatelessWidget {
                     Text(
                       'Email: ${decodedToken['email']}',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 19,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 50),
               // Edit Profile Button
               Center(
                 child: Column(
