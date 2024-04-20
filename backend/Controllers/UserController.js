@@ -240,7 +240,7 @@ const verifyCode = async (req, res) => {
     return;
   }
 
-  const houseUpdated = await House.findByIdAndUpdate(house._id, { $push : { members : user.firstName + ' ' + user.lastName } }, { new : true })
+  const houseUpdated = await House.findByIdAndUpdate(house._id, { $push : { members : user.userId } }, { new : true })
     .catch(() => null);
 
   if(!houseUpdated)
