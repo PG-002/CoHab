@@ -24,7 +24,14 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('           Noise Level Preference'),
+        title: const Text(
+          'Noise Level',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF14532d),
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleSpacing: 0,
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

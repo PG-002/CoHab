@@ -14,7 +14,13 @@ class CalendarHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("CoHab Calendar Page"),
+        title: const Text(
+          'Calendar',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF14532d),
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleSpacing: 0,
         centerTitle: true,
       ),
       body: const CalendarScreen(),
