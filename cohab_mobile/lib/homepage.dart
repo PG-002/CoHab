@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 8),
                         const Text(
-                          'Noise Level',
+                          'Dashboard',
                           style: TextStyle(color: Colors.white, fontSize: 17),
                         ),
                       ],

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 String task = '';
 String assignedTo = '';
-
+late List<Task> tasks = [];
 
 class TaskListPage extends StatelessWidget {
   const TaskListPage({super.key});
@@ -25,7 +25,7 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-  late List<Task> tasks = [];
+
 
   @override
   void initState() {

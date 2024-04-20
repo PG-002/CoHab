@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:intl/intl.dart';
 
+late List<NeatCleanCalendarEvent> eventList = [];
+
 class CalendarHomePage extends StatelessWidget {
   const CalendarHomePage({super.key});
 
@@ -30,8 +32,6 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  List<NeatCleanCalendarEvent> _eventList = [];
-
   NeatCleanCalendarEvent? _selectedEvent;
 
   @override
@@ -41,7 +41,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     getHouse().then((_) {
       setState(() {
         // Update tasks with tasks obtained from houseObj
-        _eventList = house['house']['events'].map<NeatCleanCalendarEvent>((event) {
+        eventList = house['house']['events'].map<NeatCleanCalendarEvent>((event) {
           DateTime startTime = DateTime.parse(event['start']);
           DateTime endTime = DateTime.parse(event['end']);
 
@@ -69,7 +69,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     if (newEvent != null) {
       setState(() {
-        _eventList.add(newEvent); // New event added here
+        eventList.add(newEvent); // New event added here
       });
     }
   }
@@ -88,7 +88,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
       socket.emit('deleteEvent',body);
 
-      _eventList.remove(event);
+      eventList.remove(event);
     });
   }
   void _showEventDetailsDialog(NeatCleanCalendarEvent event) {
@@ -138,7 +138,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: Calendar(
           startOnMonday: true,
           weekDays: const ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-          eventsList: _eventList,
+          eventsList: eventList,
           isExpandable: true,
           eventDoneColor: Colors.deepPurple,
           selectedColor: Colors.blue,
