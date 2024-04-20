@@ -30,6 +30,7 @@ module.exports = (io) => {
     require('../Listeners/Events')(socket, io);
     require('../Listeners/Location')(socket, io);
     require('../Listeners/NoiseLevel')(socket, io);
+    require('../Listeners/StatusChange')(socket, io);
   };
 
   return { auth, addEventListeners };
