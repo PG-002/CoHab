@@ -10,6 +10,7 @@ import 'settings.dart';
 
 late int noiseLevel;
 
+
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
@@ -70,7 +71,7 @@ class _Dashboard extends State<DashboardPage> {
           children: <Widget>[
             SizedBox(height: 20,),
             Text(
-                'Roommates'
+                'Roommates/Status'
             ),
             Text(
                 'Most Recent Tasks'
@@ -84,9 +85,28 @@ class _Dashboard extends State<DashboardPage> {
             Text(
                 'Recent Messages'
             ),
+            Text(
+                'Change Status'
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+class Roommate {
+  String id;
+  String taskDescription;
+  String assignedTo;
+  String createdBy;
+  bool completed;
+
+  Roommate({
+    required this.id,
+    required this.taskDescription,
+    required this.completed,
+    required this.assignedTo,
+    required this.createdBy,
+  });
 }
