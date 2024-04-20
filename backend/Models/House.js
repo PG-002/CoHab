@@ -7,7 +7,7 @@ const HouseSchema = new Schema({
         required : [true, 'House requires a name.']
     },
     members : {
-        type : [{ type : Schema.Types.ObjectId }],
+        type : [{ type : String }],
         default : []
     },
     statuses : {
