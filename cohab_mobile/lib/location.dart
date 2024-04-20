@@ -217,23 +217,23 @@ class _LocationTrackerPageState extends State<LocationTrackerPage> {
             bottom: 20,
             right: 20,
             child: Column(
-              children: [
-                // Zoom In button
-                FloatingActionButton(
-                  heroTag: 'zoom_in_fab',
-                  onPressed: zoomIn,
-                  tooltip: 'Zoom In',
-                  child: const Icon(Icons.add),
-                ),
-                const SizedBox(height: 10),
-                // Zoom Out button
-                FloatingActionButton(
-                  heroTag: 'zoom_out_fab',
-                  onPressed: zoomOut,
-                  tooltip: 'Zoom Out',
-                  child: const Icon(Icons.remove),
-                ),
-              ],
+              // children: [
+              //   // Zoom In button
+              //   FloatingActionButton(
+              //     heroTag: 'zoom_in_fab',
+              //     onPressed: zoomIn,
+              //     tooltip: 'Zoom In',
+              //     child: const Icon(Icons.add),
+              //   ),
+              //   const SizedBox(height: 10),
+              //   // Zoom Out button
+              //   FloatingActionButton(
+              //     heroTag: 'zoom_out_fab',
+              //     onPressed: zoomOut,
+              //     tooltip: 'Zoom Out',
+              //     child: const Icon(Icons.remove),
+              //   ),
+              // ],
             ),
           ),
         ],
