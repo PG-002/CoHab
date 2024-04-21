@@ -111,8 +111,6 @@ Future<void> joinHouse(String code) async {
       body: json.encode(body),
     );
 
-
-
   }
   catch (e) {
     // Exception occurred
@@ -360,7 +358,6 @@ Future<String?> getUsersStatus(String id) async{
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-      print(jsonResponse);
 
       temp = jsonResponse['token']; // Extracting the token string
       temp2 = JwtDecoder.decode(temp);
