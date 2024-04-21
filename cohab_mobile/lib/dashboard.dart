@@ -5,7 +5,6 @@ import 'token.dart';
 import 'task_list.dart';
 import 'calendar.dart';
 import 'groupchat.dart';
-import 'noise_level.dart';
 import 'settings.dart';
 
 late int noiseLevel;
@@ -24,7 +23,7 @@ class _Dashboard extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    getHouse().then((_) {
+    getHouse().then((_) { //array of tasks
       setState(() {
         tasks = house['house']['tasks'].map<Task>((task) {
           return Task(
@@ -36,7 +35,7 @@ class _Dashboard extends State<DashboardPage> {
           );
         }).toList();
 
-        eventList = house['house']['events'].map<NeatCleanCalendarEvent>((event) {
+        eventList = house['house']['events'].map<NeatCleanCalendarEvent>((event) { //array of calendar events
           DateTime startTime = DateTime.parse(event['start']);
           DateTime endTime = DateTime.parse(event['end']);
 
@@ -51,14 +50,18 @@ class _Dashboard extends State<DashboardPage> {
           );
         }).toList();
 
-        noiseLevel = noise_level;
+        noiseLevel = noise_level; //the current noise level
 
-        statuses = house['house']['statuses'].map<Roommate>((roommate){
+        statuses = house['house']['statuses'].map<Roommate>((roommate){ //array  of statuses
+
+          String tempname = getUsersStatus(roommate['userId']) as String;
 
           return Roommate(
-            roommate['']
+             id:  roommate['userId'],
+            status: roommate['status'],
+            name: tempname,
+           );
 
-          );
         }).toList();
       });
     }).catchError((error) {
@@ -153,9 +156,11 @@ class _Dashboard extends State<DashboardPage> {
 }
 class Roommate{
   String id;
+  String name;
   String status;
 Roommate({
     required this.id,
     required this.status,
+    required this.name,
   });
 }
