@@ -4,13 +4,22 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import Slider from "@mui/material/Slider";
-import { Thermometer, CloudRainWind, Wind, EarOff, Ear } from "lucide-react";
+import {
+  Thermometer,
+  CloudRainWind,
+  Wind,
+  EarOff,
+  Ear,
+  PlusSquare,
+} from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import sunny from "../assets/sunny.jpg";
 import day from "../assets/day.jpg";
 import rain from "../assets/rain.jpg";
 import night from "../assets/night.jpg";
 import EmblaCarousel from "../components/Dashboard/Carousel/EmblaCarousel";
+import Modal from "react-modal";
+import { toast } from "sonner";
 
 dayjs.extend(localizedFormat);
 
@@ -23,6 +32,8 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
   const [noiseLevel, setNoiseLevel] = useState(null);
   const [houseUpdate, setHouseUpdate] = useState(false);
   const [background, setBackground] = useState(null);
+  const [addRoommate, setAddRoommate] = useState(false);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     const fetchWeather = async (long, lat) => {
@@ -182,134 +193,230 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
     65: "rain",
   };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const sendHouseInvite = async (email) => {
+    try {
+      const JSONPayload = JSON.stringify({
+        houseId: houseInfo._id,
+        email,
+      });
+      const response = await fetch(
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/sendJoinCode",
+        {
+          // Adjust URL as necessary
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSONPayload,
+        }
+      );
+      if (response.ok && response.status == 200) {
+        const data = await response.json();
+        if (data.sent) {
+          toast.success("House Invite Code Sent");
+        } else {
+          toast.error("Not sent", { description: data.error });
+        }
+      } else {
+        throw new Error(response.status);
+        toast.error(response.status);
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const handleSubmitInvite = (e) => {
+    e.preventDefault();
+    console.log("submiitt4ed nvite");
+
+    if (houseInfo) {
+      sendHouseInvite(email);
+      setEmail("");
+      setAddRoommate(false);
+    } else {
+      toast.error("No House ID");
+    }
+  };
+
   return (
-    <div className="flex flex-col h-screen w-full overflow-y-auto p-5">
-      <div className="w-full flex flex-row flex-wrap justify-center gap-x-10 gap-y-4 items-center h-full">
-        <div
-          className="w-[40rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-no-repeat bg-cover bg-neutral-800"
-          style={{
-            backgroundImage: `url(${background ?? null})`,
-          }}
-        >
-          <div className="flex flex-col w-[40rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] p-8 justify-between items-start bg-neutral-800 bg-opacity-60">
-            <div className=" flex flex-col items-start ">
-              <p className="font-bold text-3xl 2xl:text-4xl">
-                {dayjs().format("dddd")},
-              </p>
-              <p className="text-6xl 2xl:text-7xl">{dayjs().format("LL")}</p>
-            </div>
-            {weather ? (
-              <div className="flex flex-row w-full justify-between font-bold text-3xl 2xl:text-4xl ">
-                <div className="flex flex-row items-center gap-x-1">
-                  <Thermometer />
-                  <p>
-                    {weather.current.temperature_2m}
-                    {weather.current_units.temperature_2m}
-                  </p>
-                </div>
-                <div className="flex flex-row items-center gap-x-1">
-                  <CloudRainWind />
-                  <p>
-                    {weather.current.precipitation.toFixed(2)}{" "}
-                    {weather.current_units.precipitation}
-                  </p>
-                </div>
-                <div className="flex flex-row items-center gap-x-1">
-                  <Wind />
-                  <p>
-                    {weather.current.wind_speed_10m}{" "}
-                    {weather.current_units.wind_speed_10m}
-                  </p>
-                </div>
+    <>
+      <div className="flex flex-col h-screen w-full overflow-y-auto overflow-x-auto p-5">
+        <div className="w-full flex flex-row flex-wrap justify-center gap-x-4 lg:gap-x-10 gap-y-4 items-center h-full">
+          <div
+            className="lg:w-[35rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-no-repeat bg-cover bg-neutral-800"
+            style={{
+              backgroundImage: `url(${background ?? null})`,
+            }}
+          >
+            <div className="flex flex-col lg:w-[35rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] p-8 justify-between items-start bg-neutral-800 bg-opacity-60">
+              <div className=" flex flex-col items-start ">
+                <p className="font-bold text-3xl 2xl:text-4xl">
+                  {dayjs().format("dddd")},
+                </p>
+                <p className=" text-4xl lg:text-6xl 2xl:text-7xl">
+                  {dayjs().format("LL")}
+                </p>
               </div>
-            ) : null}
-            <div className="flex flex-row w-full gap-x-4 items-center ">
-              <p className="font-bold text-2xl">Noise Level:</p>
-              <EarOff />
-              <Slider
-                aria-label="Small steps"
-                getAriaValueText={valueText}
-                value={noiseLevel}
-                step={1}
-                marks
-                min={0}
-                max={10}
-                onChange={handleSliderChange}
-                color=""
-                valueLabelDisplay="auto"
-              />
-              <Ear />
+              {weather ? (
+                <div className="flex flex-row w-full justify-between font-bold text-2xl lg:text-3xl 2xl:text-4xl ">
+                  <div className="flex flex-row items-center gap-x-1">
+                    <Thermometer />
+                    <p>
+                      {weather.current.temperature_2m}
+                      {weather.current_units.temperature_2m}
+                    </p>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-1">
+                    <CloudRainWind />
+                    <p>
+                      {weather.current.precipitation.toFixed(2)}{" "}
+                      {weather.current_units.precipitation}
+                    </p>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-1">
+                    <Wind />
+                    <p>
+                      {weather.current.wind_speed_10m}{" "}
+                      {weather.current_units.wind_speed_10m}
+                    </p>
+                  </div>
+                </div>
+              ) : null}
+              <div className="flex flex-row w-full gap-x-4 items-center ">
+                <p className="font-bold text-2xl">Noise Level:</p>
+                <EarOff />
+                <Slider
+                  aria-label="Small steps"
+                  getAriaValueText={valueText}
+                  value={noiseLevel}
+                  step={1}
+                  marks
+                  min={0}
+                  max={10}
+                  onChange={handleSliderChange}
+                  color=""
+                  valueLabelDisplay="auto"
+                />
+                <Ear />
+              </div>
             </div>
           </div>
-        </div>
-        <SmallCalendar events={events} />
-        <div className="flex flex-col w-[40rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-6 justify-between items-start">
-          <div className="font-bold text-2xl mb-3">Roommates:</div>
-          <EmblaCarousel userInfo={userInfo} houseInfo={houseInfo} />
-        </div>
-        <div className="flex flex-col w-[20rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
-          <div className="font-bold text-2xl pb-4">Recent Messages:</div>
-          <div className="flex flex-col  w-full h-full gap-y-2 justify-start overflow-y-auto">
-            {messages
-              ? messages
-                  .toReversed()
-                  .slice(0, 3)
-                  .map(({ message, sentBy, date }, i) => {
-                    return (
-                      <div
-                        key={i}
-                        className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start px-3 py-1 justify-evenly"
-                      >
-                        <p className="w-full text-left font-bold text-sm 2xl:text-base text-ellipsis text-nowrap overflow-hidden">
-                          {message}
-                        </p>
-                        <p className="w-full text-left text-xs text-ellipsis text-nowrap overflow-hidden">
-                          Sent By: <span className="font-bold">{sentBy}</span>
-                        </p>
-                        <p className="w-full text-left text-xs text-ellipsis text-nowrap overflow-hidden">
-                          Date:{" "}
-                          <span className="font-bold">
-                            {dayjs(date).format("lll")}
-                          </span>
-                        </p>
-                      </div>
-                    );
-                  })
-              : null}
+          <SmallCalendar events={events} />
+          <div className="flex flex-col w-[40rem] lg:w-[35rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-6 justify-between items-start">
+            <div className="flex flex-row items-center justify-between w-full">
+              <div className="font-bold text-2xl mb-3">Roommates:</div>
+              <button
+                onClick={() => setAddRoommate(true)}
+                className="mb-3 p-1 bg-eucalyptus-600 hover:bg-eucalyptus-300 border border-neutral-500"
+              >
+                <PlusSquare />
+              </button>
+            </div>
+            {addRoommate ? (
+              <div className="flex flex-col justify-center bg-eucalyptus-950 w-full h-full rounded-lg border-neutral-700 border-2 p-4">
+                <div className="font-bold text-lg mb-4">
+                  Invite New Roommate
+                </div>
+                <form
+                  onSubmit={handleSubmitInvite}
+                  className="flex flex-col items-center gap-4"
+                >
+                  <input
+                    onChange={handleEmailChange}
+                    value={email}
+                    placeholder="Enter Email Address"
+                    className="w-3/4 h-12 bg-neutral-800 rounded-xl border border-neutral-400 pl-4"
+                  ></input>
+                  <div className="flex flex-row items-center gap-2">
+                    <button
+                      type="submit"
+                      className="p-2 bg-eucalyptus-700 hover:bg-eucalyptus-600"
+                    >
+                      Send Invite
+                    </button>
+                    <button
+                      type="buttom"
+                      onClick={() => setAddRoommate(false)}
+                      className="p-2 bg-red-700 hover:bg-red-600 mt-1"
+                    >
+                      Cancel{" "}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            ) : (
+              <EmblaCarousel userInfo={userInfo} houseInfo={houseInfo} />
+            )}
           </div>
-        </div>
-        <div className="flex flex-col w-[20rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
-          <div className="font-bold text-2xl mb-4">Recent Tasks:</div>
-          <div className="flex flex-col w-full h-full gap-y-2 justify-start overflow-y-auto">
-            {tasks
-              ? tasks
-                  .toReversed()
-                  .slice(0, 3)
-                  .map((task, i) => {
-                    return !task.completed ? (
-                      <div
-                        key={i}
-                        className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start pl-3 pt-1"
-                      >
-                        <p className="w-full text-left font-bold text-xl">
-                          {task.task}
-                        </p>
-                        <p className="w-full text-left text-sm">
-                          Created By:{" "}
-                          <span className="font-bold">{task.createdBy}</span>
-                        </p>
-                        <p className="w-full text-left text-sm">
-                          Assigned to:{" "}
-                          <span className="font-bold">{task.assignedTo}</span>
-                        </p>
-                      </div>
-                    ) : null;
-                  })
-              : null}
+          <div className="flex flex-col lg:w-[22rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
+            <div className="font-bold text-2xl pb-4">Recent Messages:</div>
+            <div className="flex flex-col  w-full h-full gap-y-2 justify-start overflow-y-auto">
+              {messages
+                ? messages
+                    .toReversed()
+                    .slice(0, 3)
+                    .map(({ message, sentBy, date }, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start px-3 py-1 justify-evenly"
+                        >
+                          <p className="w-full text-left font-bold text-sm 2xl:text-base text-ellipsis text-nowrap overflow-hidden">
+                            {message}
+                          </p>
+                          <p className="w-full text-left text-xs text-ellipsis text-nowrap overflow-hidden">
+                            Sent By: <span className="font-bold">{sentBy}</span>
+                          </p>
+                          <p className="w-full text-left text-xs text-ellipsis text-nowrap overflow-hidden">
+                            Date:{" "}
+                            <span className="font-bold">
+                              {dayjs(date).format("lll")}
+                            </span>
+                          </p>
+                        </div>
+                      );
+                    })
+                : null}
+            </div>
+          </div>
+          <div className="flex flex-col lg:w-[22rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
+            <div className="font-bold text-2xl mb-4">Recent Tasks:</div>
+            <div className="flex flex-col w-full h-full gap-y-2 justify-start overflow-y-auto">
+              {tasks
+                ? tasks
+                    .toReversed()
+                    .slice(0, 3)
+                    .map((task, i) => {
+                      return !task.completed ? (
+                        <div
+                          key={i}
+                          className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start pl-3 pt-1"
+                        >
+                          <p className="w-full text-left font-bold text-xl">
+                            {task.task}
+                          </p>
+                          <p className="w-full text-left text-sm">
+                            Created By:{" "}
+                            <span className="font-bold">{task.createdBy}</span>
+                          </p>
+                          <p className="w-full text-left text-sm">
+                            Assigned to:{" "}
+                            <span className="font-bold">{task.assignedTo}</span>
+                          </p>
+                        </div>
+                      ) : null;
+                    })
+                : null}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
