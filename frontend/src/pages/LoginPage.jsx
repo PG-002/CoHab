@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Sidebar, { SidebarItem } from "./global/Sidebar";
 import { LayoutDashboard } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
+import CoHablogo from "../assets/CoHab.png";
 
 const LoginPage = ({ setUser }) => {
   const [email, setEmail] = useState("");
@@ -14,11 +15,11 @@ const LoginPage = ({ setUser }) => {
   const handleEmailChange = (e) => {
     setLoginError(false);
     setEmail(e.target.value);
-  }
+  };
   const handlePasswordChange = (e) => {
     setLoginError(false);
     setPassword(e.target.value);
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,13 +64,9 @@ const LoginPage = ({ setUser }) => {
 
   return (
     <div className="flex flex-row w-screen">
-      <div className="flex h-screen w-full">
-        <img
-          className="hidden lg:flex lg:w-1/2"
-          src={test}
-          alt="Login visual"
-        />
-        <div className="w-full bg-gray-100 dark:bg-neutral-900 lg:w-1/2 flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center h-screen w-full bg-gray-100 dark:bg-neutral-900">
+        <img className="object-fit w-48" src={CoHablogo} />
+        <div className="w-full flex items-center justify-center ">
           <div className="max-w-md w-full p-6">
             <h1 className="text-3xl font-semibold mb-6 text-black dark:text-white text-center">
               Log In
@@ -89,7 +86,11 @@ const LoginPage = ({ setUser }) => {
                   onChange={handleEmailChange}
                   className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
-                {loginError && <p className="text-red-500 text-sm mt-1">Your email or password is incorrect.</p>}
+                {loginError && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Your email or password is incorrect.
+                  </p>
+                )}
               </div>
               <div>
                 <label
@@ -106,7 +107,11 @@ const LoginPage = ({ setUser }) => {
                   onChange={handlePasswordChange}
                   className="mt-1 p-2 w-full border text-black dark:text-white bg-white dark:bg-neutral-800 rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
-                {loginError && <p className="text-red-500 text-sm mt-1">Your email or password is incorrect.</p>}
+                {loginError && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Your email or password is incorrect.
+                  </p>
+                )}
               </div>
               <button
                 type="submit"
@@ -131,10 +136,10 @@ const LoginPage = ({ setUser }) => {
               <p>
                 Forgot password?{" "}
                 <Link
-                  to="/login"
+                  to="/forgotPassword"
                   className="text-black dark:text-white hover:underline"
                 >
-                  Click here
+                  Login here
                 </Link>
               </p>
             </div>
