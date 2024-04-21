@@ -9,6 +9,10 @@ late var houseToken;
 late var house;
 late var sent;
 late int noise_level;
+late var temp;
+late var temp2;
+late var temp3;
+late var name;
 
 
 
@@ -267,8 +271,6 @@ Future<void> getHouse() async {
       house = JwtDecoder.decode(houseToken);
 
       noise_level = house['house']['noiseLevel'];
-      print(noise_level);
-      print(house);
 
     }
     else
@@ -338,4 +340,39 @@ Future<void> join(String code) async {
     // Exception occurred
     // You might want to handle this error in your UI
   }
+}
+
+Future<String?> getUsersStatus(String id) async{
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getUserInfo');
+  final Map<String, String> body = {
+    'id': id,
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+
+      temp = jsonResponse['token']; // Extracting the token string
+      temp2 = JwtDecoder.decode(temp);
+
+       name = temp2['firstName'];
+
+       return name;
+    }
+  }
+  catch(e)
+  {
+
+  }
+  return null;
 }
