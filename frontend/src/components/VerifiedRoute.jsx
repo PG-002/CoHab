@@ -16,7 +16,6 @@ const isVerified = (userInfo) => {
 const VerifiedRoute = ({ userInfo }) => {
   const [loader, setLoader] = useState(true);
   const [verified, setVerified] = useState(false);
-  console.log("verifyRoute");
   useEffect(() => {
     if (userInfo) {
       if (isVerified(userInfo)) {

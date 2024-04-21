@@ -15,9 +15,6 @@ const EmblaCarousel = ({ userInfo, houseInfo }) => {
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
-    console.log("empty", houseMates);
-  }, []);
-  useEffect(() => {
     const fetchUserInfo = async (userId) => {
       if (!userId) {
         console.log("Log out in fetch due to userID not exist");
@@ -58,7 +55,6 @@ const EmblaCarousel = ({ userInfo, houseInfo }) => {
     if (houseInfo) {
       const status = houseInfo.statuses;
       const tempArray = [];
-      console.log("Fetching users", status);
       setLoader(true);
 
       status.map((item) => {
@@ -73,15 +69,8 @@ const EmblaCarousel = ({ userInfo, houseInfo }) => {
       });
 
       setHouseMates(tempArray);
-      console.log("push", tempArray);
     }
   }, [houseInfo]);
-
-  useEffect(() => {
-    if (loader && houseMates) {
-      setLoader(false);
-    }
-  }, [houseMates]);
 
   const scrollPrev = useCallback(() => {
     if (!emblaApi) return;
