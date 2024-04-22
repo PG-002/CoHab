@@ -89,6 +89,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _addEvent() async {
     final newEvent = await showDialog<NeatCleanCalendarEvent>(
       context: context,
