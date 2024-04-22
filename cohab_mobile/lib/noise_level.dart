@@ -18,6 +18,14 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
      _currentNoiseLevel = noise_level;
     super.initState();
 
+    socket.on('noiseLevelChange',(data)
+    {
+      setState(() {
+        _currentNoiseLevel = data['noiseLevel'];
+      });
+
+    });
+
   }
 
   @override
