@@ -115,10 +115,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         'createdBy': userId,
         '_id': event.metadata!['_id'], // Accessing the _id field from the metadata map
       };
-
-      socket.emit('deleteEvent',body);
-
       eventList.remove(event);
+      socket.emit('deleteEvent',body);
     });
   }
   void _showEventDetailsDialog(NeatCleanCalendarEvent event) {

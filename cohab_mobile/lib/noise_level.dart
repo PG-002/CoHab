@@ -109,8 +109,8 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
                     // For example, you can use SharedPreferences or any other storage mechanism
                     print('Preferred noise level: $_currentNoiseLevel');
 
-                    socket.emit('setNoiseLevel', _currentNoiseLevel.toInt());
                     noise_level = _currentNoiseLevel;
+                    socket.emit('setNoiseLevel', _currentNoiseLevel.toInt());
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF14532d), // Change the background color here

@@ -131,7 +131,6 @@ class _TaskListState extends State<TaskList> {
       };
 
       socket.emit('modifyTask',body);
-
     });
   }
 
@@ -147,10 +146,8 @@ class _TaskListState extends State<TaskList> {
         'completed': tasks[index].completed,
 
       };
-
-      socket.emit('deleteTask',body);
-
       tasks.removeAt(index);
+      socket.emit('deleteTask',body);
     });
 
   }
