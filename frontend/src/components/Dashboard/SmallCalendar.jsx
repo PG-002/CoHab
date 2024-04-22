@@ -102,8 +102,8 @@ const SmallCalendar = ({ events }) => {
   };
 
   return (
-    <div className="flex flex-row gap-12 text-left overflow-hidden text-white">
-      <div className="px-3 pb-2 pt-1 w-[20rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800">
+    <div className="flex flex-row gap-8 lg:gap-12 text-left overflow-hidden text-white">
+      <div className="px-3 pb-2 pt-1 w-[20rem] lg:w-[23.5rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800">
         <header className="flex justify-between items-center pl-3">
           <Link to="/calendar">
             <p className="text-white font-bold">
@@ -159,7 +159,7 @@ const SmallCalendar = ({ events }) => {
           ))}
         </div>
       </div>
-      <div className="flex flex-col items-center w-[20rem] 2xl:w-[25rem] h-[21rem] 2xl:h-[26.25rem] p-1 bg-neutral-800 rounded-xl">
+      <div className="flex flex-col items-center lg:w-[20rem] 2xl:w-[25rem] h-[21rem] 2xl:h-[26.25rem] p-1 bg-neutral-800 rounded-xl">
         <p className="p-1 font-bold">
           {daySelected ? daySelected.format("MM/DD/YY") + " Events" : null}:
         </p>

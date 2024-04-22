@@ -1,8 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronFirst, ChevronLast, ChevronDownSquare } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
+import { HashLoader } from "react-spinners";
+useEmblaCarousel.globalOptions = { slidesToScroll: "auto" };
 
-const EmblaCarousel = ({ userInfo, houseInfo }) => {
+const EmblaCarousel = ({ userInfo, houseMates }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel();
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
@@ -58,24 +61,13 @@ const EmblaCarousel = ({ userInfo, houseInfo }) => {
     emblaApi.on("select", onSelectDot);
   }, [emblaApi, onInit, onSelectDot]);
 
-  const houseMates = [
-    { firstName: "John", lastName: "Doe", status: "In Room" },
-    { firstName: "John", lastName: "Doe", status: "In Room" },
-    { firstName: "John", lastName: "Doe", status: "In Room" },
-    { firstName: "John", lastName: "Doe", status: "In Room" },
-    { firstName: "John", lastName: "Doe", status: "In Room" },
-    { firstName: "John", lastName: "Doe", status: "In Room" },
-    { firstName: "John", lastName: "Doe", status: "In Room" },
-    { firstName: "John", lastName: "Doe", status: "In Room" },
-  ];
-
   const [statusIn, setStatusIn] = useState(true);
 
   const handleStatusChange = () => {
     setStatusIn((prev) => !prev);
   };
 
-  return (
+  return houseMates ? (
     <div className="w-full h-full overflow-hidden" ref={emblaRef}>
       <div className="flex gap-2 2xl:gap-3  h-4/5 ">
         <div className="flex flex-col items-center justify-evenly flex-grow-0 flex-shrink-0 w-[32.25%] h-full rounded-lg bg-eucalyptus-800 shadow-lg p-4">
@@ -85,7 +77,7 @@ const EmblaCarousel = ({ userInfo, houseInfo }) => {
           />
           <p className="font-bold text-lg 2xl:text-xl">You</p>
           <div className="flex flex-row items-center">
-            <p className="mr-2 font-bold text-lg 2xl:text-xl">Status: </p>
+            <p className="mr-2 font-bold text-base 2xl:text-xl">Status: </p>
             <button
               onClick={handleStatusChange}
               className="p-1 w-20 bg-eucalyptus-950 hover:bg-eucalyptus-900 border border-eucalyptus-600"
@@ -108,8 +100,8 @@ const EmblaCarousel = ({ userInfo, houseInfo }) => {
                 {houseMate.firstName} {houseMate.lastName}
               </p>
               <div className="flex flex-row items-center">
-                <p className="mr-2 font-bold text-xl">Status: </p>
-                <p className="text-lg 2xl:text-xl">{houseMate.status}</p>
+                <p className="mr-2 font-bold text-sm 2xl:text-xl">Status: </p>
+                <p className="text-base 2xl:text-xl">{houseMate.status}</p>
               </div>
             </div>
           );
@@ -151,7 +143,7 @@ const EmblaCarousel = ({ userInfo, houseInfo }) => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default EmblaCarousel;

@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import test from "../assets/test.jpg";
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import CoHablogo from "../assets/CoHab.png";
 
 const SignUpPage = ({ setUser }) => {
   const [firstName, setFirstName] = useState("");
@@ -17,7 +18,7 @@ const SignUpPage = ({ setUser }) => {
   const handleEmailChange = (e) => {
     setTakenEmail(false);
     setEmail(e.target.value);
-  }
+  };
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handlefirstNameChange = (e) => setFirstName(e.target.value);
   const handlelastNameChange = (e) => setLastName(e.target.value);
@@ -92,9 +93,9 @@ const SignUpPage = ({ setUser }) => {
 
   return (
     <>
-      <div className="flex h-screen w-screen">
-        <img className="hidden lg:flex w-1/2" src={test} />
-        <div className="w-full bg-gray-100 dark:bg-neutral-900  lg:w-1/2 flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center h-screen w-screen">
+        <img className="object-fit w-48" src={CoHablogo} />
+        <div className="w-full flex items-center justify-center ">
           <div className="max-w-md w-full p-6">
             <h1 className="text-3xl font-semibold mb-6 text-black dark:text-white text-center">
               Sign Up
@@ -134,7 +135,11 @@ const SignUpPage = ({ setUser }) => {
                 onChange={handleEmailChange}
                 className="mt-1 p-2 w-full text-black dark:text-white bg-white dark:bg-neutral-800 border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
               />
-              {TakenEmail && <p className="text-red-500 text-sm mt-1">There is already an account with this email.</p>}
+              {TakenEmail && (
+                <p className="text-red-500 text-sm mt-1">
+                  There is already an account with this email.
+                </p>
+              )}
               <label className="block text-sm font-medium text-gray-700 dark:text-white">
                 Password
               </label>
