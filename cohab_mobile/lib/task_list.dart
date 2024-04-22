@@ -64,6 +64,12 @@ class _TaskListState extends State<TaskList> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+
 
   // Function to add a task to the tasks list
   void addTask(String taskDescription) async {

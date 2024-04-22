@@ -29,6 +29,12 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
