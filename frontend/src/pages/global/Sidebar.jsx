@@ -88,7 +88,7 @@ export function SidebarItem({ icon, text, active, alert, link }) {
 
   const handleLogOut = () => {
     localStorage.clear();
-    toast("Logged out");
+    toast.info("Logged out");
     navigate("/login");
   };
 

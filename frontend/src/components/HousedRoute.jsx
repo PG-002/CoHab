@@ -13,7 +13,7 @@ const isHoused = (userInfo) => {
 };
 
 // This is your AuthenticatedRoute component
-const HousedRoute = ({ userInfo }) => {
+const HousedRoute = ({ userInfo, connected }) => {
   const [loader, setLoader] = useState(true);
   const [housed, setHoused] = useState(false);
 
@@ -22,13 +22,16 @@ const HousedRoute = ({ userInfo }) => {
       if (isHoused(userInfo)) {
         setHoused(true);
       }
-      setLoader(null);
+      setLoader(false);
     }
   }, [userInfo]);
 
-  return loader ? (
+  return loader || !connected ? (
     <div className="flex flex-col w-full h-screen items-center justify-center">
-      <HashLoader color="#36d7b7" />{" "}
+      <HashLoader color="#36d7b7" />
+      {!connected && (
+        <p className="font-bold p-10 text-2xl">Socket Connecting</p>
+      )}
     </div>
   ) : housed ? (
     <Outlet />

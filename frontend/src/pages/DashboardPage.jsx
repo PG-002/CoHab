@@ -20,6 +20,7 @@ import night from "../assets/night.jpg";
 import EmblaCarousel from "../components/Dashboard/Carousel/EmblaCarousel";
 import Modal from "react-modal";
 import { toast } from "sonner";
+import { RingLoader } from "react-spinners";
 
 dayjs.extend(localizedFormat);
 
@@ -35,16 +36,10 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
   const [addRoommate, setAddRoommate] = useState(false);
   const [email, setEmail] = useState("");
   const [houseMates, setHouseMates] = useState(null);
+  const [roommateLoading, setRoommateLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserInfo = async (userId) => {
-      if (!userId) {
-        console.log("Log out in fetch due to userID not exist");
-        handleLogOut();
-        navigate("/login"); // Redirect to login if no session
-        return;
-      }
-
       try {
         const response = await fetch(
           "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getUserInfo",
@@ -90,6 +85,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
       });
 
       setHouseMates(tempArray);
+      setRoommateLoading(false);
     }
   }, [houseInfo]);
 
@@ -232,6 +228,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
   const handleSliderChange = (e) => {
     setNoiseLevel(e.target.value);
     socket.emit("setNoiseLevel", e.target.value);
+    toast.success(`Noise level adjusted to ${e.target.value}`);
   };
 
   const valueText = (value) => {
@@ -303,15 +300,15 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
 
   return (
     <>
-      <div className="flex flex-col h-screen w-full overflow-y-auto overflow-x-auto p-5">
-        <div className="w-full flex flex-row flex-wrap justify-center gap-x-4 lg:gap-x-10 gap-y-4 items-center h-full">
+      <div className="flex flex-col h-screen w-full overflow-y-auto overflow-x-auto">
+        <div className="w-full h-full flex overflow-y-auto flex-row flex-wrap justify-evenly gap-y-4 lg:gap-0 items-center py-4">
           <div
-            className="lg:w-[35rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-no-repeat bg-cover bg-neutral-800"
+            className="w-5/6 lg:w-[44.5%] rounded-xl h-[30%] lg:h-[47%] bg-no-repeat bg-cover bg-neutral-800"
             style={{
               backgroundImage: `url(${background ?? null})`,
             }}
           >
-            <div className="flex flex-col lg:w-[35rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] p-8 justify-between items-start bg-neutral-800 bg-opacity-60">
+            <div className="flex flex-col w-full rounded-xl h-full p-8 justify-between items-start bg-neutral-800 bg-opacity-60">
               <div className=" flex flex-col items-start ">
                 <p className="font-bold text-3xl 2xl:text-4xl">
                   {dayjs().format("dddd")},
@@ -365,7 +362,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
             </div>
           </div>
           <SmallCalendar events={events} />
-          <div className="flex flex-col w-[40rem] lg:w-[35rem] 2xl:w-[50rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-6 justify-between items-start">
+          <div className="flex flex-col w-5/6 lg:w-[44.5%] rounded-xl lg:h-[47%] bg-neutral-800 p-8 pb-6 justify-between items-start">
             <div className="flex flex-row items-center justify-between w-full">
               <div className="font-bold text-2xl mb-3">Roommates:</div>
               <button
@@ -407,69 +404,81 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
                   </div>
                 </form>
               </div>
+            ) : roommateLoading ? (
+              <div className="flex flex-col items-center justify-center w-full h-full">
+                {" "}
+                <RingLoader color="#36d7b7" size={96} />{" "}
+              </div>
             ) : (
               <EmblaCarousel userInfo={userInfo} houseMates={houseMates} />
             )}
           </div>
-          <div className="flex flex-col lg:w-[22rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
-            <div className="font-bold text-2xl pb-4">Recent Messages:</div>
-            <div className="flex flex-col  w-full h-full gap-y-2 justify-start overflow-y-auto">
-              {messages
-                ? messages
-                    .toReversed()
-                    .slice(0, 3)
-                    .map(({ message, sentBy, date }, i) => {
-                      return (
-                        <div
-                          key={i}
-                          className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start px-3 py-1 justify-evenly"
-                        >
-                          <p className="w-full text-left font-bold text-sm 2xl:text-base text-ellipsis text-nowrap overflow-hidden">
-                            {message}
-                          </p>
-                          <p className="w-full text-left text-xs text-ellipsis text-nowrap overflow-hidden">
-                            Sent By: <span className="font-bold">{sentBy}</span>
-                          </p>
-                          <p className="w-full text-left text-xs text-ellipsis text-nowrap overflow-hidden">
-                            Date:{" "}
-                            <span className="font-bold">
-                              {dayjs(date).format("lll")}
-                            </span>
-                          </p>
-                        </div>
-                      );
-                    })
-                : null}
+          <div className="flex flex-row w-5/6 lg:w-[50%] h-[47%] justify-between">
+            <div className="flex flex-col w-[47%] rounded-xl h-full bg-neutral-800 p-8 pb-4 justify-between items-start">
+              <div className="font-bold text-2xl pb-4">Recent Messages:</div>
+              <div className="flex flex-col  w-full h-full gap-y-2 justify-start overflow-y-auto">
+                {messages
+                  ? messages
+                      .toReversed()
+                      .slice(0, 3)
+                      .map(({ message, sentBy, date }, i) => {
+                        return (
+                          <div
+                            key={i}
+                            className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start px-3 py-1 justify-evenly"
+                          >
+                            <p className="w-full text-left font-bold text-sm 2xl:text-base text-ellipsis text-nowrap overflow-hidden">
+                              {message}
+                            </p>
+                            <p className="w-full text-left text-xs text-ellipsis text-nowrap overflow-hidden">
+                              Sent By:{" "}
+                              <span className="font-bold">{sentBy}</span>
+                            </p>
+                            <p className="w-full text-left text-xs text-ellipsis text-nowrap overflow-hidden">
+                              Date:{" "}
+                              <span className="font-bold">
+                                {dayjs(date).format("lll")}
+                              </span>
+                            </p>
+                          </div>
+                        );
+                      })
+                  : null}
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col lg:w-[22rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
-            <div className="font-bold text-2xl mb-4">Recent Tasks:</div>
-            <div className="flex flex-col w-full h-full gap-y-2 justify-start overflow-y-auto">
-              {tasks
-                ? tasks
-                    .toReversed()
-                    .slice(0, 3)
-                    .map((task, i) => {
-                      return !task.completed ? (
-                        <div
-                          key={i}
-                          className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start pl-3 pt-1"
-                        >
-                          <p className="w-full text-left font-bold text-xl">
-                            {task.task}
-                          </p>
-                          <p className="w-full text-left text-sm">
-                            Created By:{" "}
-                            <span className="font-bold">{task.createdBy}</span>
-                          </p>
-                          <p className="w-full text-left text-sm">
-                            Assigned to:{" "}
-                            <span className="font-bold">{task.assignedTo}</span>
-                          </p>
-                        </div>
-                      ) : null;
-                    })
-                : null}
+            <div className="flex flex-col w-[47%] rounded-xl h-full bg-neutral-800 p-8 pb-4 justify-between items-start">
+              <div className="font-bold text-2xl mb-4">Recent Tasks:</div>
+              <div className="flex flex-col w-full h-full gap-y-2 justify-start overflow-y-auto">
+                {tasks
+                  ? tasks
+                      .toReversed()
+                      .slice(0, 3)
+                      .map((task, i) => {
+                        return !task.completed ? (
+                          <div
+                            key={i}
+                            className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start pl-3 pt-1"
+                          >
+                            <p className="w-full text-left font-bold text-xl">
+                              {task.task}
+                            </p>
+                            <p className="w-full text-left text-sm">
+                              Created By:{" "}
+                              <span className="font-bold">
+                                {task.createdBy}
+                              </span>
+                            </p>
+                            <p className="w-full text-left text-sm">
+                              Assigned to:{" "}
+                              <span className="font-bold">
+                                {task.assignedTo}
+                              </span>
+                            </p>
+                          </div>
+                        ) : null;
+                      })
+                  : null}
+              </div>
             </div>
           </div>
         </div>

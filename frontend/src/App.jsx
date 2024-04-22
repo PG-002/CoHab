@@ -39,6 +39,7 @@ function App() {
   const [events, setEvents] = useState(null);
   const [socket, setSocket] = useState(null);
   const [socketError, setSocketError] = useState(null);
+  const [connected, setConnected] = useState(false);
   const [userUpdate, setUserUpdate] = useState(false);
 
   const colorTheme = theme === "dark" ? "light" : "light";
@@ -54,9 +55,11 @@ function App() {
     });
 
     setSocket(connectSocket);
+    toast.info("Connecting to Socket");
 
     connectSocket.on("connect_error", (err) => {
       console.log(`connect_error due to ${err.message}`);
+      toast.error(err.message);
     });
     setSocketError(null);
   };
@@ -64,6 +67,7 @@ function App() {
   const handleLogOut = () => {
     socket.disconnect();
     localStorage.clear();
+    toast.info("Logged Out");
 
     navigate("/login");
   };
@@ -90,13 +94,6 @@ function App() {
 
   useEffect(() => {
     const fetchUserInfo = async (userId) => {
-      if (!userId) {
-        console.log("Log out in fetch due to userID not exist");
-        handleLogOut();
-        navigate("/login"); // Redirect to login if no session
-        return;
-      }
-
       try {
         const response = await fetch(
           "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getUserInfo",
@@ -169,9 +166,13 @@ function App() {
     if (socket) {
       socket.once("connect", () => {
         console.log("Socket Connected");
+        setConnected(true);
+        toast.success("Socket connected");
       });
 
       socket.on("disconnect", () => {
+        setConnected(false);
+        toast.error("Socket Disconnected");
         console.log("Socket Disconnected");
       });
 
@@ -226,7 +227,9 @@ function App() {
             element={<CreateHome userInfo={user} setUser={setUser} />}
           />
           <Route element={<VerifiedRoute userInfo={user} />}>
-            <Route element={<HousedRoute userInfo={user} />}>
+            <Route
+              element={<HousedRoute connected={connected} userInfo={user} />}
+            >
               <Route
                 element={
                   <SidebarLayout
