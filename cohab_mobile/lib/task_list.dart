@@ -351,15 +351,19 @@ class _TaskListState extends State<TaskList> {
               },
             ),
           ),
-          Row(
-            children: [
-              const SizedBox(width: 365),
-              AddTasksButton(
-                onAddTask: addTask,
-              ),
-            ],
+          SizedBox(
+            width: 365, // Adjust the width as needed
+            child: Row(
+              children: [
+                Expanded(
+                  child: AddTasksButton(
+                    onAddTask: addTask,
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(height: 20),
         ],
       ),
     );
