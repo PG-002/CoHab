@@ -5,72 +5,12 @@ import { jwtDecode } from "jwt-decode";
 import { HashLoader } from "react-spinners";
 useEmblaCarousel.globalOptions = { slidesToScroll: "auto" };
 
-const EmblaCarousel = ({ userInfo, houseInfo }) => {
+const EmblaCarousel = ({ userInfo, houseMates }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel();
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState([]);
-  const [houseMates, setHouseMates] = useState(null);
-  const [loader, setLoader] = useState(false);
-
-  useEffect(() => {
-    const fetchUserInfo = async (userId) => {
-      if (!userId) {
-        console.log("Log out in fetch due to userID not exist");
-        handleLogOut();
-        navigate("/login"); // Redirect to login if no session
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getUserInfo",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ id: userId }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch user info");
-        }
-
-        const data = await response.json();
-
-        if (data.token) {
-          const decoded = jwtDecode(data.token);
-          return decoded;
-        } else {
-          console.error("User not found:", data.error);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error.message);
-      }
-    };
-
-    if (houseInfo) {
-      const status = houseInfo.statuses;
-      const tempArray = [];
-      setLoader(true);
-
-      status.map((item) => {
-        fetchUserInfo(item.userId).then((user) => {
-          const object = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            status: item.status,
-          };
-          tempArray.push(object);
-        });
-      });
-
-      setHouseMates(tempArray);
-    }
-  }, [houseInfo]);
 
   const scrollPrev = useCallback(() => {
     if (!emblaApi) return;
@@ -160,7 +100,7 @@ const EmblaCarousel = ({ userInfo, houseInfo }) => {
                 {houseMate.firstName} {houseMate.lastName}
               </p>
               <div className="flex flex-row items-center">
-                <p className="mr-2 font-bold text-base 2xl:text-xl">Status: </p>
+                <p className="mr-2 font-bold text-sm 2xl:text-xl">Status: </p>
                 <p className="text-base 2xl:text-xl">{houseMate.status}</p>
               </div>
             </div>

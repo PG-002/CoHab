@@ -34,6 +34,64 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
   const [background, setBackground] = useState(null);
   const [addRoommate, setAddRoommate] = useState(false);
   const [email, setEmail] = useState("");
+  const [houseMates, setHouseMates] = useState(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async (userId) => {
+      if (!userId) {
+        console.log("Log out in fetch due to userID not exist");
+        handleLogOut();
+        navigate("/login"); // Redirect to login if no session
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getUserInfo",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: userId }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user info");
+        }
+
+        const data = await response.json();
+
+        if (data.token) {
+          const decoded = jwtDecode(data.token);
+          return decoded;
+        } else {
+          console.error("User not found:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error.message);
+      }
+    };
+
+    if (houseInfo) {
+      const status = houseInfo.statuses;
+      const tempArray = [];
+
+      status.map((item) => {
+        fetchUserInfo(item.userId).then((user) => {
+          const object = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            status: item.status,
+          };
+          tempArray.push(object);
+        });
+      });
+
+      setHouseMates(tempArray);
+    }
+  }, [houseInfo]);
 
   useEffect(() => {
     const fetchWeather = async (long, lat) => {
@@ -350,7 +408,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
                 </form>
               </div>
             ) : (
-              <EmblaCarousel userInfo={userInfo} houseInfo={houseInfo} />
+              <EmblaCarousel userInfo={userInfo} houseMates={houseMates} />
             )}
           </div>
           <div className="flex flex-col lg:w-[22rem] 2xl:w-[25rem] rounded-xl h-[21rem] 2xl:h-[26.25rem] bg-neutral-800 p-8 pb-4 justify-between items-start">
