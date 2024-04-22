@@ -46,6 +46,22 @@ class _TaskListState extends State<TaskList> {
     }).catchError((error) {
       // Handle error if necessary
     });
+
+    socket.on('tasksChange',(data)
+    {
+      setState(() {
+        tasks.clear();
+        tasks = data['tasks'].map<Task>((task) {
+          return Task(
+            id: task['_id'],
+            taskDescription: task['task'],
+            assignedTo: task['assignedTo'],
+            createdBy: task['createdBy'],
+            completed: task['completed'],
+          );
+        }).toList();
+      });
+    });
   }
 
 
@@ -115,7 +131,6 @@ class _TaskListState extends State<TaskList> {
       };
 
       socket.emit('modifyTask',body);
-
     });
   }
 
@@ -131,10 +146,8 @@ class _TaskListState extends State<TaskList> {
         'completed': tasks[index].completed,
 
       };
-
-      socket.emit('deleteTask',body);
-
       tasks.removeAt(index);
+      socket.emit('deleteTask',body);
     });
 
   }

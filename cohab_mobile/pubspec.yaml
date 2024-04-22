@@ -42,6 +42,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   geolocator: ^11.0.0
   weather: ^3.1.1
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

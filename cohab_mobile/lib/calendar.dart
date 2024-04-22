@@ -63,6 +63,30 @@ class _CalendarScreenState extends State<CalendarScreen> {
         }).toList();
       });
     });
+
+    socket.on('eventsChange',(data)
+    {
+      setState(() {
+        eventList.clear();
+        eventList = data['events'].map<NeatCleanCalendarEvent>((event) {
+          DateTime startTime = DateTime.parse(event['start']);
+          DateTime endTime = DateTime.parse(event['end']);
+
+          return NeatCleanCalendarEvent(
+            event['title'],
+            metadata: {
+              '_id': event['_id'].toString(), // Here you can add any key-value pairs you want
+            },
+            startTime: startTime,
+            endTime: endTime,
+            color: Colors.blue,
+          );
+        }).toList();
+      });
+
+    });
+
+
   }
 
   void _addEvent() async {
@@ -91,10 +115,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         'createdBy': userId,
         '_id': event.metadata!['_id'], // Accessing the _id field from the metadata map
       };
-
-      socket.emit('deleteEvent',body);
-
       eventList.remove(event);
+      socket.emit('deleteEvent',body);
     });
   }
   void _showEventDetailsDialog(NeatCleanCalendarEvent event) {
@@ -213,7 +235,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
   final TextEditingController _eventNameController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedStartTime = TimeOfDay.now();
-  TimeOfDay _selectedEndTime = TimeOfDay.now().replacing(hour: TimeOfDay.now().hour + 1);
+  TimeOfDay _selectedEndTime = TimeOfDay.now();
 
   @override
   void dispose() {
@@ -347,13 +369,6 @@ class _AddEventDialogState extends State<AddEventDialog> {
                 socket.emit('createEvent',body);
 
                 Navigator.of(context).pop(newEvent);
-              } else {
-                // Show error message that end time should be after start time
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('End time should be after start time'),
-                  ),
-                );
               }
             }
           },
