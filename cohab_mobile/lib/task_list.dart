@@ -46,6 +46,22 @@ class _TaskListState extends State<TaskList> {
     }).catchError((error) {
       // Handle error if necessary
     });
+
+    socket.on('tasksChange',(data)
+    {
+      setState(() {
+        tasks.clear();
+        tasks = data['tasks'].map<Task>((task) {
+          return Task(
+            id: task['_id'],
+            taskDescription: task['task'],
+            assignedTo: task['assignedTo'],
+            createdBy: task['createdBy'],
+            completed: task['completed'],
+          );
+        }).toList();
+      });
+    });
   }
 
 

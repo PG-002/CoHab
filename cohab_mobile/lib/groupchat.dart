@@ -5,6 +5,8 @@ import 'token.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+List<Map<String, dynamic>> messages = []; // List to store chat messages
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
@@ -14,7 +16,6 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  List<Map<String, dynamic>> messages = []; // List to store chat messages
 
   @override
   void initState() {
