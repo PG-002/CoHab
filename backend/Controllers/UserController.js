@@ -22,7 +22,7 @@ const signup = async (req, res) => {
   if(hashedPassword.error)
   {
     res.status(200);
-    res.json({ error : hashedPassword.error });
+    res.json({ error : hashedPassword.error, e : hashedPassword.e });
   }
   else
   {
