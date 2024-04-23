@@ -6,8 +6,9 @@ import 'task_list.dart';
 import 'calendar.dart';
 import 'groupchat.dart';
 import 'settings.dart';
+import 'package:intl/intl.dart';
 
-late int noiseLevel;
+late int noiseLevel = 0;
 late List<Roommate> statuses = [];
 
 class DashboardPage extends StatefulWidget {
@@ -23,7 +24,8 @@ class _Dashboard extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    getHouse().then((_) { //array of tasks
+    getHouse().then((_) {
+      //array of tasks
       setState(() {
         tasks = house['house']['tasks'].map<Task>((task) {
           return Task(
@@ -35,7 +37,9 @@ class _Dashboard extends State<DashboardPage> {
           );
         }).toList();
 
-        eventList = house['house']['events'].map<NeatCleanCalendarEvent>((event) { //array of calendar events
+        eventList =
+            house['house']['events'].map<NeatCleanCalendarEvent>((event) {
+          //array of calendar events
           DateTime startTime = DateTime.parse(event['start']);
           DateTime endTime = DateTime.parse(event['end']);
 
@@ -52,17 +56,41 @@ class _Dashboard extends State<DashboardPage> {
 
         noiseLevel = noise_level; //the current noise level
 
-        statuses = house['house']['statuses'].map<Roommate>((roommate){ //array  of statuses
+        /*statuses = house['house']['statuses'].map<Roommate>((roommate) {
+          String? tempname = getUsersStatus(roommate['userId']) ;
 
-          String tempname = getUsersStatus(roommate['userId']) as String;
+          
 
           return Roommate(
-             id:  roommate['userId'],
+            id: roommate['userId'],
             status: roommate['status'],
             name: tempname,
-           );
+          );
+        }).toList();*/
 
-        }).toList();
+        Future<void> loadStatuses() async {
+          List<Roommate> updatedStatuses = [];
+          List<dynamic> houseStatuses = house['house']['statuses'];
+
+          for (var roommate in houseStatuses) {
+            String? tempname = await getUsersStatus(roommate['userId']);
+            print(tempname); // This will print the retrieved name or null
+            updatedStatuses.add(
+              Roommate(
+                id: roommate['userId'],
+                status: roommate['status'],
+                name: tempname,
+              ),
+            );
+          }
+        
+
+          setState(() {
+            statuses = updatedStatuses;
+          });
+        }
+
+        loadStatuses();
       });
     }).catchError((error) {
       // Handle error if necessary
@@ -85,13 +113,15 @@ class _Dashboard extends State<DashboardPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog without returning any value
+                Navigator.of(context)
+                    .pop(); // Close the dialog without returning any value
               },
               child: Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(_status); // Close the dialog and return the entered value
+                Navigator.of(context).pop(
+                    _status); // Close the dialog and return the entered value
               },
               child: Text('OK'),
             ),
@@ -102,12 +132,13 @@ class _Dashboard extends State<DashboardPage> {
 
     if (newStatus != null) {
       // Handle the new status, e.g., update it in the database or perform any other action
-      socket.emit('updateStatus',newStatus);
+      socket.emit('updateStatus', newStatus);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = DateFormat('M/d/y').format(DateTime.now());
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -119,46 +150,282 @@ class _Dashboard extends State<DashboardPage> {
         titleSpacing: 0,
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+      
             // Your other widgets here
-          ],
-        ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            'Status',
-            style: TextStyle(
-              color: Colors.black, // Change the color of the title if needed
-              fontSize: 20, // Adjust font size as needed
-              fontWeight: FontWeight.bold, // Adjust font weight as needed
+            /*Expanded(
+              child: ListView.builder(
+                itemCount: statuses.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(statuses[index].name ?? 'Unknown'),
+                    subtitle: Text(statuses[index].status),
+                  );
+                },
+              ),
+            ),*/
+       body: Stack(
+      children: [
+        Positioned(
+          bottom: 10,
+          right: 10,
+          child: Container(
+            constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.40),
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF404040),
+              shape: BoxShape.rectangle,
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Statuses:',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                    
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 150, // Adjust the height as needed
+                  child: ListView.builder(
+                    itemCount: statuses.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF14532d), // Change the background color as needed
+                          borderRadius: BorderRadius.circular(8), // Adjust border radius as needed
+                       ),
+                        child: ListTile(
+                          title: Text(statuses[index].name ?? 'Unknown'),
+                          subtitle: Text(statuses[index].status),
+                          textColor: Colors.white,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 10), // Add some space between the title and the button
-          SizedBox(
-            width: 65.0, // Adjust width as needed
-            height: 65.0, // Adjust height as needed
-            child: FloatingActionButton(
-              onPressed: _changeStatus,
-              tooltip: 'Change Status',
-              child: Icon(Icons.emoji_emotions, color: Colors.white),
-              backgroundColor: const Color(0xFF14532d),
+        ),
+        Positioned(
+          bottom: 10,
+          left: 10,
+          child: Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.45,
+              //maxHeight: 200, // Add a maximum height constraint
+            ),
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF404040),
+              shape: BoxShape.rectangle,
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Recent Tasks:',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                const SizedBox(height: 10),
+                ...List.generate(
+                  tasks.length > 3 ? 3 : tasks.length,
+                  (index) => Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(
+                          0xFF14532d), // Background color of the task box
+                      borderRadius: BorderRadius.circular(
+                          10), // Adjust border radius as needed
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tasks[tasks.length - 3 + index].taskDescription,
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          'Created By: ${tasks[tasks.length - 3 + index].createdBy}',
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          'Assigned To: ${tasks[tasks.length - 3 + index].assignedTo}',
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        const SizedBox(
+                            height: 10), // Add some space between tasks
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 400, // Adjust the positioning as needed
+          left: 10,
+          child: Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.45,
+            ),
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF404040),
+              shape: BoxShape.rectangle,
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Noise Level:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Current Noise Level: $noiseLevel',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+
+        Positioned(
+          
+          bottom: 300,
+          right: 10,
+          child: Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.45),
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF404040),
+              shape: BoxShape.rectangle,
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Events for:\n $formattedDate',
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                const SizedBox(height: 10),
+                ...eventList.where((event) {
+                  DateTime currentDate = DateTime.now();
+                  String formattedCurrentDate =
+                      DateFormat('yyyy-MM-dd').format(currentDate);
+                  String formattedStartTime =
+                      DateFormat('yyyy-MM-dd').format(event.startTime);
+                  return formattedStartTime == formattedCurrentDate;
+                }).map((event) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(
+                          0xFF14532d), // Background color of the event box
+                      borderRadius: BorderRadius.circular(
+                          10), // Adjust border radius as needed
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          event.summary,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          '${DateFormat('h:mm a').format(event.startTime)} - ${DateFormat('h:mm a').format(event.endTime)}',
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  );
+                })
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            top: 170,
+            right: 10, 
+            child: SizedBox(
+              width: 65.0,
+              height: 65.0, 
+              child: FloatingActionButton(
+                onPressed: _changeStatus,
+                tooltip: 'Change Status',
+                backgroundColor: const Color(0xFF14532d),
+                child: const Icon(Icons.emoji_emotions, color: Colors.white),
+              ),
             ),
           ),
         ],
       ),
     );
+    
   }
+  
+
 }
-class Roommate{
+
+class Roommate {
   String id;
-  String name;
+  String? name;
   String status;
-Roommate({
+  Roommate({
     required this.id,
     required this.status,
     required this.name,
