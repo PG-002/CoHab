@@ -20,6 +20,7 @@ const signup = async (req, res) => {
 
   console.log('password in signup is:', password)
   console.log('req body is:', req.body)
+  console.log('header auth is:', req.headers.authorization)
   const hashedPassword = await hash(password);
 
   if(hashedPassword.error)
