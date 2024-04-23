@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: const Color(0xFF14532d),
         iconTheme: const IconThemeData(color: Colors.white),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: SingleChildScrollView(
