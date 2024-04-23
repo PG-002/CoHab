@@ -39,6 +39,7 @@ const SmallCalendar = ({ events }) => {
           dayjs(eventObj.start).month() ==
           dayjs(new Date(dayjs().year(), currentMonthIndex)).month()
         ) {
+          console.log(eventObj);
           tempList.push(eventObj);
           dayjsList.push(dayjs(eventObj.start).format("YYYYMMDD"));
         }
@@ -167,10 +168,11 @@ const SmallCalendar = ({ events }) => {
           {eventsList
             ? eventsList.map((event, i) => {
                 if (event) {
+                  console.log(event.title, event.description);
                   return checkEventOnDay(daySelected ?? dayjs(), event) ? (
                     <div
                       key={i}
-                      className="flex flex-col w-full h-12 2xl:h-16 rounded shadow-lg bg-eucalyptus-700 p-1 pl-2"
+                      className="flex flex-col w-full rounded shadow-lg bg-eucalyptus-700 p-1 pl-2"
                     >
                       <p className="text-sm 2xl:text-lg font-bold text-ellipsis text-nowrap overflow-hidden">
                         {event.title}
@@ -181,6 +183,11 @@ const SmallCalendar = ({ events }) => {
                           : `${dayjs(event.start).format("LT")} -
                               ${dayjs(event.end).format("LT")}`}
                       </p>
+                      {event.description && (
+                        <p className="text-xs text-ellipsis text-nowrap overflow-hidden">
+                          Desc: {event.description}
+                        </p>
+                      )}
                     </div>
                   ) : null;
                 }

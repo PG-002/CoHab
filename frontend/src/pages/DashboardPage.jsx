@@ -460,7 +460,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
                         return !task.completed ? (
                           <div
                             key={i}
-                            className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start pl-3 pt-1"
+                            className="flex flex-col w-full bg-eucalyptus-700 rounded items-start pl-3 pt-1"
                           >
                             <p className="w-full text-left font-bold text-base lg:text-xl">
                               {task.task}
