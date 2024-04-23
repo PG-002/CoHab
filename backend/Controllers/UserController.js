@@ -21,8 +21,10 @@ const signup = async (req, res) => {
 
   if(hashedPassword.error)
   {
+    console.log('error w/ password:')
+    console.log(hashedPassword.e);
     res.status(200);
-    res.json({ error : hashedPassword.error, e : hashedPassword.e });
+    res.json({ error : hashedPassword.error });
   }
   else
   {
