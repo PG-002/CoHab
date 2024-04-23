@@ -111,7 +111,7 @@ function Location({socket, userInfo}) {
           </Marker>
         ))}
       </MapContainer>
-    ) : (<div className="flex flex-col items-center justify-center w-full h-screen"><HashLoader color="#36d7b7" /></div>);
+    ) : (<div className="flex flex-col items-center justify-center w-full h-screen gap-3"><HashLoader color="#36d7b7" /><p className='font-bold text-2xl'>Getting Location</p></div>);
   } else {
     return (
       <div className="map_modal_container bg-white dark:bg-neutral-800">
