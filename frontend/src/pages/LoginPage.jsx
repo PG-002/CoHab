@@ -139,7 +139,7 @@ const LoginPage = ({ setUser }) => {
                   to="/forgotPassword"
                   className="text-black dark:text-white hover:underline"
                 >
-                  Login here
+                  Change my password
                 </Link>
               </p>
             </div>
