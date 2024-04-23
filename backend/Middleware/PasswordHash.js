@@ -3,7 +3,7 @@ const saltRounds = 5;
 
 const hash = async (password) => await bcrypt.hash(password, saltRounds)
     .then((hash) => ({ password : hash, error : '' }))
-    .catch(() => ({ password : '', error : 'Failed to hash password.' }));
+    .catch((e) => ({ password : '', error : 'Failed to hash password.', e : e }));
 
 const compare = async (password, hash) => await bcrypt.compare(password, hash)
     .then(res => ({ match : res, error : '' }))

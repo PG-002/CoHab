@@ -20,7 +20,10 @@ const signup = async (req, res) => {
   const hashedPassword = await hash(password);
 
   if(hashedPassword.error)
+  {
+    res.status(200);
     res.json({ error : hashedPassword.error });
+  }
   else
   {
     await User.create({ firstName : firstName, lastName : lastName, email : email, password : hashedPassword.password })
