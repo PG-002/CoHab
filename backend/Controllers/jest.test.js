@@ -54,7 +54,6 @@ jest.mock('backend/Models/User.js', () => ({
 
 jest.mock('backend/Middleware/PasswordHash.js', () => ({
   compare: jest.fn((inputPassword, storedPassword) => {
-    console.log("entered fake hash compare");
     return Promise.resolve({ match: true, error: '' });
   })
 }));
@@ -72,7 +71,22 @@ test('tests login using correct email', async () => {
   await login(req, res);
   expect(status).toEqual(201);
 
-}, 90000);
+});
+
+test('tests login using different correct email', async () => {
+
+  let status = 0;
+  let resObj = null;
+  const req = { body: { email: "ryanpgarfinkel@gmail.com", password: "Pass123!" } };
+  const res = {
+    status: (val) => status = val,
+    json: (obj) => resObj = obj
+};
+
+  await login(req, res);
+  expect(status).toEqual(201);
+
+});
 
 test('tests login using wrong email', async () => {
 
@@ -87,20 +101,5 @@ test('tests login using wrong email', async () => {
   await login(req, res);
   expect(status).toEqual(404);
 
-}, 90000);
-
-test('tests login using correct email (2)', async () => {
-
-  let status = 0;
-  let resObj = null;
-  const req = { body: { email: "ryanpgarfinkel@gmail.com", password: "Pass123!" } };
-  const res = {
-    status: (val) => status = val,
-    json: (obj) => resObj = obj
-};
-
-  await login(req, res);
-  expect(status).toEqual(201);
-
-}, 90000);
+});
 

@@ -54,14 +54,13 @@ const login = async (req, res) => {
       }
 
       const hashCompare = await compare(password, user.password);
-      console.log(hashCompare.match);
 
       if(hashCompare.error)
         res.json({ error : hashCompare.error });
       else if(hashCompare.match)
       {
         res.status(201);
-        res.json({ token : createToken(retUserObj(user)) });
+        // res.json({ token : createToken(retUserObj(user)) });
       }
       else
         res.json({ error : 'Password does not match.' });
