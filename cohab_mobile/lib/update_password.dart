@@ -10,6 +10,7 @@ class UpdatePasswordPage extends StatefulWidget {
 }
 
 class _UpdatePasswordState extends State<UpdatePasswordPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email = '';
   String _newPassword = '';
 
@@ -21,11 +22,17 @@ class _UpdatePasswordState extends State<UpdatePasswordPage> {
 
   void _handleNewPassword(String value) {
     setState(() {
+
+      
       _newPassword = value;
     });
   }
 
   void _handleUpdatePassword(BuildContext context) async {
+
+    print('Email: $_email');
+    print('New Password: $_newPassword');
+
   // Check if email or password is empty
     if (_email.isEmpty || _newPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -54,7 +61,7 @@ class _UpdatePasswordState extends State<UpdatePasswordPage> {
     }
   }
 
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,7 +112,9 @@ class _UpdatePasswordState extends State<UpdatePasswordPage> {
                 ],
               ),
             const SizedBox(height: 25.0),
-            Column(
+            Form(
+              key: _formKey, 
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
@@ -120,23 +129,44 @@ class _UpdatePasswordState extends State<UpdatePasswordPage> {
                     child: Container(
                       color: Colors.grey[200],
                       child: TextFormField(
-                        onChanged: _handleNewPassword,
+                        //onChanged: _handleNewPassword,
                         obscureText: true,
                         decoration: InputDecoration(
-                          hintText: 'Enter your new password',
+                          hintText: 'At least 8 characters',
                           hintStyle: const TextStyle(
-                              color: Colors.black54, fontFamily: 'Open Sans'),
+                            color: Colors.black54,
+                            fontFamily: 'Open Sans',
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          contentPadding: const EdgeInsets.fromLTRB(
-                              12.0, 8.0, 12.0, 8.0),
+                          contentPadding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
                         ),
+                        onChanged: (value) {
+                          _formKey.currentState!.validate();
+                          _handleNewPassword(value);
+                          
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a password';
+                          } else if (value.length < 8 || value.length > 20) {
+                            return 'Password must be between 8 and 20 characters';
+                          } else if (!value.contains(RegExp(r'[A-Z]'))) {
+                            return 'Password must contain at least one uppercase letter';
+                          } else if (!value.contains(RegExp(r'[0-9]'))) {
+                            return 'Password must contain at least one number';
+                          } else if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+                            return 'Password must contain at least one special character';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
                 ],
               ),
+            ),
             const SizedBox(height: 25.0),
             Builder(
                 builder: (context) => MaterialButton(
