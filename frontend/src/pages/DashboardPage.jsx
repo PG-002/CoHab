@@ -79,8 +79,12 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
             firstName: user.firstName,
             lastName: user.lastName,
             status: item.status,
+            email: user.email,
           };
-          tempArray.push(object);
+
+          if (object.firstName != userInfo.firstName) {
+            tempArray.push(object);
+          }
         });
       });
 
@@ -310,15 +314,13 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
           >
             <div className="flex flex-col w-full rounded-xl h-full p-8 justify-between items-start bg-neutral-800 bg-opacity-60">
               <div className=" flex flex-col items-start ">
-                <p className="font-bold text-3xl 2xl:text-4xl">
+                <p className="font-bold text-3xl lg:text-4xl">
                   {dayjs().format("dddd")},
                 </p>
-                <p className=" text-4xl lg:text-6xl 2xl:text-7xl">
-                  {dayjs().format("LL")}
-                </p>
+                <p className=" text-3xl  lg:text-7xl">{dayjs().format("LL")}</p>
               </div>
               {weather ? (
-                <div className="flex flex-row w-full justify-between font-bold text-2xl lg:text-3xl 2xl:text-4xl ">
+                <div className="flex flex-row w-full justify-between font-bold text-xl lg:text-3xl 2xl:text-4xl ">
                   <div className="flex flex-row items-center gap-x-1">
                     <Thermometer />
                     <p>
@@ -343,7 +345,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
                 </div>
               ) : null}
               <div className="flex flex-row w-full gap-x-4 items-center ">
-                <p className="font-bold text-2xl">Noise Level:</p>
+                <p className="font-bold text-xl lg:text-2xl">Noise Level:</p>
                 <EarOff />
                 <Slider
                   aria-label="Small steps"
@@ -367,9 +369,10 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
               <div className="font-bold text-2xl mb-3">Roommates:</div>
               <button
                 onClick={() => setAddRoommate(true)}
-                className="mb-3 p-1 bg-eucalyptus-600 hover:bg-eucalyptus-300 border border-neutral-500"
+                className="flex flex-row mb-3 p-2 bg-eucalyptus-600 hover:bg-eucalyptus-800 border border-neutral-500"
               >
-                <PlusSquare />
+                Invite Roommate
+                <PlusSquare className="ml-1" />
               </button>
             </div>
             {addRoommate ? (
@@ -459,7 +462,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
                             key={i}
                             className="flex flex-col w-full h-20 bg-eucalyptus-700 rounded items-start pl-3 pt-1"
                           >
-                            <p className="w-full text-left font-bold text-xl">
+                            <p className="w-full text-left font-bold text-base lg:text-xl">
                               {task.task}
                             </p>
                             <p className="w-full text-left text-sm">

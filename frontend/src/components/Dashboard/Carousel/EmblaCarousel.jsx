@@ -70,7 +70,7 @@ const EmblaCarousel = ({ userInfo, houseMates }) => {
   return houseMates ? (
     <div className="flex flex-col w-full h-full overflow-hidden" ref={emblaRef}>
       <div className="flex gap-2 2xl:gap-3 h-[90%] lg:h-4/5 ">
-        <div className="flex flex-col items-center justify-evenly flex-grow-0 flex-shrink-0 w-[32.25%] h-full rounded-lg bg-eucalyptus-800 shadow-lg p-[0.6rem] lg:p-4 ">
+        {/* <div className="flex flex-col items-center justify-evenly flex-grow-0 flex-shrink-0 w-[32.25%] h-full rounded-lg bg-eucalyptus-800 shadow-lg p-[0.6rem] lg:p-4 ">
           <img
             className="size-14 2xl:size-16 rounded-lg"
             src={`https://ui-avatars.com/api/?name=${userInfo.firstName} ${userInfo.lastName}&background=bbf7d0&color=052e16&bold=true`}
@@ -85,7 +85,7 @@ const EmblaCarousel = ({ userInfo, houseMates }) => {
               {statusIn ? "In Room" : "Out"}
             </button>
           </div>
-        </div>
+        </div> */}
         {houseMates.map((houseMate, i) => {
           return (
             <div
@@ -99,10 +99,13 @@ const EmblaCarousel = ({ userInfo, houseMates }) => {
               <p className="font-bold text-base 2xl:text-lg">
                 {houseMate.firstName} {houseMate.lastName}
               </p>
-              <div className="flex flex-row items-center">
+
+              <p className="font-bold text-xs 2xl:text-sm">{houseMate.email}</p>
+
+              {/* <div className="flex flex-row items-center">
                 <p className="mr-2 font-bold text-sm 2xl:text-xl">Status: </p>
                 <p className="text-base 2xl:text-xl">{houseMate.status}</p>
-              </div>
+              </div> */}
             </div>
           );
         })}
