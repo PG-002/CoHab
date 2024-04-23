@@ -26,15 +26,16 @@ const HousedRoute = ({ userInfo, connected }) => {
     }
   }, [userInfo]);
 
-  return loader || !connected ? (
+  return loader && !connected ? (
     <div className="flex flex-col w-full h-screen items-center justify-center">
       <HashLoader color="#36d7b7" />
-      {!connected && (
-        <p className="font-bold p-10 text-2xl">Socket Connecting</p>
-      )}
     </div>
   ) : housed ? (
-    <Outlet />
+    connected ? (
+      <Outlet />
+    ) : (
+      <p className="font-bold p-10 text-2xl">Socket Connecting</p>
+    )
   ) : (
     <Navigate to="/joinHouse" />
   ); // If authenticated, render the children components
