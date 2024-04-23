@@ -17,6 +17,8 @@ const retUserObj = user => ({
 
 const signup = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
+
+  console.log('password in signup is:', password)
   const hashedPassword = await hash(password);
 
   if(hashedPassword.error)
