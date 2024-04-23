@@ -1,10 +1,20 @@
 import 'package:cohab_mobile/send_join_code.dart';
 import 'package:cohab_mobile/token.dart';
 import 'package:flutter/material.dart';
+import 'web_socket.dart';
+import 'main.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
+  void logout(BuildContext context) {
+    socket.disconnect();
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +31,20 @@ class SettingsPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView( // Wrap with SingleChildScrollView
+        child: SingleChildScrollView(
+          // Wrap with SingleChildScrollView
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               // User Profile Section
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 40,),
+                    const SizedBox(
+                      height: 40,
+                    ),
                     const Text(
                       'User Profile',
                       style: TextStyle(
@@ -43,7 +56,7 @@ class SettingsPage extends StatelessWidget {
                     Text(
                       'Name: ${decodedToken['firstName']} ${decodedToken['lastName']}',
                       style: const TextStyle(
-                        fontSize:  19,
+                        fontSize: 19,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -66,7 +79,7 @@ class SettingsPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
               // Edit Profile Button
               Center(
                 child: Column(
@@ -89,7 +102,7 @@ class SettingsPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
               // Send House Invite Button
               Center(
                 child: Column(
@@ -107,12 +120,39 @@ class SettingsPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const EmailInputPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const EmailInputPage()),
                         );
                       },
                       backgroundColor: Colors.green,
                       heroTag: 'send_invite',
-                      child: const Icon(Icons.people_alt), // Unique tag for this Hero
+                      child: const Icon(
+                          Icons.people_alt), // Unique tag for this Hero
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Logout',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    FloatingActionButton(
+                      onPressed: () {
+                        logout(context);
+                      },
+                      backgroundColor: Colors.red,
+                      heroTag: 'logout',
+                      child: const Icon(
+                          Icons.exit_to_app), // Using "exit_to_app" icon
                     ),
                   ],
                 ),
