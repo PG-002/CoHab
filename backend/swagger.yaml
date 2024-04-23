@@ -1,0 +1,326 @@
+openapi: 3.0.0
+info:
+  title: Cohab API
+  version: 1.0.0
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/RyanGarfinkel/Cohab/1.0.0
+  - url: https://cohab-4fcf8ee594c1.herokuapp.com/api
+    description: Base URL of the API
+      
+components:
+  requestBodies:
+    Signup:
+      description: Signup
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              firstName:
+                type: string
+                default: "Ryan"
+              lastName:
+                type: string
+                default: "Garfinkel"
+              email:
+                type: string
+                default: "name@example.com"
+              password:
+                type: string
+                default: "secret"
+    Login:
+      description: Login
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                default: "name@example.com"
+              password:
+                type: string
+                default: "secret"
+    GetUserInfo:
+      description: GetUserInfo
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                default: "6627112d9e46a7edcbf66e4c"
+    GetHouse:
+      description: GetHouse
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                default: "6627112d9e46a7edcbf66e4c"
+    UpdatePassword:
+      description: UpdatePassword
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                default: "name@example.com"
+              password:
+                type: string
+                default: "new_secret_password!"
+    DeleteUser:
+      description: DeleteUser
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                default: "6627112d9e46a7edcbf66e4c"
+    SendVerification:
+      description: SendVerification
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                default: "name@example.com"
+    VerifyCode:
+      description: VerifyCode
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                default: "name@example.com"
+              code:
+                type: string
+                default: "123456"
+    CreateHouse:
+      description: CreateHouse
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                default: "6627112d9e46a7edcbf66e4c"
+              houseName:
+                type: string
+                default: "Knight House"
+    SendJoinCode:
+      description: SendJoinCode
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              houseId:
+                type: string
+                default: "66155152584d8066d7b638ed"
+              email:
+                type: string
+                default: "name@example.com"
+    DeleteHouse:
+      description: DeleteHouse
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                default: "6627112d9e46a7edcbf66e4c"
+    
+paths:
+  /users/signup:
+    post:
+      summary: Create an account for the user.
+      description: Create an account for the user.
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/Signup'
+      responses:
+        '201':
+          description: Successful response.
+        '404':
+          description: An error has occured.
+        '500':
+          description: Internal server error.
+  /users/login:
+    post:
+      summary: Sends back a user object if the credentials passed in matches an existing user.
+      description: Sends back a user object if the credentials passed in matches an existing user.
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/Login'
+      responses:
+        '201':
+          description: Successful response.
+        '404':
+          description: An error has occured.
+        '500':
+          description: Internal server error.
+  /users/getUserInfo:
+    post:
+      summary: Retrieves a user's object given a valid userId.
+      description: Retrieves a user's object given a valid userId.
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/GetUserInfo'
+      responses:
+        '200':
+          description: Successful response.
+        '404':
+          description: Page not found.
+        '500':
+          description: Internal server error.
+  /users/getHouse:
+    post:
+      summary: Retrieves a user's house object given a valid userId.
+      description: Retrieves a user's house object given a valid userId.
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/GetHouse'
+      responses:
+        '200':
+          description: Successful response.
+        '404':
+          description: Page not found.
+        '500':
+          description: Internal server error.
+  /users/updatePassword:
+    post:
+      summary: Updates a user's password given the user's email and new password.
+      description: Updates a user's password given the user's email and new password.
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePassword'
+      responses:
+        '200':
+          description: Successful response.
+        '404':
+          description: Page not found.
+        '500':
+          description: Internal server error.
+  /users/deleteUser:
+    post:
+      summary: Deletes a user and removes them from their house.
+      description: Deletes a user and removes them from their house.
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/DeleteUser'
+      responses:
+        '200':
+          description: Successful response.
+        '404':
+          description: Page not found.
+        '500':
+          description: Internal server error.
+  /users/sendVerification:
+    post:
+      summary: Sends the user a verification code through their email.
+      description: Sends the user a verification code through their email.
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/SendVerification'
+      responses:
+        '200':
+          description: Successful response.
+        '404':
+          description: Page not found.
+        '500':
+          description: Internal server error.
+  /users/verifyCode:
+    post:
+      summary: Determines if the email and code are a valid pair.
+      description: Determines if the email and code are a valid pair.
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/VerifyCode'
+      responses:
+        '200':
+          description: Successful response.
+        '404':
+          description: Page not found.
+        '500':
+          description: Internal server error.
+  /houses/createHouse:
+    post:
+      summary: Creates a new house and puts the user in it.
+      description: Creates a new house and puts the user in it.
+      tags:
+        - Houses
+      requestBody:
+        $ref: '#/components/requestBodies/CreateHouse'
+      responses:
+        '200':
+          description: Successful response.
+        '404':
+          description: Page not found.
+        '500':
+          description: Internal server error.
+  /houses/sendJoinCode:
+    post:
+      summary: Sends the email passed in a code to join the house.
+      description: Sends the email passed in a code to join the house.
+      tags:
+        - Houses
+      requestBody:
+        $ref: '#/components/requestBodies/SendJoinCode'
+      responses:
+        '200':
+          description: Successful response.
+        '404':
+          description: Page not found.
+        '500':
+          description: Internal server error.
+  /houses/deleteHouse:
+    post:
+      summary: Deletes the house and updates all user's in the house.
+      description: Deletes the house and updates all user's in the house.
+      tags:
+        - Houses
+      requestBody:
+        $ref: '#/components/requestBodies/DeleteHouse'
+      responses:
+        '200':
+          description: Successful response.
+        '404':
+          description: Page not found.
+        '500':
+          description: Internal server error.
