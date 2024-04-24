@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MsgBubble extends StatelessWidget {
-  final String firstName;
+  final String sentBy;
   final String msg;
   final String time;
   final bool isCurrentUser;
@@ -10,7 +10,7 @@ class MsgBubble extends StatelessWidget {
   const MsgBubble({
     Key? key,
     required this.msg,
-    required this.firstName,
+    required this.sentBy,
     required this.time,
     required this.isCurrentUser,
     this.onDelete,
@@ -44,7 +44,7 @@ class MsgBubble extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
-                    firstName,
+                    sentBy,
                     style: const TextStyle(
                       color: Color(0xFF3582F6),
                       fontWeight: FontWeight.bold,
