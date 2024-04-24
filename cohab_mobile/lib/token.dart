@@ -14,8 +14,6 @@ late var temp2;
 late var temp3;
 late var name;
 
-
-
 Future<void> signUp(
     String firstName, String lastName, String email, String password) async {
   final Uri url =
@@ -54,7 +52,8 @@ Future<void> signUp(
 }
 
 Future<void> login(String email, String password) async {
-  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/login');
+  final Uri url =
+      Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/login');
   final Map<String, String> body = {
     'email': email,
     'password': password,
@@ -69,34 +68,27 @@ Future<void> login(String email, String password) async {
       body: json.encode(body),
     );
 
-
     if (response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
       token = jsonResponse['token']; // Extracting the token string
       decodedToken = JwtDecoder.decode(token);
-
+      print(token);
       //userId
       userId = decodedToken['userId'];
-
-    } else if(response.statusCode == 404) {
+    } else if (response.statusCode == 404) {
       // Login failed
       throw 'Invalid Email';
+    } else {
+      throw 'Invalid Password';
     }
-    else
-      {
-        throw 'Invalid Password';
-      }
-  }
-
-  catch (e) {
+  } catch (e) {
     // Exception occurred
   }
 }
 
 Future<void> joinHouse(String code) async {
-
-  final Uri url = Uri.parse(
-      'https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/join');
+  final Uri url =
+      Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/join');
   final Map<String, String> body = {
     'userId': userId,
     'houseId': code,
@@ -110,9 +102,7 @@ Future<void> joinHouse(String code) async {
       },
       body: json.encode(body),
     );
-
-  }
-  catch (e) {
+  } catch (e) {
     // Exception occurred
     print(e);
   }
@@ -176,14 +166,14 @@ Future<void> verifyCode(String code) async {
         throw 'Unable to Verify User';
       }
     }
-  }
-  catch (e) {
+  } catch (e) {
     // Exception occurred
   }
 }
 
 Future<void> createHouse(String houseName) async {
-  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/createHouse');
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/houses/createHouse');
   final Map<String, String> body = {
     'userId': userId,
     'houseName': houseName,
@@ -203,15 +193,10 @@ Future<void> createHouse(String houseName) async {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       print(jsonResponse);
-
+    } else {
+      throw 'Create House Failed';
     }
-    else
-      {
-        throw 'Create House Failed';
-      }
-
-  }
-  catch (e) {
+  } catch (e) {
     // Exception occurred
     throw 'Create House Failed';
   }
@@ -247,7 +232,8 @@ Future<void> updatePassword(String email, String newPassword) async {
 }
 
 Future<void> getHouse() async {
-  final Uri url = Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getHouse');
+  final Uri url =
+      Uri.parse('https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getHouse');
   final Map<String, String> body = {
     'userId': userId,
   };
@@ -269,15 +255,10 @@ Future<void> getHouse() async {
       house = JwtDecoder.decode(houseToken);
 
       noise_level = house['house']['noiseLevel'];
-
-    }
-    else
-    {
+    } else {
       throw 'Get House Failed';
     }
-
-  }
-  catch (e) {
+  } catch (e) {
     // Exception occurred
     throw 'Get House Failed';
   }
@@ -304,7 +285,6 @@ Future<void> sendJoinCode(String email) async {
       final jsonResponse = json.decode(response.body);
       print(jsonResponse);
       sent = jsonResponse['sent'];
-
     }
   } catch (e) {
     // Exception occurred
@@ -316,7 +296,7 @@ Future<void> join(String code) async {
   final Uri url = Uri.parse(
       'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyCode');
   final Map<String, String> body = {
-    'email':decodedToken['email'],
+    'email': decodedToken['email'],
     'code': code,
   };
 
@@ -332,7 +312,6 @@ Future<void> join(String code) async {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       print(jsonResponse);
-
     }
   } catch (e) {
     // Exception occurred
@@ -340,7 +319,7 @@ Future<void> join(String code) async {
   }
 }
 
-Future<String?> getUsersStatus(String id) async{
+Future<String?> getUsersStatus(String id) async {
   final Uri url = Uri.parse(
       'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/getUserInfo');
   final Map<String, String> body = {
@@ -359,17 +338,58 @@ Future<String?> getUsersStatus(String id) async{
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
 
+      print(jsonResponse);
+
       temp = jsonResponse['token']; // Extracting the token string
       temp2 = JwtDecoder.decode(temp);
 
-       name = temp2['firstName'];
-
-       return name;
+      name = temp2['firstName'];
+      //print("Printing from token.dart");
+      //print(name);
+      return name;
     }
-  }
-  catch(e)
-  {
-
-  }
+  } catch (e) {}
   return null;
+}
+
+Future<void> updateUser(String fieldName, String fieldValue) async {
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/updateUser');
+  final Map<String, String> body = {
+    'id': userId,
+    'fieldName': fieldName,
+    'fieldValue': fieldValue,
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      //decodedToken = JwtDecoder.decode(token);
+      //decodedToken['firstName'];
+      //decodedToken['lastName'];
+
+      if (fieldName == 'firstName') {
+        decodedToken['firstName'] = fieldValue;
+      }else if (fieldName == 'lastName') {
+        decodedToken['lastName'] = fieldValue;
+      }else{
+
+      }
+      
+      print(decodedToken['firstName']);
+      print(decodedToken['lastName']);
+    }
+  } catch (e) {
+    // Exception occurred
+    // You might want to handle this error in your UI
+  }
 }
