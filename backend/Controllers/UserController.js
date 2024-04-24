@@ -275,8 +275,8 @@ const verifyCode = async (req, res) => {
     return;
   }
 
-  await User.findByIdAndUpdate(user._id, { houseId : house._id })
-    .then(() => res.json({ verified : true, token : createToken({ house : house }), error : '' }))
+  await User.findByIdAndUpdate(user._id, { houseId : house._id }, { new : true })
+    .then(h => res.json({ verified : true, token : createToken({ house : h }), error : '' }))
     .catch(() => res.json({ verfified : false, token : null, error : 'Error updating the user.' }));
 }
 
