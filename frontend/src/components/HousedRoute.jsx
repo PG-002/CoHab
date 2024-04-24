@@ -34,7 +34,9 @@ const HousedRoute = ({ userInfo, connected }) => {
     connected ? (
       <Outlet />
     ) : (
-      <p className="font-bold p-10 text-2xl">Socket Connecting</p>
+      <div className="flex flex-col w-full h-screen items-center justify-center">
+        <p className="font-bold p-10 text-2xl">Socket Connecting</p>
+      </div>
     )
   ) : (
     <Navigate to="/joinHouse" />
