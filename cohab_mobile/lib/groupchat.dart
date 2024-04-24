@@ -72,12 +72,13 @@ class _ChatScreenState extends State<ChatScreen> {
     if (new_msg.isNotEmpty && decodedToken != null) {
       setState(() {
         DateTime time = DateTime.now();
-
+        print(new_msg);
+        print(decodedToken['firstName']);
+        print(decodedToken['email']);
         final Map<String, dynamic> body = {
           'message': new_msg,
           'sentBy': decodedToken['firstName'],
           'email': decodedToken['email'],
-          'date': time.microsecondsSinceEpoch,
         };
         socket.emit('sendMessage', body);
 
@@ -105,12 +106,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void deleteMessage(int index) {
     setState(() {
+      DateTime time = DateTime.parse(messages[index].time);
       print(socket.connected);
       final Map<String,dynamic> body = {
         'message' : messages[index].msg,
         'sentBy' : messages[index].sentBy,
         'email': decodedToken['email'],
-        'date': messages[index].time,
+        'date': time.toIso8601String(),
       };
       socket.emit('deleteMessage',body);
       messages.removeAt(index);

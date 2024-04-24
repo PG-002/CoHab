@@ -66,7 +66,7 @@ class CreateAHouse extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     try{
-                      createHouse(houseName);
+                      await createHouse(houseName);
                        await getHouse();
                        socket.connect();
                           Navigator.push(
