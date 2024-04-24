@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'web_socket.dart';
 import 'token.dart';
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 List<MsgBubble> messages = []; // List to store chat messages
 
@@ -72,14 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (new_msg.isNotEmpty && decodedToken != null) {
       setState(() {
         DateTime time = DateTime.now();
-
-        final Map<String, dynamic> body = {
-          'message': new_msg,
-          'sentBy': decodedToken['firstName'],
-          'email': decodedToken['email'],
-          'date': time.microsecondsSinceEpoch,
-        };
-        socket.emit('sendMessage', body);
+        socket.emit('sendMessage',new_msg);
 
         String formattedTime = _formatDateTime(time.microsecondsSinceEpoch); // Format DateTime to a string
         messages.add(MsgBubble(
@@ -105,12 +97,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void deleteMessage(int index) {
     setState(() {
+      DateTime time = DateTime.parse(messages[index].time);
       print(socket.connected);
       final Map<String,dynamic> body = {
         'message' : messages[index].msg,
         'sentBy' : messages[index].sentBy,
         'email': decodedToken['email'],
-        'date': messages[index].time,
+        'date': time.toIso8601String(),
       };
       socket.emit('deleteMessage',body);
       messages.removeAt(index);
