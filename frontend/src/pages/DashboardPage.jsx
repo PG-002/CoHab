@@ -17,6 +17,8 @@ import sunny from "../assets/sunny.jpg";
 import day from "../assets/day.jpg";
 import rain from "../assets/rain.jpg";
 import night from "../assets/night.jpg";
+import shark from "../assets/shark.png";
+
 import EmblaCarousel from "../components/Dashboard/Carousel/EmblaCarousel";
 import Modal from "react-modal";
 import { toast } from "sonner";
@@ -220,7 +222,9 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
   }, [houseUpdate]);
 
   useEffect(() => {
-    if (weather) {
+    if (noiseLevel == 10) {
+      setBackground(shark);
+    } else if (weather) {
       const condition = weatherCodes[weather.current.weather_code];
       if (condition == "sunny") {
         setBackground(sunny);
@@ -230,7 +234,7 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
         setBackground(rain);
       }
     }
-  }, [weather]);
+  }, [weather, noiseLevel]);
 
   const handleSliderChange = (e) => {
     setNoiseLevel(e.target.value);
