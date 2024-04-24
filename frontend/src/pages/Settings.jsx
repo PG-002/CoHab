@@ -113,7 +113,6 @@ function Settings({ userInfo, houseInfo, setUpdate, handleLogout }) {
   const sendVerification = async (email, code) => {
     try {
       const JSONPayload = JSON.stringify({ email, code });
-      console.log(JSONPayload);
 
       const response = await fetch(
         "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyCode",
@@ -129,8 +128,6 @@ function Settings({ userInfo, houseInfo, setUpdate, handleLogout }) {
 
       if (response.ok && response.status == 200) {
         const data = await response.json();
-
-        console.log(data);
 
         if (data.verified) {
           setVerifiedPass(true);
@@ -175,7 +172,6 @@ function Settings({ userInfo, houseInfo, setUpdate, handleLogout }) {
 
     try {
       const JSONPayload = JSON.stringify({ email, password });
-      console.log(JSONPayload);
 
       const response = await fetch(
         "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/updatePassword",
@@ -254,11 +250,41 @@ function Settings({ userInfo, houseInfo, setUpdate, handleLogout }) {
     }
   };
 
+  const leaveHouse = async (userId) => {
+    try {
+      const response = await fetch(
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/leaveHouse",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update user info");
+      }
+
+      const data = await response.json();
+
+      if (data.removed) {
+        toast.success("Left House");
+      } else {
+        toast.error("Update failed!");
+        console.error("Update failed!".data.error);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.error(error.message);
+    }
+  };
+
   const handleClickDelete = () => {
-    console.log("house left");
     if (userInfo) {
-      submitUserChanges(userInfo.userId, "houseId", null);
-      toast.error("House left");
+      leaveHouse(userInfo.userId);
+      toast.info("Leaving House");
       handleLogout();
     }
   };

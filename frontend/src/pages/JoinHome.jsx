@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
 
-const JoinHome = ({ userInfo, setUser }) => {
+const JoinHome = ({ userInfo, setUser, setUpdate }) => {
   const [code, setCode] = useState(false);
   const [codeResponse, setCodeResponse] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(userInfo);
+    console.log("Join Home", userInfo);
     if (userInfo && userInfo.houseId) {
       navigate("/dashboard");
     }
@@ -46,11 +47,9 @@ const JoinHome = ({ userInfo, setUser }) => {
           const decoded = jwtDecode(data.token);
 
           if (decoded && decoded.house) {
-            const user = userInfo;
-            user.houseId = decoded.house._id;
-            setUser(user);
+            setUpdate(true);
+            toast.success("House Joined");
 
-            console.log(user);
             navigate("/dashboard");
           } else {
             setCodeResponse(data.error);
@@ -70,7 +69,6 @@ const JoinHome = ({ userInfo, setUser }) => {
 
   const handleCodeChange = (e) => {
     setCode(e.target.value);
-    console.log(e.target.value);
   };
 
   return (

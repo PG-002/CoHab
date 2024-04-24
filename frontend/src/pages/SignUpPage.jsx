@@ -3,8 +3,9 @@ import test from "../assets/test.jpg";
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CoHablogo from "../assets/CoHab.png";
+import { toast } from "sonner";
 
-const SignUpPage = ({ setUser }) => {
+const SignUpPage = ({ setUpdate }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,6 +28,34 @@ const SignUpPage = ({ setUser }) => {
   const hasUpperCase = /[A-Z]/;
   const hasSpecialChar = /[@$!%*?&]/;
   const hasValidLength = /^.{8,20}$/;
+
+  const sendCode = async (email) => {
+    try {
+      const JSONPayload = JSON.stringify({ email });
+
+      const response = await fetch(
+        "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/sendVerification",
+        {
+          // Adjust URL as necessary
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSONPayload,
+        }
+      );
+
+      if (response.ok && response.status == 200) {
+        toast.success("Verification Code Sent!");
+      } else if (response.status === 404) {
+        alert("Send code error: User not found");
+      } else {
+        throw new Error("Failed to send code");
+      }
+    } catch (error) {
+      console.error("Send Code error", error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
@@ -67,15 +96,19 @@ const SignUpPage = ({ setUser }) => {
         localStorage.setItem("sessionId", token);
 
         const decoded = jwtDecode(token);
-        setUser(decoded);
+        setUpdate(decoded);
+        toast.success("Signed Up!");
+        sendCode(email);
 
         navigate("/dashboard");
       } else {
+        toast.error("Failed");
         throw new Error("Failed to register");
       }
     } catch (error) {
       setTakenEmail(true);
       console.error("Registration error", error);
+      toast.error("Registration error", error);
     }
   };
 

@@ -35,6 +35,7 @@ const HousedRoute = ({ userInfo, connected }) => {
       <Outlet />
     ) : (
       <div className="flex flex-col w-full h-screen items-center justify-center">
+        <HashLoader color="#36d7b7" />
         <p className="font-bold p-10 text-2xl">Socket Connecting</p>
       </div>
     )

@@ -15,8 +15,6 @@ const VerficationPage = ({ userInfo, setUser }) => {
       if (userInfo) {
         if (userInfo.verified) {
           navigate("/dashboard");
-        } else {
-          sendCode(userInfo.email);
         }
       }
     }
@@ -33,7 +31,6 @@ const VerficationPage = ({ userInfo, setUser }) => {
   const sendCode = async (email) => {
     try {
       const JSONPayload = JSON.stringify({ email });
-      console.log(JSONPayload);
 
       const response = await fetch(
         "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/sendVerification",
@@ -63,7 +60,6 @@ const VerficationPage = ({ userInfo, setUser }) => {
   const sendVerification = async (email, code) => {
     try {
       const JSONPayload = JSON.stringify({ email, code });
-      console.log(JSONPayload);
 
       const response = await fetch(
         "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyCode",
@@ -80,13 +76,10 @@ const VerficationPage = ({ userInfo, setUser }) => {
       if (response.ok && response.status == 200) {
         const data = await response.json();
 
-        console.log(data);
-
         if (data.verified) {
           const user = userInfo;
           user.verified = true;
           setUser(user);
-          console.log(user);
           navigate("/dashboard");
         } else {
           setCodeResponse(data.error);
@@ -103,7 +96,6 @@ const VerficationPage = ({ userInfo, setUser }) => {
 
   const handleCodeChange = (e) => {
     setCode(e.target.value);
-    console.log(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -138,7 +130,7 @@ const VerficationPage = ({ userInfo, setUser }) => {
         <button type="submit" className="bg-green-900 w-6/12 h-3/5">
           Submit Code
         </button>
-        {codeSent ? (
+        {!codeSent ? (
           <p>
             Need a new code?{" "}
             <button

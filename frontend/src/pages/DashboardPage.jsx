@@ -69,27 +69,32 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
       }
     };
 
+    const fetchUsers = async (status) => {
+      let temp = [];
+      const statuses = await Promise.all(
+        status.map(async (item) => await fetchUserInfo(item.userId))
+      );
+
+      return statuses;
+    };
+
     if (houseInfo) {
       const status = houseInfo.statuses;
-      const tempArray = [];
+      let tempArray = [];
 
-      status.map((item) => {
-        fetchUserInfo(item.userId).then((user) => {
-          const object = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            status: item.status,
-            email: user.email,
-          };
-
-          if (object.firstName != userInfo.firstName) {
-            tempArray.push(object);
+      fetchUsers(status).then((statuses) => {
+        statuses.map(({ firstName, lastName, status, userId, email }) => {
+          if (userId == userInfo.userId) {
+            // console.log("Match");
+            tempArray.push({ firstName, lastName, status, userId, email });
+          } else {
+            // console.log("no match", userInfo.userId);
+            tempArray.push({ firstName, lastName, status, userId, email });
           }
         });
+        setHouseMates(tempArray);
+        setRoommateLoading(false);
       });
-
-      setHouseMates(tempArray);
-      setRoommateLoading(false);
     }
   }, [houseInfo]);
 
@@ -113,7 +118,6 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
 
         const data = await response.json();
         setWeather(data);
-        console.log(data);
       } catch (error) {
         console.error(error);
       }
@@ -159,7 +163,6 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
     }
     if (userInfo) {
       fetchWeather(userInfo.location.longitude, userInfo.location.latitude);
-      console.log("fetched");
     }
   }, [userInfo]);
 
@@ -291,7 +294,6 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
 
   const handleSubmitInvite = (e) => {
     e.preventDefault();
-    console.log("submiitt4ed nvite");
 
     if (houseInfo) {
       sendHouseInvite(email);

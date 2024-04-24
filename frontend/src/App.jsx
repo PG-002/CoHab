@@ -66,6 +66,12 @@ function App() {
 
   const handleLogOut = () => {
     socket.disconnect();
+    setSocket(null);
+    setUser(null);
+    setSession(null);
+    setEvents(null);
+    setHouseInfo(null);
+
     localStorage.clear();
     toast.info("Logged Out");
 
@@ -157,7 +163,7 @@ function App() {
   }, [theme, colorTheme]);
 
   useEffect(() => {
-    if (user && !socket) {
+    if (user && !socket && user.houseId) {
       handleLogin();
     }
   }, [user]);
@@ -210,7 +216,10 @@ function App() {
             element={<ForgotPassPage setUser={setUser} />}
           />
 
-          <Route path="/signup" element={<SignUpPage setUser={setUser} />} />
+          <Route
+            path="/signup"
+            element={<SignUpPage setUpdate={setUserUpdate} />}
+          />
         </Route>
         <Route element={<AuthenticatedRoute />}>
           <Route
@@ -220,11 +229,23 @@ function App() {
           <Route
             path="/joinHouse"
             userInfo={user}
-            element={<JoinHome userInfo={user} setUser={setUser} />}
+            element={
+              <JoinHome
+                userInfo={user}
+                setUser={setUser}
+                setUpdate={setUserUpdate}
+              />
+            }
           />
           <Route
             path="/createHouse"
-            element={<CreateHome userInfo={user} setUser={setUser} />}
+            element={
+              <CreateHome
+                userInfo={user}
+                setUser={setUser}
+                setUpdate={setUserUpdate}
+              />
+            }
           />
           <Route element={<VerifiedRoute userInfo={user} />}>
             <Route
@@ -233,6 +254,7 @@ function App() {
               <Route
                 element={
                   <SidebarLayout
+                    handleLogOut={handleLogOut}
                     userInfo={user}
                     houseInfo={houseInfo}
                     setHouseInfo={handleHouseUpdate}
