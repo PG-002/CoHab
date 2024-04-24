@@ -69,7 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
 
   void sendMessage(String new_msg) {
-    if (new_msg.isNotEmpty && token != null) {
+    if (new_msg.isNotEmpty && decodedToken != null) {
       setState(() {
         DateTime time = DateTime.now();
 
