@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'web_socket.dart';
 import 'token.dart';
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 List<MsgBubble> messages = []; // List to store chat messages
 
@@ -72,15 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (new_msg.isNotEmpty && decodedToken != null) {
       setState(() {
         DateTime time = DateTime.now();
-        print(new_msg);
-        print(decodedToken['firstName']);
-        print(decodedToken['email']);
-        final Map<String, dynamic> body = {
-          'message': new_msg,
-          'sentBy': decodedToken['firstName'],
-          'email': decodedToken['email'],
-        };
-        socket.emit('sendMessage', body);
+        socket.emit('sendMessage',new_msg);
 
         String formattedTime = _formatDateTime(time.microsecondsSinceEpoch); // Format DateTime to a string
         messages.add(MsgBubble(
