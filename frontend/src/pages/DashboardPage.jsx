@@ -320,6 +320,14 @@ const DashboardPage = ({ userInfo, houseInfo, socket, setHouseInfo }) => {
           >
             <div className="flex flex-col w-full rounded-xl h-full p-8 justify-between items-start bg-neutral-800 bg-opacity-60">
               <div className=" flex flex-col items-start ">
+                {houseInfo && (
+                  <p className="text-sm lg:text-xl mb-1 ">
+                    Welcome to{" "}
+                    <span className="font-bold underline">
+                      {houseInfo.houseName}
+                    </span>
+                  </p>
+                )}
                 <p className="font-bold text-3xl lg:text-4xl">
                   {dayjs().format("dddd")},
                 </p>
