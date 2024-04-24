@@ -1,11 +1,12 @@
 import 'package:cohab_mobile/msg_bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'web_socket.dart';
 import 'token.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-List<Map<String, dynamic>> messages = []; // List to store chat messages
+List<MsgBubble> messages = []; // List to store chat messages
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -16,37 +17,80 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController(); // Add ScrollController
 
   @override
   void initState() {
     super.initState();
-    init();
-    socket.on('groupChatChange', (data) {
+    getHouse().then((_) {
+      setState(() {
+        // Update tasks with tasks obtained from houseObj
+        messages = house['house']['groupChat'].map<MsgBubble>((messages) {
+          bool current = false;
+          if (messages['sentBy'] == decodedToken['firstName']) {
+            current = true;
+          }
+          return MsgBubble(
+            msg: messages['message'],
+            sentBy: messages['sentBy'],
+            time: messages['date'].toString(),
+            isCurrentUser: current,
+          );
+        }).toList();
+        // Scroll to the bottom when messages are loaded
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        });
+      });
+    }).catchError((error) {
+      // Handle error if necessary
+    });
+
+    socket.on('groupChatChange',(data)
+    {
       setState(() {
         messages.clear();
-        messages.addAll((data['messages'] as List<dynamic>).cast<Map<String, dynamic>>());
-        saveMessages(messages);
+        messages = data['messages'].map<MsgBubble>((message) {
+
+          bool current = false;
+          if (message['sentBy'] == decodedToken['firstName']) {
+            current = true;
+          }
+          return MsgBubble(
+            msg: message['message'],
+            sentBy: message['sentBy'],
+            time: message['date'].toString(),
+            isCurrentUser: current,
+          );
+        }).toList();
       });
     });
-    initMessages();
   }
 
-  void sendMessage(String msg) {
-    if (msg.isNotEmpty && token != null) {
-      int time = DateTime.now().microsecondsSinceEpoch;
-      socket.emit('sendMessage', {
-        'message': msg,
-        'sentBy': decodedToken['firstName'],
-        'email': decodedToken['email'],
-        'date': time,
-      });
+
+  void sendMessage(String new_msg) {
+    if (new_msg.isNotEmpty && token != null) {
       setState(() {
-        messages.add({
-          'message': msg,
+        DateTime time = DateTime.now();
+
+        final Map<String, dynamic> body = {
+          'message': new_msg,
           'sentBy': decodedToken['firstName'],
-          'time': _formatDateTime(time),
-        });
-        saveMessages(messages);
+          'email': decodedToken['email'],
+          'date': time.microsecondsSinceEpoch,
+        };
+        socket.emit('sendMessage', body);
+
+        String formattedTime = _formatDateTime(time.microsecondsSinceEpoch); // Format DateTime to a string
+        messages.add(MsgBubble(
+          msg: new_msg,
+          sentBy: decodedToken['firstName'],
+          time: formattedTime, // Use the formatted time string
+          isCurrentUser: true,
+        ));
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
       });
       _messageController.clear();
     } else {
@@ -58,26 +102,19 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Future<void> saveMessages(List<Map<String, dynamic>> messages) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('messages', jsonEncode(messages));
-  }
-
-  Future<void> initMessages() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? messagesJson = prefs.getString('messages');
-    if (messagesJson != null) {
-      setState(() {
-        messages.clear();
-        messages.addAll((jsonDecode(messagesJson) as List<dynamic>).cast<Map<String, dynamic>>());
-      });
-    }
-  }
 
   void deleteMessage(int index) {
     setState(() {
+      DateTime messageTime = DateTime.parse(messages[index].time);
+      print(socket.connected);
+      final Map<String,dynamic> body = {
+        'message' : messages[index].msg,
+        'sentBy' : messages[index].sentBy,
+        'email': decodedToken['email'],
+        'date': messageTime,
+      };
+      socket.emit('deleteMessage',body);
       messages.removeAt(index);
-      saveMessages(messages);
     });
   }
 
@@ -111,21 +148,22 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: ListView.builder(
+                controller: _scrollController, // Assign ScrollController to ListView
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
                   return Dismissible(
                     key: Key(messages[index].toString()),
-                    direction: messages[index]['sentBy'] == decodedToken['firstName']
+                    direction: messages[index].sentBy == decodedToken['firstName']
                         ? DismissDirection.endToStart
                         : DismissDirection.startToEnd,
                     onDismissed: (direction) {
                       deleteMessage(index);
                     },
                     child: MsgBubble(
-                      msg: messages[index]['message'],
-                      firstName: messages[index]['sentBy'],
-                      time: messages[index]['time'],
-                      isCurrentUser: messages[index]['sentBy'] == decodedToken['firstName'],
+                      msg: messages[index].msg,
+                      sentBy: messages[index].sentBy,
+                      time: messages[index].time,
+                      isCurrentUser: messages[index].sentBy == decodedToken['firstName'],
                       onDelete: () {
                         deleteMessage(index);
                       },
