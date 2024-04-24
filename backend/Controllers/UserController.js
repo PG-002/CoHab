@@ -111,10 +111,42 @@ const getHouse = async (req, res) => {
 const updateUser = async (req, res) => {
   const { id, fieldName, fieldValue } = req.body;
 
+  const user = User.findById(id)
+    .catch(() => null);
+
   res.status(200);
-  await User.updateOne({ _id: id }, { [fieldName]: fieldValue })
-    .then(() => res.json({ updated: true, error: "" }))
-    .catch((err) => res.json({ updated: false, error: err }));
+
+  if(!user)
+  {
+    res.json({ updated : false, error : 'User not found.' });
+    return;
+  }
+
+  await User.findByIdAndUpdate(id, { [fieldName]: fieldValue }, { new : true })
+    .then(async u => {
+      if(u.houseId && (fieldName === 'firstName' || fieldName === 'lastName'))
+      {
+        const pull = await House.findByIdAndUpdate(u.houseId, { $pull : { members : user.firstName + ' ' + user.lastName } })
+          .catch(() => null)
+
+        if(!pull)
+        {
+          res.json({ updated : false, error : 'Could not pull old name from members list.' });
+          return;
+        }
+
+        const push = House.findByIdAndUpdate(u.houseId, { $push : { members : u.firstName + ' ' + u.lastName } })
+          .catch(() => null);
+
+        if(!push)
+        {
+          res.json({ updated : false, error : 'Could not add new name to members list.' });
+          return;
+        }
+      }
+      res.json({ updated: true, error: "" })
+    })
+    .catch(() => res.json({ updated: false, error: 'Could not update the user.' }));
 };
 
 const updatePassword = async (req, res) => {
