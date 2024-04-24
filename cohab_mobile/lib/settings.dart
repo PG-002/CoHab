@@ -4,8 +4,23 @@ import 'package:flutter/material.dart';
 import 'web_socket.dart';
 import 'main.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
+
+  @override
+  createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  String firstName = ' ';
+  String lastName = ' ';
+  
+  @override
+  void initState() {
+    super.initState();
+    firstName = decodedToken['firstName'];
+    lastName = decodedToken['lastName'];
+  }
 
   void logout(BuildContext context) {
     socket.disconnect();
@@ -16,8 +31,66 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  void _editName(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Name'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                initialValue: firstName,
+                onChanged: (value) {
+                  setState(() {
+                    firstName = value;
+                  });
+                },
+                decoration: const InputDecoration(labelText: 'First Name'),
+              ),
+              TextFormField(
+                initialValue: lastName,
+                onChanged: (value) {
+                  setState(() {
+                    lastName = value;
+                  });
+                },
+                decoration: const InputDecoration(labelText: 'Last Name'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                firstName = decodedToken['firstName'];
+                lastName = decodedToken['lastName'];
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                updateUser('firstName', firstName);
+                updateUser('lastName', lastName);
+                decodedToken['firstName'] = firstName;
+
+                decodedToken['lastName'] = lastName;
+                setState(() {});
+                Navigator.of(context).pop();
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    //print(decodedToken['firstName']);
+    //print(decodedToken['lastName']);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -53,19 +126,49 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Name: $firstName $lastName',
+                            style: const TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                              width: 10), // Adjust the width as needed
+                          FloatingActionButton(
+                            onPressed: () {
+                              _editName(context);
+                            },
+                            backgroundColor: const Color(0xFF14532d),
+                            heroTag: 'edit_profile',
+                            mini: true,
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors
+                                  .white, // Set the color of the icon to white
+                            ), // Unique tag for this Hero
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    /*Text(
                       'Name: ${decodedToken['firstName']} ${decodedToken['lastName']}',
                       style: const TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.normal,
                       ),
-                    ),
+                    ),*/
                     const SizedBox(height: 20),
                     Text(
                       'House: ${house['house']['houseName']}',
                       style: const TextStyle(
                         fontSize: 19,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -73,7 +176,7 @@ class SettingsPage extends StatelessWidget {
                       'Email: ${decodedToken['email']}',
                       style: const TextStyle(
                         fontSize: 19,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -81,12 +184,12 @@ class SettingsPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               // Edit Profile Button
-              Center(
+              /*Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      'Edit your User Profile',
+                      'Edit Users Name',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -101,7 +204,7 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
+              ),*/
               const SizedBox(height: 20),
               // Send House Invite Button
               Center(
