@@ -263,11 +263,8 @@ const verifyCode = async (req, res) => {
     return;
   }
 
-  const houseUpdated = await House.findByIdAndUpdate(
-    house._id,
-    { $push: { members: user.firstName + " " + user.lastName } },
-    { new: true }
-  ).catch(() => null);
+  const houseUpdated = await House.findByIdAndUpdate(house._id, { $push : { members : user.firstName + ' ' + user.lastName }, $push : { statuses : { userId : user._id, status : 'N/A' }} }, { new : true })
+    .catch(() => null);
 
   if (!houseUpdated) {
     res.json({
@@ -278,22 +275,44 @@ const verifyCode = async (req, res) => {
     return;
   }
 
-  await User.findByIdAndUpdate(user._id, { houseId: house._id })
-    .then(() =>
-      res.json({
-        verified: true,
-        token: createToken({ house: house }),
-        error: "",
-      })
-    )
-    .catch(() =>
-      res.json({
-        verfified: false,
-        token: null,
-        error: "Error updating the user.",
-      })
-    );
-};
+  await User.findByIdAndUpdate(user._id, { houseId : house._id })
+    .then(() => res.json({ verified : true, token : createToken({ house : house }), error : '' }))
+    .catch(() => res.json({ verfified : false, token : null, error : 'Error updating the user.' }));
+}
+
+const leaveHouse = async (req, res) => {
+  const { userId } = req.body;
+
+  res.status(200);
+
+  const user = await User.findById(userId)
+    .catch(() => null);
+
+  if(!user)
+  {
+    res.json({ removed : false, error : 'User could not be found.' });
+    return;
+  }
+
+  if(!user.houseId)
+  {
+    res.json({ removed : false, error : 'User is not part of a house.' });
+    return;
+  }
+  const updatedUser = User.findByIdAndUpdate(userId, { houseId : null })
+    .then(() => true)
+    .catch(() => false);
+
+  if(!updatedUser)
+  {
+    res.json({ removed : false, error : 'Could not update the user.' });
+    return;
+  }
+  
+  await House.findByIdAndUpdate(user.houseId, { $pull : { statuses : { $elemMatch : { userId : userId } } }, $pull : { members : user.firstName + ' ' + user.lastName } })
+    .then(() => res.json({ removed : true, error : '' }))
+    .catch(() => res.json({ removed : false, error : 'House object could not be updated.' })) 
+}
 
 const encode = async (req, res) => {
   res.status(200);
@@ -313,16 +332,4 @@ const decode = async (req, res) => {
   }
 };
 
-module.exports = {
-  signup,
-  login,
-  getUserInfo,
-  getHouse,
-  updateUser,
-  updatePassword,
-  deleteUser,
-  sendVerification,
-  verifyCode,
-  encode,
-  decode,
-};
+module.exports = { signup, login, getUserInfo, getHouse, leaveHouse, updateUser, updatePassword, deleteUser, sendVerification, verifyCode, encode, decode };

@@ -1,5 +1,5 @@
 const express = require('express');
-const { signup, login, getUserInfo, getHouse, updateUser, updatePassword, deleteUser, sendVerification, verifyCode, encode, decode } = require('../Controllers/UserController');
+const { signup, login, getUserInfo, getHouse, leaveHouse, updateUser, updatePassword, deleteUser, sendVerification, verifyCode, encode, decode } = require('../Controllers/UserController');
 
 const router = express.Router();
 
@@ -8,6 +8,7 @@ router.post('/signup', signup);
 router.post('/login', login);
 router.post('/getUserInfo', getUserInfo);
 router.post('/getHouse', getHouse);
+router.post('/leaveHouse', leaveHouse);
 router.post('/updateUser', updateUser);
 router.post('/updatePassword', updatePassword);
 router.post('/deleteUser', deleteUser);
