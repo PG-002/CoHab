@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 
-function SidebarLayout({ userInfo, setHouseInfo }) {
+function SidebarLayout({ userInfo, setHouseInfo, handleLogOut }) {
   const [activePage, setActivePage] = useState("/login");
 
   let location = useLocation();
@@ -60,7 +60,7 @@ function SidebarLayout({ userInfo, setHouseInfo }) {
   }, [location]);
   return (
     <div className="w-screen flex flex-row">
-      <Sidebar userInfo={userInfo}>
+      <Sidebar userInfo={userInfo} handleLogOut={handleLogOut}>
         <SidebarItem
           icon={
             <LayoutDashboard

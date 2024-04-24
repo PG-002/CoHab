@@ -39,7 +39,6 @@ const SmallCalendar = ({ events }) => {
           dayjs(eventObj.start).month() ==
           dayjs(new Date(dayjs().year(), currentMonthIndex)).month()
         ) {
-          console.log(eventObj);
           tempList.push(eventObj);
           dayjsList.push(dayjs(eventObj.start).format("YYYYMMDD"));
         }
@@ -168,7 +167,6 @@ const SmallCalendar = ({ events }) => {
           {eventsList
             ? eventsList.map((event, i) => {
                 if (event) {
-                  console.log(event.title, event.description);
                   return checkEventOnDay(daySelected ?? dayjs(), event) ? (
                     <div
                       key={i}

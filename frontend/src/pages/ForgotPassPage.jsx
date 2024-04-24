@@ -14,7 +14,7 @@ const ForgotPassPage = () => {
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setEmailAddress(e.target.value);
   };
 
@@ -79,7 +79,6 @@ const ForgotPassPage = () => {
   const sendVerification = async (email, code) => {
     try {
       const JSONPayload = JSON.stringify({ email, code });
-      console.log(JSONPayload);
 
       const response = await fetch(
         "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/verifyCode",
@@ -95,8 +94,6 @@ const ForgotPassPage = () => {
 
       if (response.ok && response.status == 200) {
         const data = await response.json();
-
-        console.log(data);
 
         if (data.verified) {
           setVerified(true);
@@ -141,7 +138,6 @@ const ForgotPassPage = () => {
 
     try {
       const JSONPayload = JSON.stringify({ email, password });
-      console.log(JSONPayload);
 
       const response = await fetch(
         "https://cohab-4fcf8ee594c1.herokuapp.com/api/users/updatePassword",

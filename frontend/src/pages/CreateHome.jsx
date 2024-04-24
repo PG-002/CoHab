@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
 
-const CreateHome = ({ userInfo, setUser }) => {
+const CreateHome = ({ userInfo }) => {
   const [houseName, setHouseName] = useState(null);
   const [codeResponse, setCodeResponse] = useState(null);
   const navigate = useNavigate();
@@ -41,18 +42,14 @@ const CreateHome = ({ userInfo, setUser }) => {
 
       if (response.ok && response.status == 200) {
         const data = await response.json();
-        console.log(data);
 
         if (data && data.token) {
           const decoded = jwtDecode(data.token);
-          console.log(decoded);
 
           if (decoded && decoded.house) {
-            const user = userInfo;
-            user.houseId = decoded.house._id;
-            setUser(user);
+            toast.success("House Created");
+            setUpdate(true);
 
-            console.log(user);
             navigate("/dashboard");
           } else {
             setCodeResponse(data.error);
@@ -72,7 +69,6 @@ const CreateHome = ({ userInfo, setUser }) => {
 
   const handleCodeChange = (e) => {
     setHouseName(e.target.value);
-    console.log(e.target.value);
   };
 
   return (

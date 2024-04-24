@@ -12,7 +12,7 @@ import { toast } from "sonner";
 
 const SidebarContext = createContext();
 
-function Sidebar({ userInfo, children }) {
+function Sidebar({ userInfo, children, handleLogOut }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -42,6 +42,7 @@ function Sidebar({ userInfo, children }) {
           <ul className={`flex-1 px-3 transition-all `}>{children}</ul>
           <div className="mb-auto px-3 transition-all">
             <SidebarItem
+              handleLogOut={handleLogOut}
               icon={
                 <LogOut
                   size={25}
@@ -81,16 +82,10 @@ function Sidebar({ userInfo, children }) {
 
 export default Sidebar;
 
-export function SidebarItem({ icon, text, active, alert, link }) {
+export function SidebarItem({ icon, text, active, alert, link, handleLogOut }) {
   const { expanded } = useContext(SidebarContext);
 
   const navigate = useNavigate();
-
-  const handleLogOut = () => {
-    localStorage.clear();
-    toast.info("Logged out");
-    navigate("/login");
-  };
 
   return (
     <li className="list-none">
