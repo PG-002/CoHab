@@ -72,15 +72,16 @@ class _ChatScreenState extends State<ChatScreen> {
     if (new_msg.isNotEmpty && token != null) {
       setState(() {
         DateTime time = DateTime.now();
-        String formattedTime = _formatDateTime(time.microsecondsSinceEpoch); // Format DateTime to a string
 
         final Map<String, dynamic> body = {
           'message': new_msg,
           'sentBy': decodedToken['firstName'],
           'email': decodedToken['email'],
-          'date': formattedTime, // Use the formatted time string
+          'date': time.microsecondsSinceEpoch,
         };
         socket.emit('sendMessage', body);
+
+        String formattedTime = _formatDateTime(time.microsecondsSinceEpoch); // Format DateTime to a string
         messages.add(MsgBubble(
           msg: new_msg,
           sentBy: decodedToken['firstName'],
