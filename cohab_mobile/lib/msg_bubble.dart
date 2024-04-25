@@ -4,12 +4,14 @@ class MsgBubble extends StatelessWidget {
   final String sentBy;
   final String msg;
   final String time;
+  final String formattedTime;
   final bool isCurrentUser;
   final VoidCallback? onDelete;
 
   const MsgBubble({
     Key? key,
     required this.msg,
+    required this.formattedTime,
     required this.sentBy,
     required this.time,
     required this.isCurrentUser,
@@ -74,7 +76,7 @@ class MsgBubble extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    time,
+                    formattedTime,
                     style: const TextStyle(
                       color: Color(0xFFD3D3D3),
                       fontSize: 12,

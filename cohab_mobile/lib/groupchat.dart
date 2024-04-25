@@ -29,11 +29,20 @@ class _ChatScreenState extends State<ChatScreen> {
           if (messages['sentBy'] == decodedToken['firstName']) {
             current = true;
           }
+
+          // Convert timestamp string to DateTime object
+          DateTime timestamp = DateTime.parse(messages['date']);
+
+          // Format DateTime object into a desired format for messaging
+          String formattedTimestamp = DateFormat('yyyy-MM-dd hh:mm:ss a').format(timestamp);
+
+
           return MsgBubble(
             msg: messages['message'],
             sentBy: messages['sentBy'],
             time: messages['date'].toString(),
             isCurrentUser: current,
+            formattedTime: formattedTimestamp,
           );
         }).toList();
         // Scroll to the bottom when messages are loaded
@@ -55,11 +64,18 @@ class _ChatScreenState extends State<ChatScreen> {
           if (message['sentBy'] == decodedToken['firstName']) {
             current = true;
           }
+          // Convert timestamp string to DateTime object
+          DateTime timestamp = DateTime.parse(message['date']);
+
+          // Format DateTime object into a desired format for messaging
+          String formattedTimestamp = DateFormat('yyyy-MM-dd hh:mm:ss a').format(timestamp);
+
           return MsgBubble(
             msg: message['message'],
             sentBy: message['sentBy'],
             time: message['date'].toString(),
             isCurrentUser: current,
+            formattedTime: formattedTimestamp,
           );
         }).toList();
       });
@@ -78,7 +94,8 @@ class _ChatScreenState extends State<ChatScreen> {
           msg: new_msg,
           sentBy: decodedToken['firstName'],
           time: formattedTime, // Use the formatted time string
-          isCurrentUser: true,
+          isCurrentUser: true, 
+          formattedTime: _formatDateTime(time as int),
         ));
       });
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -158,7 +175,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       isCurrentUser: messages[index].sentBy == decodedToken['firstName'],
                       onDelete: () {
                         deleteMessage(index);
-                      },
+                      }, formattedTime: messages[index].formattedTime,
                     ),
                   );
                 },

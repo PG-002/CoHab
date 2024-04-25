@@ -310,7 +310,8 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 120,
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async {
+                        await getHouse();
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const ChatScreen()),
@@ -326,7 +327,8 @@ class _HomePageState extends State<HomePage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             InkWell(
-                              onTap: () {
+                              onTap: () async {
+                                await getHouse();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const ChatScreen()),
