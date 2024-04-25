@@ -80,16 +80,22 @@ const VerficationPage = ({ userInfo, setUser }) => {
           const user = userInfo;
           user.verified = true;
           setUser(user);
+          toast.success("Verification Successful");
           navigate("/dashboard");
         } else {
           setCodeResponse(data.error);
         }
       } else if (response.status === 404) {
         alert("Send code error: User not found");
+        toast.error("User not found");
       } else {
+        toast.error(data.error);
+
         throw new Error("Failed to send code");
       }
     } catch (error) {
+      toast.error(error.message);
+
       console.error("Send Code error", error);
     }
   };
