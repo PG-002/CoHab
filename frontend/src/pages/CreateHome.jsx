@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 
-const CreateHome = ({ userInfo }) => {
+const CreateHome = ({ userInfo, setUpdate }) => {
   const [houseName, setHouseName] = useState(null);
   const [codeResponse, setCodeResponse] = useState(null);
   const navigate = useNavigate();
