@@ -14,7 +14,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   String firstName = ' ';
   String lastName = ' ';
-  
+
   @override
   void initState() {
     super.initState();
@@ -89,8 +89,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    //print(decodedToken['firstName']);
-    //print(decodedToken['lastName']);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -155,14 +153,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         ],
                       ),
                     ),
-
-                    /*Text(
-                      'Name: ${decodedToken['firstName']} ${decodedToken['lastName']}',
-                      style: const TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),*/
                     const SizedBox(height: 20),
                     Text(
                       'House: ${house['house']['houseName']}',
@@ -182,29 +172,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
-              // Edit Profile Button
-              /*Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Edit Users Name',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    FloatingActionButton(
-                      onPressed: () {},
-                      backgroundColor: Colors.blue,
-                      heroTag: 'edit_profile',
-                      child: const Icon(Icons.edit), // Unique tag for this Hero
-                    ),
-                  ],
-                ),
-              ),*/
               const SizedBox(height: 20),
               // Send House Invite Button
               Center(
@@ -260,6 +227,64 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
+Center(
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      const Text(
+        'Leave House',
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const SizedBox(height: 20),
+      SizedBox( // Wrap the button with SizedBox widget and provide width
+        width: 200, // Adjust width as needed
+        child: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Leave House'),
+                  content: const Text(
+                      'Are you sure you want to leave the house?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close the dialog
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        await leaveHouse();
+                        logout(context);
+                      },
+                      child: const Text('Confirm'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          backgroundColor: Colors.red,
+          heroTag: 'Leave House',
+          child: const Text(
+            'Leave House', // Text for the button
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+
             ],
           ),
         ),

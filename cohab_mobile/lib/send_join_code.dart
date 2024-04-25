@@ -1,5 +1,5 @@
 import 'package:cohab_mobile/token.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EmailInputPage extends StatefulWidget {
@@ -123,7 +123,7 @@ class Sent extends StatelessWidget
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'The code was sent!.',
+                'The code was sent!',
                 style: TextStyle(fontSize: 22),
               ),
               SizedBox(height: 15),
