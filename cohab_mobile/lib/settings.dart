@@ -101,10 +101,9 @@ class _SettingsPageState extends State<SettingsPage> {
         titleSpacing: 0,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          // Wrap with SingleChildScrollView
+      body: SingleChildScrollView( // Wrap with SingleChildScrollView
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -235,64 +234,64 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               const SizedBox(height: 20),
-Center(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      const Text(
-        'Leave House',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 25,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      const SizedBox(height: 20),
-      SizedBox( // Wrap the button with SizedBox widget and provide width
-        width: 200, // Adjust width as needed
-        child: FloatingActionButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Leave House'),
-                  content: const Text(
-                      'Are you sure you want to leave the house?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close the dialog
-                      },
-                      child: const Text('Cancel'),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Leave House',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    TextButton(
-                      onPressed: () async {
-                        await leaveHouse();
-                        logout(context);
-                      },
-                      child: const Text('Confirm'),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 200, // Adjust width as needed
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Leave House'),
+                                content: const Text(
+                                    'Are you sure you want to leave the house?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await leaveHouse();
+                                      logout(context);
+                                    },
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        backgroundColor: Colors.red,
+                        heroTag: 'Leave House',
+                        child: const Text(
+                          'Leave House', // Text for the button
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
-                );
-              },
-            );
-          },
-          backgroundColor: Colors.red,
-          heroTag: 'Leave House',
-          child: const Text(
-            'Leave House', // Text for the button
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-    ],
-  ),
-),
-
+                ),
+              ),
             ],
           ),
         ),
