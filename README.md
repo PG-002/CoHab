@@ -1,29 +1,50 @@
 # CoHab
 
-CoHab is a roommate assistant app designed to help groups of people that are in shared living scenarios. Keep track of tasks, schedules, and chats all in one place!
+The hardest part of living with others is communication. So we made it easier.
 
-### Install for frontend:
+CoHab is an all encompassing full-stack application that allows you to coordinate and communicate with your roommates easier. Featuring a calendar, tasklist, group chat, and location sharing functionality, living with others has never been easier.
 
-npm install -D tailwindcss postcss autoprefixer
+## Features
 
-### Install for backend:
+- Calendar (Add, Delete or Update Events)
+- Groupchat (Realtime chat with roommates)
+- Tasklist (Create, assign and keep track of tasks)
+- Dashboard (Adjust house noise level, see recent events, messages and tasks)
 
-- express
-- mongoose
-- cors
-- dotenv
-- body-parser
-- heroku
-- path
-- jsonwebtoken
-- nodemailer
-- bcryptI'
+## Tech Stack
 
-### Install for flutter:
+**Web Client:** React, TailwindCSS, SocketIO Client
 
-- install flutter from https://docs.flutter.dev/get-started/install/windows/mobile?tab=vscode
+**Mobile Client:** Flutter, SocketIO Client
 
-  NOTE #1: download using the VsCode instructions \*\*\*\*
-  NOTE #2: Don't put the flutter SDK folder that you downloaded in the repo
+**Server:** Node, Express, SocketIO, MongoDB
 
-- flutter extension on VSCode
+## Demo
+
+Insert gif or link to demo
+
+## Authors
+
+#### Project Manager
+
+- [Austin Vosler](https://github.com/AustinVosler)
+
+#### Mobile
+
+- [Stephanny Bais](https://github.com/nanihanny)
+- [Elizabeth Teter](https://github.com/ellieteter)
+- [Ethan Fuller](https://github.com/Ethan-byte196)
+
+#### Web
+
+- [Jerry He](https://github.com/jerhe3)
+- [Sathvik Prabhudeva](https://github.com/Sathvik-P)
+
+#### Backend
+
+- [Evan Pilling](https://github.com/evanpilling)
+- [Ryan Garfinkel](https://github.com/RyanGarfinkel)
+
+#### Database
+
+- [Ethan Fuller](https://github.com/Ethan-byte196)
