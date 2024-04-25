@@ -95,7 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
           sentBy: decodedToken['firstName'],
           time: formattedTime, // Use the formatted time string
           isCurrentUser: true, 
-          formattedTime: _formatDateTime(time as int),
+          formattedTime: formattedTime,
         ));
       });
       WidgetsBinding.instance.addPostFrameCallback((_) {

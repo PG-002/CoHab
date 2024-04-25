@@ -443,7 +443,7 @@ class _Dashboard extends State<DashboardPage> {
     floatingActionButton: Stack(
       children: [
         Positioned(
-          top: 150,
+          top: 120,
           left: 40,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
