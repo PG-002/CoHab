@@ -379,14 +379,40 @@ Future<void> updateUser(String fieldName, String fieldValue) async {
 
       if (fieldName == 'firstName') {
         decodedToken['firstName'] = fieldValue;
-      }else if (fieldName == 'lastName') {
+      } else if (fieldName == 'lastName') {
         decodedToken['lastName'] = fieldValue;
-      }else{
+      } else {}
 
-      }
-      
       print(decodedToken['firstName']);
       print(decodedToken['lastName']);
+    }
+  } catch (e) {
+    // Exception occurred
+    // You might want to handle this error in your UI
+  }
+}
+
+Future<void> leaveHouse() async {
+  final Uri url = Uri.parse(
+      'https://cohab-4fcf8ee594c1.herokuapp.com/api/users/leaveHouse');
+  final Map<String, String> body = {
+    'userId': userId,
+  };
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      decodedToken = JwtDecoder.decode(token);
+      print(decodedToken);
     }
   } catch (e) {
     // Exception occurred
