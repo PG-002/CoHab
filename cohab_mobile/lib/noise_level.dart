@@ -37,12 +37,13 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF262626),
       appBar: AppBar(
         title: const Text(
           'Noise Level',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF14532d),
+        backgroundColor: const Color(0xFF0A5B40),
         iconTheme: const IconThemeData(color: Colors.white),
         titleSpacing: 0,
         centerTitle: true,
@@ -57,6 +58,7 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
               child: Text(
                 'Select your preferred noise level:',
                 style: TextStyle(
+                  color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -64,7 +66,7 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
             ),
             const SizedBox(height: 30),
             Slider(
-              activeColor: Color(0xFF14532d),
+              activeColor: const Color(0xFF0A5B40),
               value: _currentNoiseLevel.toDouble(),
               min: 0,
               max: 10,
@@ -82,15 +84,24 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
               children: <Widget>[
                 Text(
                   'Quiet',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16
+                    ),
                 ),
                 Text(
                   'Normal',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16
+                    ),
                 ),
                 Text(
                   'Loud',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16
+                    ),
                 ),
               ],
             ),
@@ -102,6 +113,7 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
                   Text(
                     'Current Noise Level Preference: $_currentNoiseLevel',
                     style: const TextStyle(
+                      color: Colors.white,
                       fontSize: 18,
                     ),
                   ),
@@ -119,7 +131,7 @@ class _NoiseLevelPageState extends State<NoiseLevelPage> {
                     socket.emit('setNoiseLevel', _currentNoiseLevel.toInt());
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF14532d), // Change the background color here
+                    backgroundColor: const Color(0xFF0A5B40), // Change the background color here
                   ),
                   child: Text(
                     'Save Preference',

@@ -315,12 +315,13 @@ class _TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF262626),
       appBar: AppBar(
         title: const Text(
-          '                       Task List',
+          '                   Task List',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF14532d),
+        backgroundColor: const Color(0xFF0A5B40),
         iconTheme: const IconThemeData(color: Colors.white),
         titleSpacing: 0,
       ),
@@ -477,7 +478,7 @@ class AddTasksButton extends StatelessWidget {
             },
           );
         },
-        backgroundColor: const Color(0xFF14532d),
+        backgroundColor: const Color(0xFF0A5B40),
         child: const Icon(
           Icons.add,
           color: Colors.white,

@@ -90,12 +90,13 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF262626),
       appBar: AppBar(
         title: const Text(
           'Settings',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF14532d),
+        backgroundColor: const Color(0xFF0A5B40),
         iconTheme: const IconThemeData(color: Colors.white),
         titleSpacing: 0,
         centerTitle: true,
@@ -119,6 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     const Text(
                       'User Profile',
                       style: TextStyle(
+                        color: Colors.white,
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
@@ -131,6 +133,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           Text(
                             'Name: $firstName $lastName',
                             style: const TextStyle(
+                              color: Colors.white,
                               fontSize: 19,
                               fontWeight: FontWeight.bold,
                             ),
@@ -141,7 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             onPressed: () {
                               _editName(context);
                             },
-                            backgroundColor: const Color(0xFF14532d),
+                            backgroundColor: const Color(0xFF0A5B40),
                             heroTag: 'edit_profile',
                             mini: true,
                             child: const Icon(
@@ -157,6 +160,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Text(
                       'House: ${house['house']['houseName']}',
                       style: const TextStyle(
+                        color: Colors.white,
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
                       ),
@@ -165,6 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Text(
                       'Email: ${decodedToken['email']}',
                       style: const TextStyle(
+                        color: Colors.white,
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
                       ),
@@ -181,6 +186,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     const Text(
                       'Send House Invite Code',
                       style: TextStyle(
+                        color: Colors.white,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),
@@ -194,7 +200,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               builder: (context) => const EmailInputPage()),
                         );
                       },
-                      backgroundColor: Colors.green,
+                      backgroundColor: const Color(0xFF3BCB8E),
                       heroTag: 'send_invite',
                       child: const Icon(
                           Icons.people_alt), // Unique tag for this Hero
@@ -210,6 +216,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     const Text(
                       'Logout',
                       style: TextStyle(
+                        color: Colors.white,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),
@@ -235,6 +242,7 @@ Center(
       const Text(
         'Leave House',
         style: TextStyle(
+          color: Colors.white,
           fontSize: 25,
           fontWeight: FontWeight.bold,
         ),

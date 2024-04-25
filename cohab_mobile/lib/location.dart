@@ -202,7 +202,7 @@ class _LocationTrackerPageState extends State<LocationTrackerPage> {
           'Location Tracker',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF14532d),
+        backgroundColor: const Color(0xFF0A5B40),
         iconTheme: const IconThemeData(color: Colors.white),
         titleSpacing: 0,
         centerTitle: true,

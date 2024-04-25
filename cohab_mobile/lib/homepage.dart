@@ -21,10 +21,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF262626),
       appBar: AppBar(
         title: Text('${house['house']['houseName']} Home Page',style: TextStyle(color: Colors.white),),
         centerTitle: true,
-        backgroundColor: const Color(0xFF14532d),
+        backgroundColor: const Color(0xFF0A5B40),
         iconTheme: const IconThemeData(color: Colors.white),
         automaticallyImplyLeading: false,
       ),
@@ -46,9 +47,9 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Ink(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF14532d), // Fill the button with green color
+                      color: const Color(0xFF0A5B40), // Fill the button with green color
                       borderRadius: BorderRadius.circular(8.0),
-                      border: Border.all(color: const Color(0xFF14532d)), // Green border
+                      border: Border.all(color: const Color(0xFF0A5B40)), // Green border
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -95,9 +96,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Ink(
                         decoration: BoxDecoration(
-                          color: const Color(0xFF14532d), // Fill the button with green color
+                          color: const Color(0xFF0A5B40), // Fill the button with green color
                           borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                          border: Border.all(color: const Color(0xFF0A5B40)), // Green border
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -139,9 +140,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Ink(
                         decoration: BoxDecoration(
-                          color: const Color(0xFF14532d), // Fill the button with green color
+                          color: const Color(0xFF0A5B40), // Fill the button with green color
                           borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                          border: Border.all(color: const Color(0xFF0A5B40)), // Green border
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -186,9 +187,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Ink(
                         decoration: BoxDecoration(
-                          color: const Color(0xFF14532d), // Fill the button with green color
+                          color: const Color(0xFF0A5B40), // Fill the button with green color
                           borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                          border: Border.all(color: const Color(0xFF0A5B40)), // Green border
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -228,9 +229,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Ink(
                         decoration: BoxDecoration(
-                          color: const Color(0xFF14532d), // Fill the button with green color
+                          color: const Color(0xFF0A5B40), // Fill the button with green color
                           borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                          border: Border.all(color: const Color(0xFF0A5B40)), // Green border
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -275,9 +276,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Ink(
                         decoration: BoxDecoration(
-                          color: const Color(0xFF14532d), // Fill the button with green color
+                          color: const Color(0xFF0A5B40), // Fill the button with green color
                           borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                          border: Border.all(color: const Color(0xFF0A5B40)), // Green border
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -317,9 +318,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Ink(
                         decoration: BoxDecoration(
-                          color: const Color(0xFF14532d), // Fill the button with green color
+                          color: const Color(0xFF0A5B40), // Fill the button with green color
                           borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(color: const Color(0xFF14532d)), // Green border
+                          border: Border.all(color: const Color(0xFF0A5B40)), // Green border
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,

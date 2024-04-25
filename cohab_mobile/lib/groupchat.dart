@@ -129,7 +129,7 @@ class _ChatScreenState extends State<ChatScreen> {
           'Chat Room',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF14532d),
+        backgroundColor: const Color(0xFF0A5B40),
         iconTheme: const IconThemeData(color: Colors.white),
         titleSpacing: 0,
         centerTitle: true,
@@ -192,7 +192,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     },
                     icon: Icon(
                       Icons.send,
-                      color: const Color(0xFF005A44), // Color of the current user's text bubble
+                      color: const Color(0xFF3BCB8E), // Color of the current user's text bubble
                     ),
                   ),
                 ],

@@ -140,12 +140,13 @@ class _Dashboard extends State<DashboardPage> {
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('M/d/y').format(DateTime.now());
     return Scaffold(
+      backgroundColor: const Color(0xFF262626),
       appBar: AppBar(
         title: const Text(
           'Dashboard',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF14532d),
+        backgroundColor: const Color(0xFF0A5B40),
         iconTheme: const IconThemeData(color: Colors.white),
         titleSpacing: 0,
         centerTitle: true,
@@ -165,7 +166,7 @@ class _Dashboard extends State<DashboardPage> {
               decoration: BoxDecoration(
                 color: const Color(0xFF404040),
                 shape: BoxShape.rectangle,
-                border: Border.all(color: Colors.grey),
+                border: Border.all(color: const Color(0xFF404040)),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: SingleChildScrollView(
@@ -189,7 +190,7 @@ class _Dashboard extends State<DashboardPage> {
                           return Container(
                             margin: const EdgeInsets.symmetric(vertical: 4),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF14532d),
+                              color: const Color(0xFF0A724F),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: ListTile(
@@ -230,7 +231,7 @@ class _Dashboard extends State<DashboardPage> {
             decoration: BoxDecoration(
               color: const Color(0xFF404040),
               shape: BoxShape.rectangle,
-              border: Border.all(color: Colors.grey),
+              border: Border.all(color: const Color(0xFF404040)),
               borderRadius: BorderRadius.circular(20),
             ),
             child: SingleChildScrollView(
@@ -262,7 +263,7 @@ class _Dashboard extends State<DashboardPage> {
                         margin: const EdgeInsets.only(bottom: 10),
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF14532d),
+                          color: const Color(0xFF0A724F),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Column(
@@ -318,7 +319,7 @@ class _Dashboard extends State<DashboardPage> {
             decoration: BoxDecoration(
               color: const Color(0xFF404040),
               shape: BoxShape.rectangle,
-              border: Border.all(color: Colors.grey),
+              border: Border.all(color: const Color(0xFF404040)),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
@@ -336,7 +337,7 @@ class _Dashboard extends State<DashboardPage> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF14532d), 
+                  color: const Color(0xFF0A724F), 
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
@@ -366,7 +367,7 @@ class _Dashboard extends State<DashboardPage> {
           decoration: BoxDecoration(
             color: const Color(0xFF404040),
             shape: BoxShape.rectangle,
-            border: Border.all(color: Colors.grey),
+            border: Border.all(color: const Color(0xFF404040)),
             borderRadius: BorderRadius.circular(20),
           ),
           child: SingleChildScrollView(
@@ -406,7 +407,7 @@ class _Dashboard extends State<DashboardPage> {
                     margin: const EdgeInsets.only(bottom: 10),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF14532d),
+                      color: const Color(0xFF0A724F),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
@@ -450,13 +451,13 @@ class _Dashboard extends State<DashboardPage> {
             children: [
               Tooltip(
                 message: 'Change Status',
-                textStyle: const TextStyle(color: Colors.black),
+                textStyle: const TextStyle(color: Colors.white),
                 child: SizedBox(
                   width: 65.0,
                   height: 65.0,
                   child: FloatingActionButton(
                     onPressed: _changeStatus,
-                    backgroundColor: const Color(0xFF14532d),
+                    backgroundColor: const Color(0xFF0A724F),
                     child: const Icon(Icons.emoji_emotions, color: Colors.white),
                   ),
                 ),
@@ -464,7 +465,7 @@ class _Dashboard extends State<DashboardPage> {
               const SizedBox(height: 8), // Add some space between the button and the text
               const Text(
                 'Change Status',
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.white),
               ),
             ],
           ),
