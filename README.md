@@ -10,6 +10,7 @@ CoHab is an all encompassing full-stack application that allows you to coordinat
 - Groupchat (Realtime chat with roommates)
 - Tasklist (Create, assign and keep track of tasks)
 - Dashboard (Adjust house noise level, see recent events, messages and tasks)
+- Realtime Location Sharing
 
 ## Tech Stack
 
