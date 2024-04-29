@@ -25,6 +25,10 @@ CoHab is an all encompassing full-stack application that allows you to coordinat
 <img src='./CoHabWalkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
+
+https://github.com/PG-002/CoHab/assets/85854289/2e7808b6-efc2-441b-a84d-e14b0c9a09a5
+
+
 ## Authors
 
 #### Project Manager
